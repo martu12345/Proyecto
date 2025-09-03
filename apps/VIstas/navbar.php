@@ -2,7 +2,7 @@
     <!-- Logo -->
     <div class="logo">
         <a href="index.php">
-            <img src="../../public/imagenes/logos/logo_manitas.png">
+            <img src="../../publico/imagenes/logos/logo_manitas.png">
         </a>
     </div>
 
