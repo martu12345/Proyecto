@@ -2,7 +2,7 @@
     <!-- Logo -->
     <div class="logo">
         <a href="index.php">
-            <img src="../../publico/imagenes/logos/logo_manitas.png">
+            <img src="/Proyecto/public/imagen/logo/logo_manitas.png" >
         </a>
     </div>
 
@@ -27,7 +27,7 @@
         <form action="buscar.php" method="POST">
             <input type="text" name="q" placeholder="Buscar...">
             <button type="submit">
-                <img src="../../public/imagenes/iconos/icono_manitas.png">
+                <img src="/Proyecto/public/imagen/icono/icono_busqueda.png">
             </button>
         </form>
     </div>
@@ -36,7 +36,7 @@
     <div class="perfil">
         <form action="perfil.php" method="POST">
             <button type="submit">
-                <img src="../../public/imagenes/iconos/iconos_manitas.png" alt="Mi perfil">
+                <img src="/Proyecto/public/imagen/icono/icono_avatar.png" alt="Mi perfil">
             </button>
         </form>
     </div>
