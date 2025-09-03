@@ -6,7 +6,7 @@
         </a>
     </div>
 
-    <!-- Departamentos -->
+    <!-- Eleccion de departamentos -->
     <div class="departamentos">
         <form action="departamento.php" method="POST">
             <select name="departamento">
