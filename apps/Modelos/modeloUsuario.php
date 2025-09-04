@@ -37,6 +37,7 @@ class Usuario {
     public function verificarContraseña($contraseñaIngresada) {
         return password_verify($contraseñaIngresada, $this->contraseña);
 // esto tampoco se si esta bien
+//faltan las funciones del diagrama de clases 
 }
 }
 ?>
