@@ -93,19 +93,60 @@ body {
     height: 20px;
 }
 
-.perfil button {
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-family: 'Lexend', sans-serif;
+/* Perfil - Dropdown con hover y delay */
+.perfil {
+    position: relative;
 }
 
-.perfil img {
+.perfil-btn {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.perfil-btn img {
     width: 32px;
     height: 32px;
     border-radius: 50%;
 }
 
+/* Menú oculto por defecto */
+.perfil-menu {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* duración del efecto */
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    flex-direction: column;
+    min-width: 150px;
+    z-index: 100;
+}
+
+.perfil-menu a {
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #333;
+    display: block;
+    font-family: 'Lexend', sans-serif;
+}
+
+.perfil-menu a:hover {
+    background-color: #ff914d;
+    color: #fff;
+}
+
+/* Mostrar menú al pasar el mouse con transición */
+.perfil:hover .perfil-menu {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column; 

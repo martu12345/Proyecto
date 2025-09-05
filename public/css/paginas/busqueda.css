@@ -1,0 +1,89 @@
+/* Contenedor principal con dos columnas */
+.contenedor-principal {
+    display: flex;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* Columna izquierda (filtros) */
+.columna-izquierda {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filtro {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.filtro h3 {
+    margin-top: 0;
+}
+
+/* Columna derecha (resultados) */
+.columna-derecha {
+    flex: 3;
+}
+
+.titulo-resultados {
+    margin-bottom: 20px;
+}
+
+/* Plantilla de servicios */
+.servicio {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.servicio img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+.info-servicio {
+    flex: 1;
+}
+
+.info-servicio h3 {
+    margin: 0 0 5px 0;
+}
+
+.info-servicio p {
+    margin: 0;
+}
+
+/* Botón "+" */
+.btn-mas {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .contenedor-principal {
+        flex-direction: column;
+    }
+
+    .columna-izquierda {
+        margin-bottom: 20px;
+    }
+}

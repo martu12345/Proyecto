@@ -12,12 +12,10 @@
 
 </head>
 <body>
-
     <?php include '../apps/vistas/layout/navbar.php'; ?>
     <?php include '../apps/vistas/layout/frase.php'; ?>
     <?php include '../apps/vistas/layout/secciones.php'; ?>
     <script src="/Proyecto/public/js/secciones.js"></script>
     <?php include '../apps/vistas/layout/footer.php'; ?>
-
 </body>
 </html>

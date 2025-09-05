@@ -1,0 +1,95 @@
+
+.login-background {
+    background-color: #ff914d;
+    width: 100%;
+    min-height: calc(100vh - 90px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.login-box {
+    background-color: #fff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    max-width: 400px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+.login-box h2 {
+    margin-bottom: 30px;
+    font-family: 'Lexend', sans-serif;
+    color: #333;
+}
+
+
+.login-box label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-family: 'Lexend', sans-serif;
+    color: #555;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-family: 'Lexend', sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.login-box input:focus {
+    border-color: #ff914d;
+}
+
+
+.login-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.login-buttons button {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Lexend', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.login-buttons button[type="submit"] {
+    background-color: #ff914d;
+    color: #fff;
+}
+
+.login-buttons button[type="submit"]:hover {
+    background-color: #e07a39;
+}
+
+.login-buttons button[type="button"] {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.login-buttons button[type="button"]:hover {
+    background-color: #ddd;
+}
+
+@media (max-width: 480px) {
+    .login-box {
+        padding: 30px 20px;
+    }
+}
