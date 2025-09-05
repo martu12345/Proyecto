@@ -5,9 +5,9 @@
             <img src="/Proyecto/public/imagen/icono/icono_hogar.png" >
             <span>Hogar</span>
         </div>
-        <div class="cuadro" data-busqueda="Cuidado">
-            <img src="/Proyecto/public/imagen/icono/icono_cuidado.png">
-            <span>Cuidado</span>
+        <div class="cuadro" data-busqueda="Belleza">
+            <img src="/Proyecto/public/imagen/icono/icono_belleza.png">
+            <span>Belleza</span>
         </div>
         <div class="cuadro" data-busqueda="Tecnologia">
             <img src="/Proyecto/public/imagen/icono/icono_tecnologia.png">
