@@ -4,7 +4,7 @@ require_once('../Modelos/conexion.php');
 
 
 $email    = $_POST['email'] ?? '';
-$contrasena = $_POST['contrasena'] ?? ''; 
+$contrasena = $_POST['contrasena'] ?? ''; // <-- cambio aquí
 $telefono = $_POST['telefono'] ?? '';
 $nombre = $_POST['nombre'] ?? '';
 $apellido = $_POST['apellido'] ?? '';
@@ -33,8 +33,8 @@ if (strlen($contrasena) < 8) {
 // crear cliente
 $unCliente = new Cliente(null, $email, $contrasena, $nombre, $apellido);
 
-if($unCliente->guardarCliente($conn, $telefono)) {
-    echo "Cliente y teléfono guardados correctamente!";
+if ($unCliente->guardarCliente($conn)) {
+    echo "Cliente guardado correctamente!";
 } else {
     echo "Error al guardar el cliente.";
 }

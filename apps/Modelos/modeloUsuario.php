@@ -3,7 +3,6 @@ class Usuario {
     protected $idUsuario; // pk
     private $email;
     private $contrasena;
-    private $telefono;
 
     public function __construct($idUsuario, $email, $contrasena) {
         $this->idUsuario = $idUsuario;
@@ -82,7 +81,7 @@ public function guardar($conn) {
             $usuario = new Usuario(
                 $resultado['idUsuario'], 
                 $resultado['email'], 
-                $resultado['contraseña'], 
+                $resultado['contraseña']
             );
             $usuario->contrasena = $resultado['contraseña']; // mantener hash
             return $usuario;

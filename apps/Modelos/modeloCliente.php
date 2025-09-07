@@ -1,5 +1,7 @@
 <?php
 require_once('modeloUsuario.php');
+require_once('modeloTelefono.php');
+
 
 class Cliente extends Usuario {
     private $nombre;
@@ -17,19 +19,21 @@ class Cliente extends Usuario {
 
     // setters
     public function setIdUsuario($IdUsuario) {
-    $this->setIdUsuario($conn->insert_id);
+    $this->idUsuario;
     }
     public function setNombre($nombre) { $this->nombre = $nombre; }
     public function setApellido($apellido) { $this->apellido = $apellido; }
 
-    //guardar cliente en la base
-    public function guardarCliente($conn) {
+    //guardar cliente en la base y telefono 
+    public function guardarCliente($conn, $telefono = null) {
         if(parent::guardar($conn)) {
             $this->idUsuario = $conn->insert_id;
             $sql = "INSERT INTO cliente (IdUsuario, Nombre, Apellido) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("iss", $this->idUsuario, $this->nombre, $this->apellido);
-            return $stmt->execute();
+            Telefono::insertarTelefono($conn, $this->idUsuario, $telefono);
+             return $stmt->execute();
+
         } else {
             return false;
         } 
