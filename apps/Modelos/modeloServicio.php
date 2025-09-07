@@ -1,6 +1,6 @@
 <?php
 class Servicio {
-    private $idServicio;      /
+    private $idServicio;
     private $titulo;
     private $categoria;
     private $descripcion;
@@ -8,7 +8,6 @@ class Servicio {
     private $disponibilidad;
     private $imagen;           
 
-    
     public function __construct($idServicio, $titulo, $categoria, $descripcion, $precio, $disponibilidad, $imagen = null) {
         $this->idServicio = $idServicio;
         $this->titulo = $titulo;
@@ -16,9 +15,10 @@ class Servicio {
         $this->descripcion = $descripcion;
         $this->precio = $precio;
         $this->disponibilidad = $disponibilidad;
-        $this->imagen = $imagen;
+        $this->imagen = $imagen ?? ''; 
     }
 
+    // Getters
     public function getIdServicio() { return $this->idServicio; }
     public function getTitulo() { return $this->titulo; }
     public function getCategoria() { return $this->categoria; }
@@ -27,6 +27,7 @@ class Servicio {
     public function getDisponibilidad() { return $this->disponibilidad; }
     public function getImagen() { return $this->imagen; }
 
+    // Setters
     public function setIdServicio($idServicio) { $this->idServicio = $idServicio; }
     public function setTitulo($titulo) { $this->titulo = $titulo; }
     public function setCategoria($categoria) { $this->categoria = $categoria; }
@@ -35,14 +36,13 @@ class Servicio {
     public function setDisponibilidad($disponibilidad) { $this->disponibilidad = $disponibilidad; }
     public function setImagen($imagen) { $this->imagen = $imagen; }
 
-   
+    // Guardar en BD
     public function guardar($conn) {
         $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, disponibilidad, imagen) 
                 VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
-            echo "Error al preparar la consulta: " . $conn->error;
-            return false;
+            die("Error al preparar la consulta: " . $conn->error);
         }
 
         $stmt->bind_param(
@@ -58,8 +58,7 @@ class Servicio {
         if ($stmt->execute()) {
             return true;
         } else {
-            echo "Error al guardar servicio: " . $stmt->error;
-            return false;
+            die("Error al guardar servicio: " . $stmt->error);
         }
     }
 }

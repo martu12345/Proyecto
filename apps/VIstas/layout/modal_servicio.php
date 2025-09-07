@@ -3,7 +3,7 @@
         <span class="cerrar">&times;</span>
         <h2>Crear Servicio</h2>
 
-        <form id="formServicio" enctype="multipart/form-data">
+        <form id="formServicio" action="/Proyecto/apps/controlador/controlador_servicio.php" method="POST" enctype="multipart/form-data">
             <div class="form-top">
                 <div class="form-image">
                     <label for="imagen">Foto del servicio</label>
@@ -37,9 +37,8 @@
             </div>
 
             <label for="descripcion">Descripción</label>
-            <textarea id="descripcion" name="descripcion" rows="3" style="overflow:hidd en;"></textarea>
+            <textarea id="descripcion" name="descripcion" rows="3" style="overflow:hidden;"></textarea>
             <div id="contador">0 / 60 palabras</div>
-            </textarea>
 
             <div class="boton-contenedor">
                 <button type="submit">Guardar</button>
