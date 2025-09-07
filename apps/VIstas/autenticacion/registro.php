@@ -25,7 +25,7 @@
         <!-- Formulario Cliente -->
         <div class="login-box" id="formulario-cliente" style="display:none;">
             <h2>Registro Cliente</h2>
-            <form action="procesar_cliente.php" method="POST"> 
+            <form action="../../Controlador/controladorCliente.php" method="POST"> 
                 <label for="nombre">Nombre</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Lucas" required>
 
@@ -35,8 +35,8 @@
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="yolucas@gmail.com" required>
 
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="lucas123" required>
+                <label for="contraseña">Contraseña</label>
+                <input type="password" id="contraseña" name="contraseña" placeholder="lucas123" required>
 
                 <div class="login-buttons">
                     <button type="submit">Registrarse</button>

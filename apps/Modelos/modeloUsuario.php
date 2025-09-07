@@ -43,7 +43,7 @@ class Usuario {
     public function guardar($conn) {
         $stmt = $conn->prepare("INSERT INTO usuarios (email, contraseña, telefono) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $this->email, $this->contraseña, $this->telefono);
-        return $stmt->execute();4
+        return $stmt->execute();
     }
 
     public static function buscarPorEmail($conn, $email) {
@@ -53,7 +53,7 @@ class Usuario {
         $resultado = $stmt->get_result()->fetch_assoc();
 
         if($resultado) {
-            $usuario = new Usuario($resultado['email'], $resultado['contraseña'], $resultado['telefono'], $resultado['idUsuario']);
+            $usuario = new Usuario($resultado['idUsuario'], $resultado['email'], $resultado['contraseña'], $resultado['telefono'], $resultado['idUsuario']);
             $usuario->contraseña = $resultado['contraseña']; // mantener hash
             return $usuario;
         }
@@ -61,5 +61,5 @@ class Usuario {
     }
 }
 }
-}
+
 ?>

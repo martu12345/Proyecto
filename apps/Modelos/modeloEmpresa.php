@@ -1,19 +1,18 @@
 <?
-class Cliente {
+require_once('modeloUsuario.php')
+class Empresa extends Usuario {
     private $idUsuario; // pk
     private $nombre;
     private $apellido;
-    public function __construct($idUsuario, $nombreEmpresa, $calle, $numero) {
-        //rne
-    $this->idUsuario = $idUsuario;
+    public function __construct($idUsuario, $email, $contraseña, $telefono, $nombreEmpresa, $calle, $numero) {
+     parent::__construct($idUsuario, $email, $contraseña, $telefono);
+     // rne
     $this->nombreEmpresa = $nombreEmpresa;
     $this->calle = $calle;
     $this->numero = $numero; 
     }
         // getters
-    public function getIdUsuario() {
-         return $this->idUsuario;
-         }
+ 
     public function getNombreEmpresa() {
          return $this->nombreEmpresa;
          }

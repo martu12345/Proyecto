@@ -1,5 +1,5 @@
 <?php
-require_once('modeloUsuario.php');
+require_once('../Modelos/modeloUsuario.php');
 $email    = $_POST['email'] ?? '';
 $contraseña = $_POST['contraseña'] ?? '';
 $telefono = $_POST['telefono'] ?? '';
@@ -22,7 +22,5 @@ if (strlen($contraseña) < 8) {
 }
 $unUsuario = new Usuario($idUsuario, $email, $contraseña, $telefono);
 
-public function iniciarSesion() ^{
-    
-}
+
 ?>
