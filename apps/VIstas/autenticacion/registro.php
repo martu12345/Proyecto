@@ -36,7 +36,7 @@
         <input type="email" id="email" name="email" placeholder="yolucas@gmail.com" required>
 
         <label for="telefono">Teléfono</label>
-        <input type="tel" id="telefono" name="telefono" placeholder="099123456" pattern="[0-9]{8}" title="Ingrese un número uruguayo de 8 dígitos" maxlength="9" required>
+        <input type="tel" id="telefono" name="telefono" placeholder="099123456" pattern="[0-9]{9}" title="Ingrese un número uruguayo de 9 dígitos" maxlength="9" required>
 
 
         <label for="contrasena">Contraseña</label>
