@@ -14,8 +14,9 @@ class Cliente {
          return $this->idUsuario;
          }
     public function getNombre() {
-         return $this->nombre;
-         }
+        return this->nombre;    
+    }
+        
     public function getApellido() {
          return $this->apellido;
          }
@@ -25,7 +26,7 @@ class Cliente {
          $this->nombre = $nombre;
          }
 
-    public function setApellido($apellido) { 
+    public function setTelefono($apellido) { 
         $this->apellido = $apellido; 
     }
 
