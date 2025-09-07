@@ -13,8 +13,7 @@ if ($conn->connect_error) {
 }
 
 // prueba para ver si fucona la base de datos
-$$sql = "INSERT INTO Usuario (email, contraseña) 
-        VALUES ('martina@example.com', '123456')";
+$sql = "INSERT INTO Usuario (email, contraseña) VALUES ('martina@example.com', '123456')";
 
 
 if ($conn->query($sql) === TRUE) {
@@ -23,11 +22,6 @@ if ($conn->query($sql) === TRUE) {
     echo "Error al insertar: " . $conn->error;
 }
 
-// Mostrar todos los registros
-$resultado = $conn->query("SELECT * FROM Usuarios");
-while($fila = $resultado->fetch_assoc()) {
-    echo "<br>Id: " . $fila['idusuario'] . " - Email: " . $fila['email'] . " - Contraseña: " . $fila['contraseña'];
-}
-?>
+
 
 ?>
