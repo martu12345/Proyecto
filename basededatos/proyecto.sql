@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `miproyecto` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `miproyecto`;
 -- MySQL dump 10.13  Distrib 8.0.43, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: miproyecto
@@ -74,12 +72,12 @@ DROP TABLE IF EXISTS `brinda`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `brinda` (
-  `IdServicio` int NOT NULL,
   `IdUsuario` int NOT NULL,
-  PRIMARY KEY (`IdServicio`,`IdUsuario`),
-  KEY `fk_brinda_empresa` (`IdUsuario`),
-  CONSTRAINT `fk_brinda_empresa` FOREIGN KEY (`IdUsuario`) REFERENCES `empresa` (`IdUsuario`) ON DELETE CASCADE,
-  CONSTRAINT `fk_brinda_servicio` FOREIGN KEY (`IdServicio`) REFERENCES `servicio` (`IdServicio`) ON DELETE CASCADE
+  `IdServicio` int NOT NULL,
+  PRIMARY KEY (`IdUsuario`,`IdServicio`),
+  KEY `IdServicio` (`IdServicio`),
+  CONSTRAINT `brinda_ibfk_1` FOREIGN KEY (`IdUsuario`) REFERENCES `empresa` (`IdUsuario`) ON DELETE CASCADE,
+  CONSTRAINT `brinda_ibfk_2` FOREIGN KEY (`IdServicio`) REFERENCES `servicio` (`IdServicio`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -135,7 +133,7 @@ CREATE TABLE `comunica` (
   KEY `fk_comunica_empresa` (`IdUsuarioEmpresa`),
   CONSTRAINT `fk_comunica_cliente` FOREIGN KEY (`IdUsuarioCliente`) REFERENCES `cliente` (`IdUsuario`) ON DELETE CASCADE,
   CONSTRAINT `fk_comunica_empresa` FOREIGN KEY (`IdUsuarioEmpresa`) REFERENCES `empresa` (`IdUsuario`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,7 +166,7 @@ CREATE TABLE `contrata` (
   CONSTRAINT `fk_contrata_cliente` FOREIGN KEY (`IdUsuario`) REFERENCES `cliente` (`IdUsuario`) ON DELETE CASCADE,
   CONSTRAINT `fk_contrata_servicio` FOREIGN KEY (`IdServicio`) REFERENCES `servicio` (`IdServicio`) ON DELETE CASCADE,
   CONSTRAINT `chk_calificacion` CHECK (((`Calificacion` between 1 and 5) or (`Calificacion` is null)))
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,12 +218,10 @@ CREATE TABLE `servicio` (
   `Descripcion` varchar(500) DEFAULT NULL,
   `Precio` int NOT NULL,
   `Disponibilidad` tinyint(1) NOT NULL,
-  `IdUsuarioEmpresa` int NOT NULL,
+  `imagen` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`IdServicio`),
-  KEY `fk_servicio_empresa` (`IdUsuarioEmpresa`),
-  CONSTRAINT `fk_servicio_empresa` FOREIGN KEY (`IdUsuarioEmpresa`) REFERENCES `empresa` (`IdUsuario`),
   CONSTRAINT `chk_precio` CHECK ((`Precio` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -275,7 +271,7 @@ CREATE TABLE `usuario` (
   `contraseña` varchar(255) NOT NULL,
   PRIMARY KEY (`IdUsuario`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,4 +292,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-06 22:26:53
+-- Dump completed on 2025-09-07 19:15:18

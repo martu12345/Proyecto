@@ -1,19 +1,6 @@
 <?php
-// Comando para que mysql permita crear tablas de seervicio sin el idempresa mientras no tenemos el registro
-// ALTER TABLE Servicio MODIFY COLUMN IdUsuarioEmpresa INT NULL;
-
-// Estos dos comandos son para restaurar la base de datos a como tiene que ser originalmente
-// ALTER TABLE Servicio 
-// MODIFY COLUMN IdUsuarioEmpresa INT NOT NULL;
-
-
 require_once '../modelos/modeloServicio.php';
 require_once '../modelos/conexion.php'; 
-
-
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
