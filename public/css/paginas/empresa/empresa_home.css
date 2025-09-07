@@ -1,0 +1,21 @@
+
+/* Botón flotante */
+.btn-float {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background-color: #ff914d;
+    color: white;
+    font-size: 32px;
+    border: none;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
+
+.btn-float:hover {
+    background-color: #e2833b;
+}
