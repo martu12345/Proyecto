@@ -5,8 +5,8 @@ class Cliente extends Usuario {
     private $nombre;
     private $apellido;
 
-    public function __construct($idUsuario, $email, $contrasena, $telefono, $nombre, $apellido) {
-        parent::__construct($idUsuario, $email, $contrasena, $telefono);
+    public function __construct($idUsuario, $email, $contrasena, $nombre, $apellido) {
+        parent::__construct($idUsuario, $email, $contrasena);
         $this->nombre = $nombre;
         $this->apellido = $apellido;
     }
@@ -16,6 +16,9 @@ class Cliente extends Usuario {
     public function getApellido() { return $this->apellido; }
 
     // setters
+    public function setIdUsuario($IdUsuario) {
+    $this->setIdUsuario($conn->insert_id);
+    }
     public function setNombre($nombre) { $this->nombre = $nombre; }
     public function setApellido($apellido) { $this->apellido = $apellido; }
 
@@ -29,8 +32,10 @@ class Cliente extends Usuario {
             return $stmt->execute();
         } else {
             return false;
-        }
-    }
+        } 
+    } 
+
+
 
 }
 ?>

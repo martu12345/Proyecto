@@ -1,11 +1,19 @@
 <?php
 require_once('../Modelos/modeloCliente.php');
+require_once('../Modelos/conexion.php');
+
 
 $email    = $_POST['email'] ?? '';
 $contrasena = $_POST['contrasena'] ?? ''; // <-- cambio aquí
 $telefono = $_POST['telefono'] ?? '';
 $nombre = $_POST['nombre'] ?? '';
 $apellido = $_POST['apellido'] ?? '';
+
+echo "Email: $email <br>";
+echo "Contraseña: $contrasena <br>";
+echo "Teléfono: $telefono <br>";
+echo "Nombre: $nombre <br>";
+echo "Apellido: $apellido <br>";
 
 // validaciones 
 if (empty($email)) {
@@ -23,6 +31,11 @@ if (strlen($contrasena) < 8) {
 }
 
 // crear cliente
-$unCliente = new Cliente(null, $email, $contrasena, $telefono, $nombre, $apellido);
+$unCliente = new Cliente(null, $email, $contrasena, $nombre, $apellido);
 
+if ($unCliente->guardarCliente($conn)) {
+    echo "Cliente guardado correctamente!";
+} else {
+    echo "Error al guardar el cliente.";
+}
 ?>

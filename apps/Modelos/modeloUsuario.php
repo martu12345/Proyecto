@@ -1,15 +1,15 @@
 <?php
 class Usuario {
-    private $idUsuario; // pk
+    protected $idUsuario; // pk
     private $email;
     private $contrasena;
     private $telefono;
 
-    public function __construct($idUsuario, $email, $contrasena, $telefono) {
+    public function __construct($idUsuario, $email, $contrasena) {
         $this->idUsuario = $idUsuario;
         $this->email = $email;
         $this->contrasena = password_hash($contrasena, PASSWORD_DEFAULT);
-        $this->telefono = $telefono;
+
     }
 
     // getters
@@ -21,11 +21,13 @@ class Usuario {
         return $this->email;
     }
 
-    public function getTelefono() {
-        return $this->telefono;
-    }
 
     // setters
+        public function setIdUsuario($id) {
+        $this->idUsuario = $id;
+    }
+
+
     public function setEmail($email) {
         $this->email = $email;
     }
@@ -34,21 +36,40 @@ class Usuario {
         $this->contrasena = password_hash($contrasena, PASSWORD_DEFAULT);
     }
 
-    public function setTelefono($telefono) { 
-        $this->telefono = $telefono; 
-    }
-
     // verificación de contraseña
     public function verificarContrasena($contrasenaIngresada) { 
         return password_verify($contrasenaIngresada, $this->contrasena); 
     }
 
-    // guardar en la base de datos
+    /* guardar en la base de datos
     public function guardar($conn) {
         $stmt = $conn->prepare("INSERT INTO usuarios (Email, Contraseña, Telefono) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $this->email, $this->contrasena, $this->telefono);
         return $stmt->execute();
     }
+*/
+public function guardar($conn) {
+    // Preparar la consulta
+    $stmt = $conn->prepare("INSERT INTO usuario (Email, Contraseña) VALUES (?, ?)");
+    if (!$stmt) {
+        die("Error prepare usuarios: " . $conn->error);
+    }
+
+    // Asignar parámetros
+    $stmt->bind_param("ss", $this->email, $this->contrasena);
+
+    // Ejecutar y verificar
+    if (!$stmt->execute()) {
+        die("Error execute usuarios: " . $stmt->error);
+    }
+
+    // Guardar el id generado automáticamente
+    $this->idUsuario = $conn->insert_id;
+
+    $stmt->close();
+    return true;
+}
+
 
     // buscar usuario por email
     public static function buscarPorEmail($conn, $email) {
@@ -62,7 +83,6 @@ class Usuario {
                 $resultado['idUsuario'], 
                 $resultado['email'], 
                 $resultado['contraseña'], 
-                $resultado['telefono']
             );
             $usuario->contrasena = $resultado['contraseña']; // mantener hash
             return $usuario;

@@ -1,7 +1,9 @@
 <?php
 require_once('../Modelos/modeloUsuario.php');
+require_once('../Modelos/conexion.php');
+
 $email    = $_POST['email'] ?? '';
-$contraseña = $_POST['contraseña'] ?? '';
+$contrasena = $_POST['contrasena'] ?? '';
 $telefono = $_POST['telefono'] ?? '';
 
 // validaciones 
@@ -14,13 +16,13 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 // ontaseña no este vacia y que tenga al menos 8 caracteres 
-if (empty($contraseña)) {
+if (empty($contrasena)) {
     die("La contraseña no puede estar vacía");
 }
-if (strlen($contraseña) < 8) {
+if (strlen($contrasena) < 8) {
     die("La contraseña debe tener al menos 8 caracteres");
 }
-$unUsuario = new Usuario($idUsuario, $email, $contraseña, $telefono);
+$unUsuario = new Usuario($idUsuario, $email, $contrasena, $telefono);
 
 
 ?>
