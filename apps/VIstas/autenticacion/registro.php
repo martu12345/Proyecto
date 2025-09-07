@@ -35,8 +35,8 @@
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="yolucas@gmail.com" required>
 
-                <label for="contraseña">Contraseña</label>
-                <input type="password" id="contraseña" name="contraseña" placeholder="lucas123" required>
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" placeholder="lucas123" required>
 
                 <div class="login-buttons">
                     <button type="submit">Registrarse</button>
