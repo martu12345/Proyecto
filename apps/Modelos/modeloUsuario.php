@@ -1,4 +1,4 @@
-<?
+<?php
 class Usuario {
     private $idUsuario; // pk
     private $email;
@@ -38,6 +38,28 @@ class Usuario {
         return password_verify($contraseñaIngresada, $this->contraseña);
 // esto tampoco se si esta bien
 //faltan las funciones del diagrama de clases 
+
+// esto sirv para conectar con la base 
+    public function guardar($conn) {
+        $stmt = $conn->prepare("INSERT INTO usuarios (email, contraseña, telefono) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $this->email, $this->contraseña, $this->telefono);
+        return $stmt->execute();4
+    }
+
+    public static function buscarPorEmail($conn, $email) {
+        $stmt = $conn->prepare("SELECT * FROM usuarios WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $resultado = $stmt->get_result()->fetch_assoc();
+
+        if($resultado) {
+            $usuario = new Usuario($resultado['email'], $resultado['contraseña'], $resultado['telefono'], $resultado['idUsuario']);
+            $usuario->contraseña = $resultado['contraseña']; // mantener hash
+            return $usuario;
+        }
+        return null;
+    }
+}
 }
 }
 ?>
