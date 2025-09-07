@@ -120,6 +120,32 @@
     box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
 }
 
+
+.login-box input[type="tel"] {
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-family: 'Lexend', sans-serif;
+    font-size: 14px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-box input[type="tel"]:focus {
+    border-color: #ff914d;
+    box-shadow: 0px 0px 5px rgba(255,145,77,0.5);
+}
+
+
+.login-box input::placeholder {
+    color: #bbb;
+    font-style: italic;
+}
+
+
 @media (max-width: 480px) {
     .login-box {
         padding: 20px;

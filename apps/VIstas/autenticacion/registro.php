@@ -22,29 +22,34 @@
             </div>
         </div>
 
-        <!-- Formulario Cliente -->
-        <div class="login-box" id="formulario-cliente" style="display:none;">
-            <h2>Registro Cliente</h2>
-            <form action="../../Controlador/controladorCliente.php" method="POST"> 
-                <label for="nombre">Nombre</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Lucas" required>
+     <!-- Formulario Cliente -->
+<div class="login-box" id="formulario-cliente" style="display:none;">
+    <h2>Registro Cliente</h2>
+    <form action="../../Controlador/controladorCliente.php" method="POST"> 
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Lucas" required>
 
-                <label for="apellido">Apellido</label>
-                <input type="text" id="apellido" name="apellido" placeholder="Perez" required>
+        <label for="apellido">Apellido</label>
+        <input type="text" id="apellido" name="apellido" placeholder="Perez" required>
 
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="yolucas@gmail.com" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="yolucas@gmail.com" required>
 
-                <label for="contrasena">Contraseña</label>
-                <input type="password" id="contrasena" name="contrasena" placeholder="lucas123" required>
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" name="telefono" placeholder="099123456" pattern="[0-9]{8}" title="Ingrese un número uruguayo de 8 dígitos" maxlength="9" required>
 
-                <div class="login-buttons">
-                    <button type="submit">Registrarse</button>
-                    <button type="button" onclick="window.location.href='login.php'">Iniciar sesión</button>
-                    <button type="button" onclick="window.location.href='/Proyecto/public/index.php'">Cancelar</button>
-                </div>
-            </form>
+
+        <label for="contrasena">Contraseña</label>
+        <input type="password" id="contrasena" name="contrasena" placeholder="lucas123" required>
+
+        <div class="login-buttons">
+            <button type="submit">Registrarse</button>
+            <button type="button" onclick="window.location.href='login.php'">Iniciar sesión</button>
+            <button type="button" onclick="window.location.href='/Proyecto/public/index.php'">Cancelar</button>
         </div>
+    </form>
+</div>
+
 
         <!-- Formulario Empresa -->
         <div class="login-box" id="formulario-empresa" style="display:none;">

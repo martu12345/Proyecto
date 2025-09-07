@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>   <!-- Ta todo mal aca-->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
