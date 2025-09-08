@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,11 @@
     <link rel="stylesheet" href="/Proyecto/public/css/fonts.css">
     <link rel="stylesheet" href="/Proyecto/public/css/layout/navbar.css">
     <link rel="stylesheet" href="/Proyecto/public/css/layout/footer.css">
-    <link rel="stylesheet" href="/Proyecto/public/css/paginas/registro.css"> 
+    <link rel="stylesheet" href="/Proyecto/public/css/paginas/registro.css">
 </head>
+
 <body>
-    <?php include '../layout/navbar.php'; ?>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
     <div class="login-background">
 
@@ -22,39 +24,39 @@
             </div>
         </div>
 
-     <!-- Formulario Cliente -->
-<div class="login-box" id="formulario-cliente" style="display:none;">
-    <h2>Registro Cliente</h2>
-    <form action="../../Controlador/controladorCliente.php" method="POST"> 
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Lucas" required>
+        <!-- Formulario Cliente -->
+        <div class="login-box" id="formulario-cliente" style="display:none;">
+            <h2>Registro Cliente</h2>
+            <form action=" /Proyecto/apps/controlador/ClienteControlador" method="POST">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Lucas" required>
 
-        <label for="apellido">Apellido</label>
-        <input type="text" id="apellido" name="apellido" placeholder="Perez" required>
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" name="apellido" placeholder="Perez" required>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="yolucas@gmail.com" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="yolucas@gmail.com" required>
 
-        <label for="telefono">Teléfono</label>
-        <input type="tel" id="telefono" name="telefono" placeholder="099123456" pattern="[0-9]{9}" title="Ingrese un número uruguayo de 9 dígitos" maxlength="9" required>
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="099123456" pattern="[0-9]{9}" title="Ingrese un número uruguayo de 9 dígitos" maxlength="9" required>
 
 
-        <label for="contrasena">Contraseña</label>
-        <input type="password" id="contrasena" name="contrasena" placeholder="lucas123" required>
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" placeholder="lucas123" required>
 
-        <div class="login-buttons">
-            <button type="submit">Registrarse</button>
-            <button type="button" onclick="window.location.href='login.php'">Iniciar sesión</button>
-            <button type="button" onclick="window.location.href='/Proyecto/public/index.php'">Cancelar</button>
+                <div class="login-buttons">
+                    <button type="submit">Registrarse</button>
+                    <button type="button" onclick="window.location.href='login.php'">Iniciar sesión</button>
+                    <button type="button" onclick="window.location.href='/Proyecto/public/index.php'">Cancelar</button>
+                </div>
+            </form>
         </div>
-    </form>
-</div>
 
 
         <!-- Formulario Empresa -->
         <div class="login-box" id="formulario-empresa" style="display:none;">
             <h2>Registro Empresa</h2>
-            <form action="../../Controlador/controladorEmpresa.php" method="POST"> 
+            <form action="/Proyecto/apps/Controlador/EmpresaControlador.php" method="POST">
                 <label for="nombreEmpresa">Nombre</label>
                 <input type="text" id="nombreEmpresa" name="nombreEmpresa" placeholder="Empresa S.A." required>
 
@@ -78,25 +80,15 @@
                     <button type="button" onclick="window.location.href='login.php'">Iniciar sesión</button>
                     <button type="button" onclick="window.location.href='/Proyecto/public/index.php'">Cancelar</button>
                 </div>
-            </form>
+            </form> 
         </div>
 
     </div>
 
-    <?php include '../layout/footer.php'; ?>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
+    <script src="/Proyecto/public/js/mostrar_formulario.js"></script>
 
-    <script> //Dependiendo de lo que escoja la persona le muestra de empresa o cliente
-        function mostrarFormulario(tipo) {
-            document.getElementById('tipo-cuenta-box').style.display = 'none';
 
-            if(tipo === 'cliente') {
-                document.getElementById('formulario-cliente').style.display = 'block';
-            } else if(tipo === 'empresa') {
-                document.getElementById('formulario-empresa').style.display = 'block';
-            }
-        }
-    </script>
-
-    
 </body>
+
 </html>

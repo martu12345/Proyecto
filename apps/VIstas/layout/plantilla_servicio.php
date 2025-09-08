@@ -1,4 +1,3 @@
-
 <div class="servicio">
     <?php if (!empty($servicio['imagen'])): ?>
         <img src="/Proyecto/public/imagen/servicios/<?= htmlspecialchars($servicio['imagen']) ?>" alt="<?= htmlspecialchars($servicio['Titulo']) ?>" class="imagen-servicio">

@@ -8,6 +8,7 @@ unset($_SESSION['servicios']); // esto limpia la sesion despues de usarla
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +20,7 @@ unset($_SESSION['servicios']); // esto limpia la sesion despues de usarla
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/busqueda.css">
     <link rel="stylesheet" href="/Proyecto/public/css/layout/plantilla_servicio.css">
 </head>
+
 <body>
 
     <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'); ?>
@@ -60,4 +62,5 @@ unset($_SESSION['servicios']); // esto limpia la sesion despues de usarla
     <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'); ?>
 
 </body>
+
 </html>

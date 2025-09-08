@@ -1,10 +1,10 @@
 <?php
-require_once('../Modelos/modeloEmpresa.php');
-require_once('../Modelos/conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/empresa.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
 
 
 $email    = $_POST['emailEmpresa'] ?? '';
-$contrasena = $_POST['contrasenaEmpresa'] ?? ''; 
+$contrasena = $_POST['contrasenaEmpresa'] ?? '';
 $nombreEmpresa = $_POST['nombreEmpresa'] ?? '';
 $telefono = $_POST['telefonoEmpresa'] ?? '';
 $calle = $_POST['calle'] ?? '';
@@ -29,9 +29,8 @@ if (strlen($contrasena) < 8) {
 // crear empresa
 $unaEmpresa = new Empresa(null, $email, $contrasena, $telefono, $nombreEmpresa, $calle, $numero);
 
-if($unaEmpresa->guardarEmpresa($conn, $telefono)) {
+if ($unaEmpresa->guardarEmpresa($conn, $telefono)) {
     header("Location: /Proyecto/apps/vistas/autenticacion/login.php");
 } else {
     echo "Error al guardar el Empresa.";
 }
-?>

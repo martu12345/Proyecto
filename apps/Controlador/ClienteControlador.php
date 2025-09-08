@@ -1,10 +1,10 @@
 <?php
-require_once('../Modelos/modeloCliente.php');
-require_once('../Modelos/conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/cliente.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
 
 
 $email    = $_POST['email'] ?? '';
-$contrasena = $_POST['contrasena'] ?? ''; 
+$contrasena = $_POST['contrasena'] ?? '';
 $telefono = $_POST['telefono'] ?? '';
 $nombre = $_POST['nombre'] ?? '';
 $apellido = $_POST['apellido'] ?? '';
@@ -33,9 +33,9 @@ if (strlen($contrasena) < 8) {
 // crear cliente
 $unCliente = new Cliente(null, $email, $contrasena, $nombre, $apellido);
 
-if($unCliente->guardarCliente($conn, $telefono)) {
+if ($unCliente->guardarCliente($conn, $telefono)) {
     echo "Cliente y teléfono guardados correctamente!";
 } else {
     echo "Error al guardar el cliente.";
 }
-?>  donde=?
+?> donde=?

@@ -1,6 +1,6 @@
 <?php
-require_once('../Modelos/modeloUsuario.php');
-require_once('../Modelos/conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/usuario.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
 
 $email    = $_POST['email'] ?? '';
 $contrasena = $_POST['contrasena'] ?? '';
@@ -23,6 +23,3 @@ if (strlen($contrasena) < 8) {
     die("La contraseña debe tener al menos 8 caracteres");
 }
 $unUsuario = new Usuario($idUsuario, $email, $contrasena, $telefono);
-
-
-?>

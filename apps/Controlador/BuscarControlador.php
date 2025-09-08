@@ -22,6 +22,3 @@ $_SESSION['servicios'] = $servicios;
 // te envia al busqueda prinicpal 
 header("Location: /Proyecto/apps/vistas/paginas/busqueda.php");
 exit();
-
-
-?>

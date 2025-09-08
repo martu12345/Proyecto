@@ -1,6 +1,7 @@
 <?php if (session_status() == PHP_SESSION_NONE) {
     session_start();
 } ?>
+
 <nav class="navbar">
 
     <div class="navbar-left">
@@ -28,7 +29,7 @@
 
     <div class="navbar-right">
         <div class="busqueda">
-            <form action="/Proyecto/apps/controlador/buscar.php"  method="POST">
+            <form action="/Proyecto/apps/controlador/BuscarControlador.php" method="POST">
                 <input type="text" name="q" placeholder="Buscar...">
                 <button type="submit">
                     <img src="/Proyecto/public/imagen/icono/icono_busqueda.png" alt="Buscar">
@@ -36,7 +37,7 @@
             </form>
         </div>
 
-                    
+
 
 
         <div class="perfil">
@@ -44,7 +45,7 @@
                 <img src="/Proyecto/public/imagen/icono/icono_avatar.png" alt="Mi perfil">
             </div>
             <div class="perfil-menu">
-                <a href=" /Proyecto/apps/Controlador/buscar.php">Iniciar sesión</a>
+                <a href=" /Proyecto/apps/Controlador/BuscarControlador.php">Iniciar sesión</a>
                 <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>
             </div>
         </div>

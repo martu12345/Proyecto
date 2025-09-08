@@ -1,6 +1,6 @@
 <?php
-require_once '../modelos/modeloServicio.php';
-require_once '../modelos/conexion.php'; 
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/servicio.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -10,12 +10,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $categoria = $_POST['categoria'] ?? '';
     $descripcion = $_POST['descripcion'] ?? '';
     $precio = $_POST['precio'] ?? 0;
-    $disponibilidad = 1; 
+    $disponibilidad = 1;
 
     // 2. Procesar imagen
     $imagenNombre = '';
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-        $carpetaDestino = '../../public/imagen/servicios/'; 
+        $carpetaDestino = '../../public/imagen/servicios/';
         if (!is_dir($carpetaDestino)) {
             mkdir($carpetaDestino, 0755, true);
         }
@@ -43,4 +43,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => true, 'mensaje' => 'Servicio creado correctamente']);
     }
 }
-?>

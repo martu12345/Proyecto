@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/login.css">
 </head>
 <body>
-    <?php include '../layout/navbar.php'; ?>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
     <div class="login-background">
         <div class="login-box">
@@ -32,6 +32,6 @@
         </div>
     </div>
 
-    <?php include '../layout/footer.php'; ?>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
 </body>
 </html>
