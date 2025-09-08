@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 2. Procesar imagen
     $imagenNombre = '';
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-        $carpetaDestino = '../../public/imagenes/servicios/'; 
+        $carpetaDestino = '../../public/imagen/servicios/'; 
         if (!is_dir($carpetaDestino)) {
             mkdir($carpetaDestino, 0755, true);
         }

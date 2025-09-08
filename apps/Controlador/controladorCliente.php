@@ -38,4 +38,4 @@ if($unCliente->guardarCliente($conn, $telefono)) {
 } else {
     echo "Error al guardar el cliente.";
 }
-?>
+?>  donde=?

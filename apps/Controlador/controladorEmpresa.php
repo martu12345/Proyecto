@@ -10,12 +10,6 @@ $telefono = $_POST['telefonoEmpresa'] ?? '';
 $calle = $_POST['calle'] ?? '';
 $numero = $_POST['numero'] ?? '';
 
-echo "Email: $email <br>";
-echo "Contraseña: $contrasena <br>";
-echo "Teléfono: $telefono <br>";
-echo "NombreEmpresa: $nombreEmpresa <br>";
-echo "Calle: $calle <br>";
-echo "Numero: $numero <br>";
 
 // validaciones 
 if (empty($email)) {
@@ -36,7 +30,7 @@ if (strlen($contrasena) < 8) {
 $unaEmpresa = new Empresa(null, $email, $contrasena, $telefono, $nombreEmpresa, $calle, $numero);
 
 if($unaEmpresa->guardarEmpresa($conn, $telefono)) {
-    echo "Empresa y teléfono guardados correctamente!";
+    header("Location: /Proyecto/apps/vistas/autenticacion/login.php");
 } else {
     echo "Error al guardar el Empresa.";
 }

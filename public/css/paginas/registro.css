@@ -145,6 +145,14 @@
     font-style: italic;
 }
 
+.errores {
+    background-color: #ffcccc;
+    color: #a70000;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
 
 @media (max-width: 480px) {
     .login-box {

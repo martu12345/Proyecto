@@ -1,0 +1,62 @@
+.servicio {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    align-items: flex-start;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-family: 'Lexend', sans-serif;
+}
+
+.servicio:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.imagen-servicio {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.info-servicio {
+    display: flex;
+    flex-direction: column;
+}
+
+.nombre-servicio {
+    font-size: 1.15rem; 
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: #222;
+}
+
+.nombre-servicio::first-letter {
+    text-transform: uppercase;
+}
+
+.descripcion-servicio {
+    font-size: 1rem;
+    margin: 0 0 6px 0;
+    color: #555;
+    line-height: 1.4;
+}
+
+.categoria-servicio {
+    font-size: 0.9rem;
+    font-style: italic;
+    margin: 0 0 6px 0;
+    color: #888;
+}
+
+.precio-servicio {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #000;
+}

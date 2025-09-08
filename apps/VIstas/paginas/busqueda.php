@@ -1,4 +1,12 @@
-<!DOCTYPE html>   <!-- Ta todo mal aca-->
+<?php
+session_start();
+
+// trae la info del controlador
+$servicios = isset($_SESSION['servicios']) ? $_SESSION['servicios'] : [];
+unset($_SESSION['servicios']); // esto limpia la sesion despues de usarla
+?>
+
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -9,10 +17,11 @@
     <link rel="stylesheet" href="/Proyecto/public/css/layout/navbar.css">
     <link rel="stylesheet" href="/Proyecto/public/css/layout/footer.css">
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/busqueda.css">
+    <link rel="stylesheet" href="/Proyecto/public/css/layout/plantilla_servicio.css">
 </head>
 <body>
 
-    <?php include '../layout/navbar.php'; ?>
+    <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'); ?>
 
     <main>
         <div class="contenedor-principal">
@@ -28,45 +37,27 @@
                         <option value="3">3 estrellas</option>
                         <option value="2">2 estrellas</option>
                         <option value="1">1 estrella</option>
-                                            <!-- Falta hacer que funcione -->
-
                     </select>
                 </div>
             </aside>
 
             <section class="columna-derecha">
-                <h2 class="titulo-resultados">18 servicios</h2>
-                                    <!-- Falta hacer que el numero se cuente con js -->
-
-
+                <h2 class="titulo-resultados"><?= count($servicios) ?> servicios</h2>
                 <div id="resultados">
-                    <div class="servicio">
-                        <img src="/Proyecto/public/img/servicio1.jpg" alt="Servicio 1">
-                        <div class="info-servicio">
-                            <h3>Nombre del Servicio</h3>
-                            <p>Descripción breve del servicio...</p>
-                        </div>
-                        <button class="btn-mas">+</button>
-                    </div>
-
-                    <div class="servicio">
-                        <img src="/Proyecto/public/img/servicio2.jpg" alt="Servicio 2">
-                        <div class="info-servicio">
-                            <h3>Nombre del Servicio</h3>
-                            <p>Descripción breve del servicio...</p>
-                        </div>
-                        <button class="btn-mas">+</button>
-                    </div>
-
-                    <!-- Falta hacer una plantilla aparte y llenar los datos con js -->
-
+                    <?php if (!empty($servicios)): ?>
+                        <?php foreach ($servicios as $servicio): ?>
+                            <?php include($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/plantilla_servicio.php'); ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No se encontraron servicios.</p>
+                    <?php endif; ?>
                 </div>
             </section>
 
         </div>
     </main>
 
-    <?php include '../layout/footer.php'; ?>
+    <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'); ?>
 
 </body>
 </html>

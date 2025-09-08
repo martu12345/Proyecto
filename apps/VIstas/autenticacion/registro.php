@@ -85,7 +85,7 @@
 
     <?php include '../layout/footer.php'; ?>
 
-    <script>
+    <script> //Dependiendo de lo que escoja la persona le muestra de empresa o cliente
         function mostrarFormulario(tipo) {
             document.getElementById('tipo-cuenta-box').style.display = 'none';
 
@@ -96,5 +96,7 @@
             }
         }
     </script>
+
+    
 </body>
 </html>

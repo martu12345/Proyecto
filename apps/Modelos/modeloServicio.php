@@ -36,7 +36,7 @@ class Servicio {
     public function setDisponibilidad($disponibilidad) { $this->disponibilidad = $disponibilidad; }
     public function setImagen($imagen) { $this->imagen = $imagen; }
 
-    // Guardar en BD
+    // Guardar en base
     public function guardar($conn) {
         $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, disponibilidad, imagen) 
                 VALUES (?, ?, ?, ?, ?, ?)";
