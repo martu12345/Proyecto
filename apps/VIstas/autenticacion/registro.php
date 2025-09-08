@@ -54,18 +54,18 @@
         <!-- Formulario Empresa -->
         <div class="login-box" id="formulario-empresa" style="display:none;">
             <h2>Registro Empresa</h2>
-            <form action="procesar_empresa.php" method="POST"> 
-                <label for="nombre_empresa">Nombre</label>
-                <input type="text" id="nombre_empresa" name="nombre_empresa" placeholder="Empresa S.A." required>
+            <form action="../../Controlador/controladorEmpresa.php" method="POST"> 
+                <label for="nombreEmpresa">Nombre</label>
+                <input type="text" id="nombreEmpresa" name="nombreEmpresa" placeholder="Empresa S.A." required>
 
                 <label for="email_empresa">Email</label>
-                <input type="email" id="email_empresa" name="email" placeholder="contacto@empresaejemplo.com" required>
+                <input type="email" id="emailEmpresa" name="emailEmpresa" placeholder="contacto@empresaejemplo.com" required>
 
-                <label for="password_empresa">Contraseña</label>
-                <input type="password" id="password_empresa" name="password" placeholder="empresa123" required>
+                <label for="contrasenaEmpresa">Contraseña</label>
+                <input type="password" id="contrasenaEmpresa" name="contrasenaEmpresa" placeholder="empresa123" required>
 
-                <label for="telefono">Teléfono</label>
-                <input type="text" id="telefono" name="telefono" placeholder="+598 91234567" required>
+                <label for="telefonoEmpresa">Teléfono</label>
+                <input type="text" id="telefonoEmpresa" name="telefonoEmpresa" placeholder="+598 91234567" required>
 
                 <label for="calle">Calle</label>
                 <input type="text" id="calle" name="calle" placeholder="Boulevar" required>

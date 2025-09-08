@@ -1,19 +1,21 @@
 <?php
-require_once('../Modelos/modeloCliente.php');
+require_once('../Modelos/modeloEmpresa.php');
 require_once('../Modelos/conexion.php');
 
 
-$email    = $_POST['email'] ?? '';
-$contrasena = $_POST['contrasena'] ?? ''; // <-- cambio aquí
-$telefono = $_POST['telefono'] ?? '';
-$nombre = $_POST['nombre'] ?? '';
-$apellido = $_POST['apellido'] ?? '';
+$email    = $_POST['emailEmpresa'] ?? '';
+$contrasena = $_POST['contrasenaEmpresa'] ?? ''; 
+$nombreEmpresa = $_POST['nombreEmpresa'] ?? '';
+$telefono = $_POST['telefonoEmpresa'] ?? '';
+$calle = $_POST['calle'] ?? '';
+$numero = $_POST['numero'] ?? '';
 
 echo "Email: $email <br>";
 echo "Contraseña: $contrasena <br>";
 echo "Teléfono: $telefono <br>";
-echo "Nombre: $nombre <br>";
-echo "Apellido: $apellido <br>";
+echo "NombreEmpresa: $nombreEmpresa <br>";
+echo "Calle: $calle <br>";
+echo "Numero: $numero <br>";
 
 // validaciones 
 if (empty($email)) {
@@ -30,12 +32,12 @@ if (strlen($contrasena) < 8) {
     die("La contraseña debe tener al menos 8 caracteres");
 }
 
-// crear cliente
-$unCliente = new Cliente(null, $email, $contrasena, $nombre, $apellido);
+// crear empresa
+$unaEmpresa = new Empresa(null, $email, $contrasena, $telefono, $nombreEmpresa, $calle, $numero);
 
-if ($unCliente->guardarCliente($conn)) {
-    echo "Cliente guardado correctamente!";
+if($unaEmpresa->guardarEmpresa($conn, $telefono)) {
+    echo "Empresa y teléfono guardados correctamente!";
 } else {
-    echo "Error al guardar el cliente.";
+    echo "Error al guardar el Empresa.";
 }
 ?>
