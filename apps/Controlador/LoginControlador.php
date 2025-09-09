@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once('../Modelos/Usuario.php');
-require_once('../Modelos/conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Usuario.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];

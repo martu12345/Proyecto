@@ -54,7 +54,7 @@
             <div class="perfil-menu">
                 <?php if ($logueado): ?>
                     <a href="<?php echo $perfil_url; ?>">Mi perfil</a>
-                    <a href="/Proyecto/apps/controlador/logout.php">Cerrar sesión</a>
+                    <a href="/Proyecto/apps/controlador/LogoutControlador.php">Cerrar sesión</a>
                 <?php else: ?>
                     <a href="/Proyecto/apps/vistas/autenticacion/login.php">Iniciar sesión</a>
                     <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>

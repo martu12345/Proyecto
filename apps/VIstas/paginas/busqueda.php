@@ -1,9 +1,8 @@
 <?php
 session_start();
 
-// trae la info del controlador
 $servicios = isset($_SESSION['servicios']) ? $_SESSION['servicios'] : [];
-unset($_SESSION['servicios']); // esto limpia la sesion despues de usarla
+unset($_SESSION['servicios']); 
 ?>
 
 <!DOCTYPE html>

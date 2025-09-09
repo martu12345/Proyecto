@@ -18,13 +18,11 @@ $apellido = $_POST['apellido'] ?? '';
 $email = $_POST['email'] ?? '';
 $contrasena = $_POST['contrasena'] ?? '';
 
-// Validación básica
 if (empty($email) || empty($contrasena)) {
     echo json_encode(['ok'=>false, 'error'=>'Email y contraseña son obligatorios']);
     exit();
 }
 
-// Traer datos actuales
 $stmt = $conn->prepare("SELECT u.Email, c.Nombre, c.Apellido 
                         FROM usuario u 
                         JOIN cliente c ON u.IdUsuario = c.IdUsuario 
@@ -41,7 +39,7 @@ if(!$datos) {
     exit();
 }
 
-// Crear objeto Cliente con datos actuales + cambios
+// crea  cliente con datos actuales mas los cambios
 $cliente = new Cliente($idUsuario, $email, $contrasena, $nombre, $apellido);
 
 // actualizar email
@@ -56,7 +54,7 @@ $stmt2->bind_param("si", $hash, $idUsuario);
 if(!$stmt2->execute()) die("Error update contraseña: ".$stmt2->error);
 $stmt2->close();
 
-// actualizar cliente (nombre, apellido, email)
+// actualizar cliente ( osea el nombre, apellido, email)
 if ($cliente->actualizarCliente($conn)) {
     echo json_encode(['ok' => true]);
 } else {

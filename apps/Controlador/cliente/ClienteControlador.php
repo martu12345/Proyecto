@@ -15,7 +15,7 @@ echo "Teléfono: $telefono <br>";
 echo "Nombre: $nombre <br>";
 echo "Apellido: $apellido <br>";
 
-// validaciones 
+// validaciones  - hay que agregarlas
 if (empty($email)) {
     die("El email no puede estar vacío");
 }

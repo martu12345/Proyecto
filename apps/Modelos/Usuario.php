@@ -54,9 +54,10 @@ class Usuario
         return $stmt->execute();
     }
 */
+
+
     public function guardar($conn)
     {
-        // Preparar la consulta
         $stmt = $conn->prepare("INSERT INTO usuario (Email, Contraseña) VALUES (?, ?)");
         if (!$stmt) {
             die("Error prepare usuarios: " . $conn->error);

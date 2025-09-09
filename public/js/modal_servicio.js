@@ -12,12 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cerrar modal
     btnCerrar.addEventListener('click', () => modal.style.display = 'none');
-    window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
+    window.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
 
-    // Preview de imagen
+    // prevista de imagen
     inputImagen.addEventListener('change', () => {
         const file = inputImagen.files[0];
-        if(file){
+        if (file) {
             const reader = new FileReader();
             reader.onload = e => {
                 previewImagen.src = e.target.result;
@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let words = textarea.value.split(/\s+/).filter(w => w.length > 0);
 
         // Limitar a 60 palabras si se pega texto
-        if(words.length > 60){
+        if (words.length > 60) {
             textarea.value = words.slice(0, 60).join(' ');
             words = textarea.value.split(/\s+/).filter(w => w.length > 0);
         }
 
         // Actualizar contador
-        if(contador) contador.textContent = `${words.length} / 60 palabras`;
+        if (contador) contador.textContent = `${words.length} / 60 palabras`;
 
         // Ajustar altura automáticamente
         textarea.style.height = 'auto';
@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Permitir borrar o mover el cursor
         const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Control', 'Meta', 'Shift', 'Tab'];
-        
-        if(words.length >= 60 && !allowedKeys.includes(e.key)){
+
+        if (words.length >= 60 && !allowedKeys.includes(e.key)) {
             e.preventDefault(); // bloquea escribir más
         }
     });
