@@ -1,4 +1,3 @@
-/* ===== GENERAL ===== */
 body {
     font-family: "Lexend", sans-serif;
     margin: 0;
@@ -25,7 +24,6 @@ body {
     box-sizing: border-box;
 }
 
-/* ===== LADO IZQUIERDO ===== */
 .perfil-opciones {
     background-color: #f5f5f5;
     width: 220px;
@@ -36,7 +34,6 @@ body {
     box-sizing: border-box;
 }
 
-/* FOTO DE EMPRESA */
 .foto-circulo {
     width: 90px;
     height: 90px;
@@ -60,7 +57,6 @@ body {
     border-radius: 50%;
 }
 
-/* NOMBRE EMPRESA */
 .nombre-usuario {
     font-weight: 600;
     margin-bottom: 25px;
@@ -68,7 +64,6 @@ body {
     word-break: break-word;
 }
 
-/* OPCIONES LADO IZQUIERDO */
 .opciones-lista {
     display: flex;
     flex-direction: column;
@@ -97,7 +92,6 @@ body {
     color: #fff;
 }
 
-/* ===== INFO EMPRESA ===== */
 .perfil-info {
     flex: 1;
     padding: 40px;
@@ -138,7 +132,6 @@ body {
     box-sizing: border-box;
 }
 
-/* ===== BOTONES ===== */
 .botones-perfil {
     margin-top: 20px;
     text-align: right;
@@ -191,7 +184,6 @@ body {
     background-color: #e57373;
 }
 
-/* ===== INTERMEDIO: opciones horizontales ===== */
 @media (max-width: 900px) and (min-width: 600px) {
     .perfil-box {
         flex-direction: column;
@@ -218,17 +210,15 @@ body {
         word-break: break-word;
     }
 
-    /* opciones horizontal */
     .opciones-lista {
         flex-direction: row;
         justify-content: center;
         gap: 15px;
-        width: auto; /* que no se estire toda la fila */
+        width: auto; 
         margin: 0;
     }
 }
 
-/* ===== MUY CHICO: opciones verticales ===== */
 @media (max-width: 599px) {
     .perfil-box {
         flex-direction: column;
@@ -254,7 +244,6 @@ body {
         margin-bottom: 15px;
     }
 
-    /* opciones vertical */
     .opciones-lista {
         flex-direction: column;
         gap: 10px;
