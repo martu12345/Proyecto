@@ -15,13 +15,13 @@
     <div class="login-background">
         <div class="login-box">
             <h2>Inicio de sesión</h2>
-            <form action="procesar_login.php" method="POST"> <!-- Despues hay que redireccionar a el php correcto -->
+            <form action="../../Controlador/LoginControlador.php" method="POST"> <!-- Despues hay que redireccionar a el php correcto -->
 
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Tu email" required>
 
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Tu contraseña" required>
+                <label for="contrasena">Contraseña</label>
+                <input type="password" id="contrasena" name="contrasena" placeholder="Tu contraseña" required>
 
                 <div class="login-buttons">
                     <button type="submit">Iniciar sesión</button>

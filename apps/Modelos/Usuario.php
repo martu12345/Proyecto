@@ -81,14 +81,14 @@ class Usuario
     // buscar usuario por email
     public static function buscarPorEmail($conn, $email)
     {
-        $stmt = $conn->prepare("SELECT * FROM usuarios WHERE email = ?");
-        $stmt->bind_param("sss", $email);
+        $stmt = $conn->prepare("SELECT * FROM usuario WHERE email = ?");
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $resultado = $stmt->get_result()->fetch_assoc();
 
         if ($resultado) {
             $usuario = new Usuario(
-                $resultado['idUsuario'],
+                $resultado['IdUsuario'],
                 $resultado['email'],
                 $resultado['contraseña']
             );

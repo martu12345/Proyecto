@@ -54,7 +54,7 @@
                 <img src="/Proyecto/public/imagen/icono/icono_avatar.png" alt="Mi perfil">
             </div>
             <div class="perfil-menu">
-                <a href="/Proyecto/apps/Controlador/BuscarControlador.php">Iniciar sesión</a>
+                <a href="/Proyecto/apps/vistas/autenticacion/login.php">Iniciar sesión</a>
                 <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>
             </div>
         </div>
