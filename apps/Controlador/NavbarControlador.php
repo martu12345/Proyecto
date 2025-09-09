@@ -24,7 +24,7 @@ if ($logueado) {
     if ($rol === 'admin') {
         $perfil_url = "/Proyecto/apps/vistas/paginas/admin/perfil.php";
     } elseif ($rol === 'empresa') {
-        $perfil_url = "/Proyecto/apps/vistas/paginas/empresa/perfil.php";
+        $perfil_url = "/Proyecto/apps/vistas/paginas/empresa/perfil_empresa.php";
     } elseif ($rol === 'cliente') {
         $perfil_url = "/Proyecto/apps/vistas/paginas/cliente/perfil_cliente.php";
     }

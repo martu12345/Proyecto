@@ -25,6 +25,7 @@ body {
     box-sizing: border-box;
 }
 
+/* ===== LADO IZQUIERDO ===== */
 .perfil-opciones {
     background-color: #f5f5f5;
     width: 220px;
@@ -35,6 +36,7 @@ body {
     box-sizing: border-box;
 }
 
+/* FOTO DE EMPRESA */
 .foto-circulo {
     width: 90px;
     height: 90px;
@@ -46,7 +48,7 @@ body {
     font-size: 36px;
     color: #555;
     cursor: pointer;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     border: none;
     overflow: hidden;
 }
@@ -58,13 +60,15 @@ body {
     border-radius: 50%;
 }
 
+/* NOMBRE EMPRESA */
 .nombre-usuario {
     font-weight: 600;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     text-align: center;
     word-break: break-word;
 }
 
+/* OPCIONES LADO IZQUIERDO */
 .opciones-lista {
     display: flex;
     flex-direction: column;
@@ -93,6 +97,7 @@ body {
     color: #fff;
 }
 
+/* ===== INFO EMPRESA ===== */
 .perfil-info {
     flex: 1;
     padding: 40px;
@@ -133,6 +138,7 @@ body {
     box-sizing: border-box;
 }
 
+/* ===== BOTONES ===== */
 .botones-perfil {
     margin-top: 20px;
     text-align: right;
@@ -185,12 +191,8 @@ body {
     background-color: #e57373;
 }
 
-/* ===== RESPONSIVE ===== */
-
-/* ===== RESPONSIVE ===== */
-
-/* INTERMEDIO: mantiene foto/nombre arriba y opciones en fila */
-@media (max-width: 900px) and (min-width: 700px) {
+/* ===== INTERMEDIO: opciones horizontales ===== */
+@media (max-width: 900px) and (min-width: 600px) {
     .perfil-box {
         flex-direction: column;
     }
@@ -200,21 +202,34 @@ body {
         align-items: center;
         width: 100%;
         padding: 20px;
+        box-sizing: border-box;
     }
 
+    .foto-circulo {
+        width: 90px;
+        height: 90px;
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+    .nombre-usuario {
+        text-align: center;
+        margin-bottom: 15px;
+        word-break: break-word;
+    }
+
+    /* opciones horizontal */
     .opciones-lista {
-        display: flex;
         flex-direction: row;
         justify-content: center;
-        flex-wrap: wrap; /* permite que las opciones bajen si no hay espacio */
         gap: 15px;
-        width: auto;
+        width: auto; /* que no se estire toda la fila */
         margin: 0;
     }
 }
 
-/* MUY CHICO: apila todo verticalmente */
-@media (max-width: 699px) {
+/* ===== MUY CHICO: opciones verticales ===== */
+@media (max-width: 599px) {
     .perfil-box {
         flex-direction: column;
     }
@@ -224,8 +239,22 @@ body {
         align-items: center;
         width: 100%;
         padding: 15px;
+        box-sizing: border-box;
     }
 
+    .foto-circulo {
+        width: 90px;
+        height: 90px;
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+    .nombre-usuario {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    /* opciones vertical */
     .opciones-lista {
         flex-direction: column;
         gap: 10px;

@@ -56,7 +56,7 @@
         <!-- Formulario Empresa -->
         <div class="login-box" id="formulario-empresa" style="display:none;">
             <h2>Registro Empresa</h2>
-            <form action="/Proyecto/apps/Controlador/EmpresaControlador.php" method="POST">
+            <form action="/Proyecto/apps/Controlador/empresa/EmpresaControlador.php" method="POST">
                 <label for="nombreEmpresa">Nombre</label>
                 <input type="text" id="nombreEmpresa" name="nombreEmpresa" placeholder="Empresa S.A." required>
 
