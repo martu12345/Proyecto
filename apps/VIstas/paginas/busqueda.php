@@ -29,18 +29,29 @@ unset($_SESSION['servicios']); // esto limpia la sesion despues de usarla
         <div class="contenedor-principal">
 
             <aside class="columna-izquierda">
-                <div class="filtro">
-                    <h3>Filtro</h3>
-                    <label for="estrellas">Filtrar por estrellas:</label>
-                    <select id="estrellas" name="estrellas">
-                        <option value="">Todas</option>
-                        <option value="5">5 estrellas</option>
-                        <option value="4">4 estrellas</option>
-                        <option value="3">3 estrellas</option>
-                        <option value="2">2 estrellas</option>
-                        <option value="1">1 estrella</option>
-                    </select>
-                </div>
+                <form action="/Proyecto/apps/controlador/BuscarControlador.php" method="POST" class="filtro">
+                    <div class="rating-container">
+                        <label>Filtrar por estrellas:</label>
+                        <div class="rating">
+                            <input type="radio" name="estrellas" id="estrella5" value="5">
+                            <label for="estrella5" title="5 estrellas">★</label>
+
+                            <input type="radio" name="estrellas" id="estrella4" value="4">
+                            <label for="estrella4" title="4 estrellas">★</label>
+
+                            <input type="radio" name="estrellas" id="estrella3" value="3">
+                            <label for="estrella3" title="3 estrellas">★</label>
+
+                            <input type="radio" name="estrellas" id="estrella2" value="2">
+                            <label for="estrella2" title="2 estrellas">★</label>
+
+                            <input type="radio" name="estrellas" id="estrella1" value="1">
+                            <label for="estrella1" title="1 estrella">★</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-filtrar">Filtrar</button>
+                </form>
             </aside>
 
             <section class="columna-derecha">

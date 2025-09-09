@@ -144,6 +144,30 @@ form button:hover {
     background-color: #e67a3e;
 }
 
+form select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 14px;
+    background-color: #fff;
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+form select:focus {
+    border-color: #ff914d;
+    outline: none;
+    box-shadow: 0 0 5px rgba(255,145,77,0.5);
+}
+
+form label + select {
+    margin-bottom: 12px;
+}
 
 @media(max-width: 700px) {
     .form-top {

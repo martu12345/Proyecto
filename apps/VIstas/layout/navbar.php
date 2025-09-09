@@ -22,6 +22,18 @@
                     <option value="rocha">Rocha</option>
                     <option value="salto">Salto</option>
                     <option value="artigas">Artigas</option>
+                    <option value="cerro_largo">Cerro Largo</option>
+                    <option value="durazno">Durazno</option>
+                    <option value="flores">Flores</option>
+                    <option value="florida">Florida</option>
+                    <option value="lavalleja">Lavalleja</option>
+                    <option value="paysandu">Paysandú</option>
+                    <option value="rio_negro">Río Negro</option>
+                    <option value="rivera">Rivera</option>
+                    <option value="san_jose">San José</option>
+                    <option value="soriano">Soriano</option>
+                    <option value="tacuarembo">Tacuarembó</option>
+                    <option value="treinta_y_tres">Treinta y Tres</option>
                 </select>
             </form>
         </div>
@@ -37,18 +49,14 @@
             </form>
         </div>
 
-
-
-
         <div class="perfil">
             <div class="perfil-btn">
                 <img src="/Proyecto/public/imagen/icono/icono_avatar.png" alt="Mi perfil">
             </div>
             <div class="perfil-menu">
-                <a href=" /Proyecto/apps/Controlador/BuscarControlador.php">Iniciar sesión</a>
+                <a href="/Proyecto/apps/Controlador/BuscarControlador.php">Iniciar sesión</a>
                 <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>
             </div>
         </div>
-
     </div>
 </nav>

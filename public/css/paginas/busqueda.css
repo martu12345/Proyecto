@@ -1,4 +1,9 @@
-
+body {
+    font-family: "Lexend", sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
 
 .contenedor-principal {
     display: flex;
@@ -7,6 +12,7 @@
     margin: 20px auto;
     padding: 0 20px;
     box-sizing: border-box;
+    min-height: 70vh;
 }
 
 .columna-izquierda {
@@ -15,10 +21,10 @@
 }
 
 .filtro {
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .filtro h3 {
@@ -31,16 +37,24 @@
 
 .titulo-resultados {
     margin-bottom: 20px;
+    color: #333;
+    font-weight: 500;
 }
 
 .servicio {
     display: flex;
     align-items: center;
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.servicio:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .servicio img {
@@ -52,5 +66,89 @@
 }
 
 .info-servicio {
-    flex:
+    flex: 1;
+}
+
+.filtro {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rating-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.rating {
+    display: flex;
+    flex-direction: row-reverse; /* pintar de izquierda a derecha */
+    justify-content: center; /* centramos las estrellas */
+    gap: 5px;
+}
+
+
+.rating input {
+    display: none; /* ocultamos radio buttons */
+}
+
+.rating label {
+    font-size: 30px;
+    color: #ccc; /* estrellas grises */
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+/* Hover: pintar estrellas hasta el cursor */
+.rating label:hover,
+.rating label:hover ~ label {
+    color: gold;
+}
+
+/* Estrellas seleccionadas se quedan doradas */
+.rating input:checked ~ label {
+    color: gold;
+}
+
+/* Botón filtrar */
+.btn-filtrar {
+    background-color: #ff914d;
+    color: #fff;
+    font-family: 'Lexend', sans-serif; /* letra más coqueta */
+    font-size: 16px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-filtrar:hover {
+    background-color: #ff7a1a;
+}
+
+
+@media (max-width: 768px) {
+    .contenedor-principal {
+        flex-direction: column;
+    }
+
+    .columna-izquierda,
+    .columna-derecha {
+        min-width: 100%;
+    }
+
+    .servicio {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .servicio img {
+        margin-bottom: 10px;
+    }
 }

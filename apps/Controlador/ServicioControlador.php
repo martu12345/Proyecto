@@ -2,7 +2,6 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/servicio.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 1. Recibir datos del formulario
@@ -43,3 +42,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => true, 'mensaje' => 'Servicio creado correctamente']);
     }
 }
+?>

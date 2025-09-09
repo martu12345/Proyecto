@@ -21,66 +21,24 @@ class Servicio
     }
 
     // Getters
-    public function getIdServicio()
-    {
-        return $this->idServicio;
-    }
-    public function getTitulo()
-    {
-        return $this->titulo;
-    }
-    public function getCategoria()
-    {
-        return $this->categoria;
-    }
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-    public function getPrecio()
-    {
-        return $this->precio;
-    }
-    public function getDisponibilidad()
-    {
-        return $this->disponibilidad;
-    }
-    public function getImagen()
-    {
-        return $this->imagen;
-    }
+    public function getIdServicio() { return $this->idServicio; }
+    public function getTitulo() { return $this->titulo; }
+    public function getCategoria() { return $this->categoria; }
+    public function getDescripcion() { return $this->descripcion; }
+    public function getPrecio() { return $this->precio; }
+    public function getDisponibilidad() { return $this->disponibilidad; }
+    public function getImagen() { return $this->imagen; }
 
     // Setters
-    public function setIdServicio($idServicio)
-    {
-        $this->idServicio = $idServicio;
-    }
-    public function setTitulo($titulo)
-    {
-        $this->titulo = $titulo;
-    }
-    public function setCategoria($categoria)
-    {
-        $this->categoria = $categoria;
-    }
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-    }
-    public function setPrecio($precio)
-    {
-        $this->precio = $precio;
-    }
-    public function setDisponibilidad($disponibilidad)
-    {
-        $this->disponibilidad = $disponibilidad;
-    }
-    public function setImagen($imagen)
-    {
-        $this->imagen = $imagen;
-    }
+    public function setIdServicio($idServicio) { $this->idServicio = $idServicio; }
+    public function setTitulo($titulo) { $this->titulo = $titulo; }
+    public function setCategoria($categoria) { $this->categoria = $categoria; }
+    public function setDescripcion($descripcion) { $this->descripcion = $descripcion; }
+    public function setPrecio($precio) { $this->precio = $precio; }
+    public function setDisponibilidad($disponibilidad) { $this->disponibilidad = $disponibilidad; }
+    public function setImagen($imagen) { $this->imagen = $imagen; }
 
-    // Guardar en base
+    // Guardar en base de datos
     public function guardar($conn)
     {
         $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, disponibilidad, imagen) 
@@ -107,3 +65,4 @@ class Servicio
         }
     }
 }
+?>
