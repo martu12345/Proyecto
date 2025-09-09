@@ -9,7 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $categoria = $_POST['categoria'] ?? '';
     $descripcion = $_POST['descripcion'] ?? '';
     $precio = $_POST['precio'] ?? 0;
-    $disponibilidad = 1;
+    $departamento = $_POST['departamento'] ?? null; // nuevo campo
+    $disponibilidad = null; // DB pone default 1 si no se pasa
+
+    if (!$departamento) {
+        die(json_encode(['success' => false, 'mensaje' => 'Debe seleccionar un departamento']));
+    }
 
     // 2. Procesar imagen
     $imagenNombre = '';
@@ -33,13 +38,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $categoria,
         $descripcion,
         $precio,
+        $departamento,   // ahora obligatorio
         $disponibilidad,
         $imagenNombre
     );
 
     // 4. Guardar en BD
     if ($servicio->guardar($conn)) {
-        echo json_encode(['success' => true, 'mensaje' => 'Servicio creado correctamente']);
+        if ($servicio->guardar($conn)) {
+            header('Location: /Proyecto/apps/vistas/paginas/empresa/perfil_empresa.php'); // por ejemplo
+            exit;
+        }
     }
 }
-?>

@@ -20,6 +20,7 @@
                         <option value="Hogar">Hogar</option>
                         <option value="Autos">Autos</option>
                         <option value="Belleza">Belleza</option>
+                        <option value="Belleza">Limpieza</option>
                         <option value="Cuidado de niños">Cuidado de niños</option>
                         <option value="Digital">Digital</option>
                         <option value="Cocina">Cocina</option>
@@ -29,6 +30,30 @@
                         <option value="Educación">Educación</option>
                         <option value="Transporte">Transporte</option>
                         <option value="Arte y Cultura">Arte y Cultura</option>
+                    </select>
+
+                    <label for="departamento">Departamento</label>
+                    <select id="departamento" name="departamento" required>
+                        <option value="">Selecciona...</option>
+                        <option value="Artigas">Artigas</option>
+                        <option value="Canelones">Canelones</option>
+                        <option value="Cerro Largo">Cerro Largo</option>
+                        <option value="Colonia">Colonia</option>
+                        <option value="Durazno">Durazno</option>
+                        <option value="Flores">Flores</option>
+                        <option value="Florida">Florida</option>
+                        <option value="Lavalleja">Lavalleja</option>
+                        <option value="Maldonado">Maldonado</option>
+                        <option value="Montevideo">Montevideo</option>
+                        <option value="Paysandú">Paysandú</option>
+                        <option value="Río Negro">Río Negro</option>
+                        <option value="Rivera">Rivera</option>
+                        <option value="Rocha">Rocha</option>
+                        <option value="Salto">Salto</option>
+                        <option value="San José">San José</option>
+                        <option value="Soriano">Soriano</option>
+                        <option value="Tacuarembó">Tacuarembó</option>
+                        <option value="Treinta y Tres">Treinta y Tres</option>
                     </select>
 
                     <label for="precio">Precio (UYU)</label>

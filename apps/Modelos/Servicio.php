@@ -1,23 +1,32 @@
 <?php
-class Servicio
-{
+class Servicio {
     private $idServicio;
     private $titulo;
     private $categoria;
     private $descripcion;
     private $precio;
     private $disponibilidad;
+    private $departamento;
     private $imagen;
 
-    public function __construct($idServicio, $titulo, $categoria, $descripcion, $precio, $disponibilidad, $imagen = null)
-    {
+    public function __construct(
+        $idServicio = null,
+        $titulo = '',
+        $categoria = '',
+        $descripcion = '',
+        $precio = 0,
+        $departamento,
+        $disponibilidad = null,
+        $imagen = ''
+    ) {
         $this->idServicio = $idServicio;
         $this->titulo = $titulo;
         $this->categoria = $categoria;
         $this->descripcion = $descripcion;
         $this->precio = $precio;
+        $this->departamento = $departamento;
         $this->disponibilidad = $disponibilidad;
-        $this->imagen = $imagen ?? '';
+        $this->imagen = $imagen;
     }
 
     // Getters
@@ -27,6 +36,7 @@ class Servicio
     public function getDescripcion() { return $this->descripcion; }
     public function getPrecio() { return $this->precio; }
     public function getDisponibilidad() { return $this->disponibilidad; }
+    public function getDepartamento() { return $this->departamento; }
     public function getImagen() { return $this->imagen; }
 
     // Setters
@@ -36,25 +46,26 @@ class Servicio
     public function setDescripcion($descripcion) { $this->descripcion = $descripcion; }
     public function setPrecio($precio) { $this->precio = $precio; }
     public function setDisponibilidad($disponibilidad) { $this->disponibilidad = $disponibilidad; }
+    public function setDepartamento($departamento) { $this->departamento = $departamento; }
     public function setImagen($imagen) { $this->imagen = $imagen; }
 
     // Guardar en base de datos
-    public function guardar($conn)
-    {
-        $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, disponibilidad, imagen) 
-                VALUES (?, ?, ?, ?, ?, ?)";
+    public function guardar($conn) {
+        $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, disponibilidad, departamento, imagen) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
             die("Error al preparar la consulta: " . $conn->error);
         }
 
         $stmt->bind_param(
-            "sssdis",
+            "sssdiss",
             $this->titulo,
             $this->categoria,
             $this->descripcion,
             $this->precio,
             $this->disponibilidad,
+            $this->departamento,
             $this->imagen
         );
 
