@@ -1,12 +1,10 @@
-<?php if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-} ?>
+<?php include __DIR__ . '/../../controlador/NavbarControlador.php'; ?>
 
 <nav class="navbar">
 
     <div class="navbar-left">
         <div class="logo">
-            <a href="/Proyecto/public/index.php">
+            <a href="<?php echo $home_url; ?>">
                 <img src="/Proyecto/public/imagen/logo/logo_manitas.png" alt="Logo">
             </a>
         </div>
@@ -54,8 +52,13 @@
                 <img src="/Proyecto/public/imagen/icono/icono_avatar.png" alt="Mi perfil">
             </div>
             <div class="perfil-menu">
-                <a href="/Proyecto/apps/vistas/autenticacion/login.php">Iniciar sesión</a>
-                <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>
+                <?php if ($logueado): ?>
+                    <a href="<?php echo $perfil_url; ?>">Mi perfil</a>
+                    <a href="/Proyecto/apps/controlador/logout.php">Cerrar sesión</a>
+                <?php else: ?>
+                    <a href="/Proyecto/apps/vistas/autenticacion/login.php">Iniciar sesión</a>
+                    <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>
+                <?php endif; ?>
             </div>
         </div>
     </div>

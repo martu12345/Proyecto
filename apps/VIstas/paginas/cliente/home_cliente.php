@@ -19,6 +19,7 @@
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/secciones.php'; ?>
     <script src="/Proyecto/public/js/secciones.js"></script>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
+
 </body>
 
 </html>
