@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     // ======== CLIENTE ========
     const formCliente = document.getElementById("formulario-cliente");
-    if(formCliente){
+    if (formCliente) {
         const emailCliente = document.getElementById("email");
-        
+
         formCliente.addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -13,33 +13,47 @@ document.addEventListener("DOMContentLoaded", () => {
             const telefono = document.getElementById("telefono").value.trim();
             const contrasena = document.getElementById("contrasena").value;
 
-            if(nombre.length < 2 || !/^[a-zA-Z]+$/.test(nombre)){ alert("Nombre inválido"); return; }
-            if(apellido.length < 2 || !/^[a-zA-Z]+$/.test(apellido)){ alert("Apellido inválido"); return; }
-            if(!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)){ alert("Email inválido"); return; }
-            if(!/^[0-9]{9}$/.test(telefono)){ alert("Teléfono inválido"); return; }
-            if(contrasena.length < 8){ alert("Contraseña inválida"); return; }
+            // VALIDACIONES
+            if (nombre.length < 2 || !/^[a-zA-Z]+$/.test(nombre)) {
+                alert("Nombre inválido"); return;
+            }
+            if (apellido.length < 2 || !/^[a-zA-Z]+$/.test(apellido)) {
+                alert("Apellido inválido"); return;
+            }
+            if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)) {
+                alert("Email inválido"); return;
+            }
+            if (!/^[0-9]{9}$/.test(telefono)) {
+                alert("Teléfono inválido"); return;
+            }
+            if (contrasena.length < 8) {
+                alert("Contraseña inválida"); return;
+            }
 
+            // VERIFICAR EMAIL
             try {
                 const res = await fetch(`/Proyecto/apps/Controlador/VerificarEmail.php?email=${encodeURIComponent(email)}`);
                 const data = await res.json();
-                if(data.existe){
+                if (data.existe) {
                     alert("Este email ya está registrado. Usa otro.");
                     emailCliente.focus();
                     return;
                 }
-            } catch(err) {
+            } catch (err) {
                 console.error("Error al verificar email:", err);
                 alert("No se pudo verificar el email. Intenta de nuevo.");
                 return;
             }
 
-            formCliente.submit();
+            // TODO OK -> ENVIAR FORM
+            console.log("Todo validado. Enviando formulario...");
+            e.target.submit(); // 🔑 acá se envía de verdad
         });
     }
 
     // ======== EMPRESA ========
     const formEmpresa = document.getElementById("formulario-empresa");
-    if(formEmpresa){
+    if (formEmpresa) {
         const emailEmpresa = document.getElementById("emailEmpresa");
 
         formEmpresa.addEventListener("submit", async (e) => {
@@ -52,28 +66,32 @@ document.addEventListener("DOMContentLoaded", () => {
             const calle = document.getElementById("calle").value.trim();
             const numero = document.getElementById("numero").value.trim();
 
-            if(nombreEmpresa.length < 2){ alert("Nombre de empresa inválido"); return; }
-            if(!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)){ alert("Email inválido"); return; }
-            if(contrasena.length < 8){ alert("Contraseña inválida"); return; }
-            if(!/^[0-9]+$/.test(telefono.replace(/\D/g,''))){ alert("Teléfono inválido"); return; }
-            if(calle.length < 2){ alert("Calle inválida"); return; }
-            if(numero.length < 1){ alert("Número de calle inválido"); return; }
+            // VALIDACIONES
+            if (nombreEmpresa.length < 2) { alert("Nombre de empresa inválido"); return; }
+            if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)) { alert("Email inválido"); return; }
+            if (contrasena.length < 8) { alert("Contraseña inválida"); return; }
+            if (!/^[0-9]+$/.test(telefono.replace(/\D/g, ''))) { alert("Teléfono inválido"); return; }
+            if (calle.length < 2) { alert("Calle inválida"); return; }
+            if (numero.length < 1) { alert("Número de calle inválido"); return; }
 
+            // VERIFICAR EMAIL
             try {
                 const res = await fetch(`/Proyecto/apps/Controlador/VerificarEmail.php?email=${encodeURIComponent(email)}`);
                 const data = await res.json();
-                if(data.existe){
+                if (data.existe) {
                     alert("Este email ya está registrado. Usa otro.");
                     emailEmpresa.focus();
                     return;
                 }
-            } catch(err) {
+            } catch (err) {
                 console.error("Error al verificar email:", err);
                 alert("No se pudo verificar el email. Intenta de nuevo.");
                 return;
             }
 
-            formEmpresa.submit();
+            // TODO OK -> ENVIAR FORM
+            console.log("Todo validado. Enviando formulario...");
+            e.target.submit(); // 🔑 acá también
         });
     }
 });

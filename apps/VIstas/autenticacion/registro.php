@@ -27,7 +27,7 @@
         <!-- Formulario Cliente -->
         <div class="login-box" id="formulario-cliente" style="display:none;">
             <h2>Registro Cliente</h2>
-            <form action="/Proyecto/apps/Controlador/cliente/ClienteControlador.php" method="POST">
+            <form id="formulario-cliente" action="/Proyecto/apps/Controlador/cliente/ClienteControlador.php" method="POST">
                 <label for="nombre">Nombre</label>
                 <input type="text" id="nombre" name="nombre" placeholder="Lucas" required>
 
