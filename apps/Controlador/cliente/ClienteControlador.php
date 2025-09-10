@@ -17,25 +17,26 @@ echo "Apellido: $apellido <br>";
 
 // validaciones  - hay que agregarlas
 if (empty($email)) {
-    die("El email no puede estar vacío");
+    //die("El email no puede estar vacío");
 }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    die("Email inválido");
+   // die("Email inválido");
 }
 
 if (empty($contrasena)) {
-    die("La contraseña no puede estar vacía");
+   // die("La contraseña no puede estar vacía");
 }
 if (strlen($contrasena) < 8) {
-    die("La contraseña debe tener al menos 8 caracteres");
+   // die("La contraseña debe tener al menos 8 caracteres");
 }
 
 // crear cliente
 $unCliente = new Cliente(null, $email, $contrasena, $nombre, $apellido);
 
 if ($unCliente->guardarCliente($conn, $telefono)) {
-    echo "Cliente y teléfono guardados correctamente!";
+    header("Location: /Proyecto/apps/vistas/autenticacion/login.php");
 } else {
-    echo "Error al guardar el cliente.";
+    echo "Error al guardar el Cliete.";
 }
-?> donde=?
+
+?> 

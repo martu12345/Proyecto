@@ -47,15 +47,6 @@ class Usuario
         return password_verify($contrasenaIngresada, $this->contrasena);
     }
 
-    /* guardar en la base de datos
-    public function guardar($conn) {
-        $stmt = $conn->prepare("INSERT INTO usuarios (Email, Contraseña, Telefono) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $this->email, $this->contrasena, $this->telefono);
-        return $stmt->execute();
-    }
-*/
-
-
     public function guardar($conn)
     {
         $stmt = $conn->prepare("INSERT INTO usuario (Email, Contraseña) VALUES (?, ?)");
@@ -97,5 +88,13 @@ class Usuario
             return $usuario;
         }
         return null;
+    }
+
+    public static function existeEmail($conn, $email) {
+        $stmt = $conn->prepare("SELECT IdUsuario FROM usuario WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
+        return $stmt->num_rows > 0;
     }
 }

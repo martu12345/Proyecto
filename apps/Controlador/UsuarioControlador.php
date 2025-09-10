@@ -6,6 +6,7 @@ $email    = $_POST['email'] ?? '';
 $contrasena = $_POST['contrasena'] ?? '';
 $telefono = $_POST['telefono'] ?? '';
 
+   
 // validaciones 
 // email no vacio y que sea valido
 if (empty($email)) {
@@ -17,7 +18,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 // ontaseña no este vacia y que tenga al menos 8 caracteres 
 if (empty($contrasena)) {
-    die("La contraseña no puede estar vacía");
+   die("La contraseña no puede estar vacía");
 }
 if (strlen($contrasena) < 8) {
     die("La contraseña debe tener al menos 8 caracteres");

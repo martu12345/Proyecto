@@ -15,7 +15,7 @@
     <div class="login-background">
         <div class="login-box">
             <h2>Inicio de sesión</h2>
-            <form action="../../Controlador/LoginControlador.php" method="POST"> <!-- Despues hay que redireccionar a el php correcto -->
+            <form action="../../Controlador/LoginControlador.php" method="POST"> 
 
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Tu email" required>
