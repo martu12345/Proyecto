@@ -1,0 +1,38 @@
+.detalle-container {
+    max-width: 900px;
+    background-color: #fff;
+    margin: 50px auto;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.detalle-imagen {
+    flex: 1;
+}
+
+.detalle-imagen img {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.detalle-info {
+    flex: 2;
+}
+
+.detalle-info h2 {
+    margin-top: 0;
+}
+
+.detalle-info p {
+    margin: 8px 0;
+}
+
+.detalle-info .precio {
+    font-weight: bold;
+    color: #ff914d;
+    font-size: 1.2rem;
+}
