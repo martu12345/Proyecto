@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // ======== CLIENTE ========
+/* document.addEventListener("DOMContentLoaded", () => {
+ 
     const formCliente = document.getElementById("formulario-cliente");
     if (formCliente) {
         const emailCliente = document.getElementById("email");
@@ -94,4 +94,4 @@ document.addEventListener("DOMContentLoaded", () => {
             e.target.submit(); // 🔑 acá también
         });
     }
-});
+}); */
