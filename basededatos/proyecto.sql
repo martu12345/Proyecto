@@ -112,7 +112,6 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'Martina','Ferreira'),(2,'sofia','iurramendi'),(5,'Pepote','Pepo');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,7 +201,6 @@ CREATE TABLE `empresa` (
 
 LOCK TABLES `empresa` WRITE;
 /*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
-INSERT INTO `empresa` VALUES (3,'MartuRepara','Garcia','3030'),(6,'martina','PGarcia','2230');
 /*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +222,7 @@ CREATE TABLE `servicio` (
   `departamento` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`IdServicio`),
   CONSTRAINT `chk_precio` CHECK ((`Precio` >= 0))
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +231,6 @@ CREATE TABLE `servicio` (
 
 LOCK TABLES `servicio` WRITE;
 /*!40000 ALTER TABLE `servicio` DISABLE KEYS */;
-INSERT INTO `servicio` VALUES (1,'maquillaje a domicilio ','Belleza','Hacemos maquillaje a domiciclo ',100,1,'1757341686_Captura de pantalla 2024-09-20 002216.png',''),(2,'maquillaje en tu casa','Belleza','Hacemos maquillaje a domiciclo  y para todas las personas\r\n',1000,1,'1757341718_Captura de pantalla 2024-09-21 235022.png',''),(3,'Catering para tu fiesta','Cocina','90',1,0,'','Te cocino para tu party '),(4,'Cocinita','Hogar','cocinado con marta ',390,1,'1757376848_WIN_20250902_11_57_04_Pro.jpg',''),(5,'Limpieza en tu casa','Belleza','Hago limpieza a domicilio ',100,NULL,'1757455052_Captura de pantalla 2025-07-29 192346.png','Artigas'),(6,'asas','Transporte','sasasas',11,NULL,'1757455155_Captura de pantalla 2024-05-01 224317.png','Soriano');
 /*!40000 ALTER TABLE `servicio` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -259,7 +256,6 @@ CREATE TABLE `telefono` (
 
 LOCK TABLES `telefono` WRITE;
 /*!40000 ALTER TABLE `telefono` DISABLE KEYS */;
-INSERT INTO `telefono` VALUES (1,'092393343'),(2,'092393343'),(3,'092383343'),(5,'098898887'),(6,'098765455');
 /*!40000 ALTER TABLE `telefono` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,7 +272,7 @@ CREATE TABLE `usuario` (
   `contraseña` varchar(255) NOT NULL,
   PRIMARY KEY (`IdUsuario`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +281,6 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'yomartinasofia@gmail.com','$2y$10$yEr3ykI29Fl3uvrFZONcAu1RYqnuMCS6OWpJiI5A/i6BpF.rImJtW'),(2,'sofi@gmail.com','$2y$10$pM0ruQumwN6sPba5EYqNqeUiLkqJbk889gRJFQk/rFa9tEo/n2AL.'),(3,'martu@gmail.com','$2y$10$m9NjzVBnU3jiOSKR24HwS.0NpFhAHAJ7cWay2nbu4GOLJ.0SzG8yy'),(5,'pepote@gmail.com','$2y$10$tvF/872AzKYfOrR3hVY1zOyfyxA0feEYk9sq7NSiHXlw3brUO1KzC'),(6,'mar@gmail.com','$2y$10$6V8OPwKAN0nSUI0JtD8qt.8UP6l16lD215XH3viwPrTWoce6.tD9u');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -298,4 +293,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-13 11:20:27
+-- Dump completed on 2025-09-13 11:25:40
