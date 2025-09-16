@@ -101,6 +101,7 @@ CREATE TABLE `cliente` (
   `IdUsuario` int NOT NULL,
   `Nombre` varchar(50) NOT NULL,
   `Apellido` varchar(50) NOT NULL,
+  `imagen` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`IdUsuario`),
   CONSTRAINT `fk_cliente_usuario` FOREIGN KEY (`IdUsuario`) REFERENCES `usuario` (`IdUsuario`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -190,6 +191,7 @@ CREATE TABLE `empresa` (
   `NombreEmpresa` varchar(100) NOT NULL,
   `Calle` varchar(100) NOT NULL,
   `Numero` varchar(10) NOT NULL,
+  `imagen` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`IdUsuario`),
   CONSTRAINT `fk_empresa_usuario` FOREIGN KEY (`IdUsuario`) REFERENCES `usuario` (`IdUsuario`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -293,4 +295,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-13 11:25:40
+-- Dump completed on 2025-09-16 17:40:36
