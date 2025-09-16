@@ -7,55 +7,44 @@ class Empresa extends Usuario
     private $nombreEmpresa;
     private $calle;
     private $numero;
+    private $imagen; // atributo para la foto
 
-    public function __construct($idUsuario, $email, $contrasena, $telefono, $nombreEmpresa, $calle, $numero)
+    public function __construct($idUsuario, $email, $contrasena, $telefono, $nombreEmpresa, $calle, $numero, $imagen = null)
     {
         parent::__construct($idUsuario, $email, $contrasena, $telefono);
-        // rne
         $this->nombreEmpresa = $nombreEmpresa;
         $this->calle = $calle;
         $this->numero = $numero;
-    }
-    // getters
-
-    public function getNombreEmpresa()
-    {
-        return $this->nombreEmpresa;
-    }
-    public function getCalle()
-    {
-        return $this->calle;
-    }
-    public function getNumero()
-    {
-        return $this->numero;
-    }
-    // setters
-    public function setNombreEmpresa($nombreEmpresa)
-    {
-        $this->nombreEmpresa = $nombreEmpresa;
-    }
-    public function setCalle($calle)
-    {
-        $this->calle = $calle;
+        $this->imagen = $imagen;
     }
 
-    public function setNumero($numero)
+    // getters y setters
+    public function getNombreEmpresa() { return $this->nombreEmpresa; }
+    public function getCalle() { return $this->calle; }
+    public function getNumero() { return $this->numero; }
+    public function getImagen() { return $this->imagen; }
+
+    public function setNombreEmpresa($nombreEmpresa) { $this->nombreEmpresa = $nombreEmpresa; }
+    public function setCalle($calle) { $this->calle = $calle; }
+    public function setNumero($numero) { $this->numero = $numero; }
+    public function setImagen($imagen) { $this->imagen = $imagen; }
+
+    // Actualiza los datos de la empresa (incluyendo imagen)
+    public function actualizarEmpresa($conn)
     {
-        $this->numero = $numero;
+        $sql = "UPDATE empresa SET NombreEmpresa = ?, Calle = ?, Numero = ?, Imagen = ? WHERE IdUsuario = ?";
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) die("Error prepare update empresa: " . $conn->error);
+        $stmt->bind_param("ssssi", $this->nombreEmpresa, $this->calle, $this->numero, $this->imagen, $this->idUsuario);
+        return $stmt->execute();
     }
-    //guardar empresa en la base y telefono 
-    public function guardarEmpresa($conn, $telefono = null)
+
+    // Actualiza solo la imagen
+    public function actualizarImagen($conn)
     {
-        if (parent::guardar($conn)) {
-            $this->idUsuario = $conn->insert_id;
-            $sql = "INSERT INTO empresa (IdUsuario, NombreEmpresa, Calle, Numero) VALUES (?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sssi", $this->idUsuario, $this->nombreEmpresa, $this->calle, $this->numero);
-            Telefono::insertarTelefono($conn, $this->idUsuario, $telefono);
-            return $stmt->execute();
-        } else {
-            return false;
-        }
+        if (!$this->imagen) return false;
+        $stmt = $conn->prepare("UPDATE empresa SET Imagen = ? WHERE IdUsuario = ?");
+        $stmt->bind_param("si", $this->imagen, $this->idUsuario);
+        return $stmt->execute();
     }
 }

@@ -1,4 +1,4 @@
-/* document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
  
     const formCliente = document.getElementById("formulario-cliente");
     if (formCliente) {
@@ -94,4 +94,4 @@
             e.target.submit(); // 🔑 acá también
         });
     }
-}); */
+}); 

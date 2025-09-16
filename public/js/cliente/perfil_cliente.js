@@ -1,11 +1,14 @@
-// codigo que hace que maneja todo el tema de editar perfil
+// Manejo del perfil de cliente (editar datos + cambiar imagen)
 document.addEventListener("DOMContentLoaded", function () {
     const btnEditar = document.getElementById("btnEditar");
     const btnGuardar = document.getElementById("btnGuardar");
     const btnCancelar = document.getElementById("btnCancelar");
     const campos = document.querySelectorAll(".campo-perfil");
     const form = document.getElementById("formPerfil");
+    const inputImagen = document.getElementById("inputImagen"); // input type="file"
+    const imgPerfil = document.getElementById("imgPerfil"); // <img> actual
 
+    // ---- EDITAR CAMPOS ----
     btnEditar.addEventListener("click", function () {
         campos.forEach(campo => {
             campo.classList.add("editando");
@@ -73,4 +76,30 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(err => console.error("Error fetch:", err));
     });
+
+    // ---- CAMBIO DE IMAGEN ----
+    if (inputImagen) {
+        inputImagen.addEventListener("change", function () {
+            const file = inputImagen.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append("imagen", file);
+
+            fetch("/Proyecto/apps/controlador/cliente/ClienteImagenControlador.php", {
+                method: "POST",
+                body: formData
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.ok) {
+                        // refrescar imagen en pantalla
+                        imgPerfil.src = "/Proyecto/public/imagen/clientes/" + data.imagen + "?t=" + new Date().getTime();
+                    } else {
+                        alert("Error al subir imagen: " + (data.error || "Error desconocido"));
+                    }
+                })
+                .catch(err => console.error("Error subida imagen:", err));
+        });
+    }
 });
