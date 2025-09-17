@@ -1,5 +1,6 @@
- document.addEventListener("DOMContentLoaded", () => {
- 
+document.addEventListener("DOMContentLoaded", () => {
+
+    // ======== CLIENTE ========
     const formCliente = document.getElementById("formulario-cliente");
     if (formCliente) {
         const emailCliente = document.getElementById("email");
@@ -14,20 +15,22 @@
             const contrasena = document.getElementById("contrasena").value;
 
             // VALIDACIONES
-            if (nombre.length < 2 || !/^[a-zA-Z]+$/.test(nombre)) {
-                alert("Nombre inválido"); return;
+            if (nombre.length < 2 || !/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/.test(nombre)) {
+                alert("Nombre inválido (solo letras, mínimo 2)"); return;
             }
-            if (apellido.length < 2 || !/^[a-zA-Z]+$/.test(apellido)) {
-                alert("Apellido inválido"); return;
+            if (apellido.length < 2 || !/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/.test(apellido)) {
+                alert("Apellido inválido (solo letras, mínimo 2)"); return;
             }
             if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)) {
                 alert("Email inválido"); return;
             }
-            if (!/^[0-9]{9}$/.test(telefono)) {
-                alert("Teléfono inválido"); return;
+            // Teléfono uruguayo (09 + 7 dígitos = total 9)
+            if (!/^09[0-9]{7}$/.test(telefono)) {
+                alert("Teléfono inválido. Debe ser uruguayo y tener 9 dígitos (ej: 09xxxxxxx)"); return;
             }
-            if (contrasena.length < 8) {
-                alert("Contraseña inválida"); return;
+            // Contraseña fuerte
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&.,;:])[A-Za-z\d@$!%*#?&.,;:]{8,}$/.test(contrasena)) {
+                alert("La contraseña debe tener al menos 8 caracteres, con mayúscula, minúscula, número y símbolo"); return;
             }
 
             // VERIFICAR EMAIL
@@ -47,7 +50,7 @@
 
             // TODO OK -> ENVIAR FORM
             console.log("Todo validado. Enviando formulario...");
-            e.target.submit(); // 🔑 acá se envía de verdad
+            e.target.submit();
         });
     }
 
@@ -67,12 +70,26 @@
             const numero = document.getElementById("numero").value.trim();
 
             // VALIDACIONES
-            if (nombreEmpresa.length < 2) { alert("Nombre de empresa inválido"); return; }
-            if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)) { alert("Email inválido"); return; }
-            if (contrasena.length < 8) { alert("Contraseña inválida"); return; }
-            if (!/^[0-9]+$/.test(telefono.replace(/\D/g, ''))) { alert("Teléfono inválido"); return; }
-            if (calle.length < 2) { alert("Calle inválida"); return; }
-            if (numero.length < 1) { alert("Número de calle inválido"); return; }
+            if (nombreEmpresa.length < 2 || !/^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ\s]+$/.test(nombreEmpresa)) {
+                alert("Nombre de empresa inválido"); return;
+            }
+            if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)) {
+                alert("Email inválido"); return;
+            }
+            // Teléfono uruguayo (09 + 7 dígitos = total 9)
+            if (!/^09[0-9]{7}$/.test(telefono)) {
+                alert("Teléfono inválido. Debe ser uruguayo y tener 9 dígitos (ej: 09xxxxxxx)"); return;
+            }
+            if (calle.length < 2 || calle.length > 50) {
+                alert("Calle inválida (mínimo 2, máximo 50 caracteres)"); return;
+            }
+            if (!/^[0-9]{1,5}$/.test(numero)) {
+                alert("Número de calle inválido (solo hasta 5 dígitos)"); return;
+            }
+            // Contraseña fuerte
+            if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&.,;:])[A-Za-z\d@$!%*#?&.,;:]{8,}$/.test(contrasena)) {
+                alert("La contraseña debe tener al menos 8 caracteres, con mayúscula, minúscula, número y símbolo"); return;
+            }
 
             // VERIFICAR EMAIL
             try {
@@ -91,7 +108,7 @@
 
             // TODO OK -> ENVIAR FORM
             console.log("Todo validado. Enviando formulario...");
-            e.target.submit(); // 🔑 acá también
+            e.target.submit();
         });
     }
-}); 
+});
