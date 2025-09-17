@@ -13,9 +13,9 @@
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
     <div class="login-background">
-        <div class="login-box">
+        <div class="login-box" id="formulario-login">
             <h2>Inicio de sesión</h2>
-            <form action="../../Controlador/LoginControlador.php" method="POST"> 
+            <form action="../../Controlador/LoginControlador.php" method="POST" id="formulario-login"> 
 
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Tu email" required>
@@ -33,5 +33,7 @@
     </div>
 
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
+    <script src="/Proyecto/public/js/validaciones/validacionLogin.js"></script>
+
 </body>
 </html>

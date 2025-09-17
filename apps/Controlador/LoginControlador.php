@@ -49,8 +49,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // si no pertenece a ningún rol
         echo "El usuario no tiene rol asignado.";
-    } else {
-        echo "Usuario o contraseña incorrectos.";
-    }
+    } 
+    if (!$usuario) {
+    echo "No existe ninguna cuenta con ese email";
+} elseif (!$usuario->verificarContrasena($contrasenaIngresada)) {
+    echo "Contraseña incorrecta";
+    echo json_encode(['exito' => false, 'mensaje' => 'Contraseña incorrecta']);
+        exit();
+
+} else {
+    // login OK
+}
+
 }
 ?>
