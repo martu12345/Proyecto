@@ -28,7 +28,7 @@ unset($_SESSION['servicios']);
         <div class="contenedor-principal">
 
             <aside class="columna-izquierda">
-                <form action="/Proyecto/apps/controlador/BuscarControlador.php" method="POST" class="filtro">
+                <form action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST" class="filtro">
                     <div class="rating-container">
                         <label>Filtrar por estrellas:</label>
                         <div class="rating">

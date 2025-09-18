@@ -72,7 +72,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/cliente/Per
     </div>
 
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
-    <script src="/Proyecto/public/js/perfil_cliente.js"></script>
+    <script src="/Proyecto/public/js/cliente/perfil_cliente.js"></script>
 
 </body>
 

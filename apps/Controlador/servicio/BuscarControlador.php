@@ -1,4 +1,5 @@
-<?php
+
+<?php // Lista la bsuqueda de servicios por palabra clave 
 session_start(); 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php'); 
 

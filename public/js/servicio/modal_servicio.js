@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const textarea = document.getElementById('descripcion');
     const contador = document.getElementById('contador');
 
-    // Abrir modal
+    // Abrir 
     btnCrear.addEventListener('click', () => modal.style.display = 'block');
 
-    // Cerrar modal
+    // Cerrar 
     btnCerrar.addEventListener('click', () => modal.style.display = 'none');
     window.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
 
@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Ajuste dinámico del textarea y contador
+    // Ajuste  del textarea y contador
     textarea.addEventListener('input', () => {
         let words = textarea.value.split(/\s+/).filter(w => w.length > 0);
 
-        // Limitar a 60 palabras si se pega texto
+        // Limitar a 60 palabras 
         if (words.length > 60) {
             textarea.value = words.slice(0, 60).join(' ');
             words = textarea.value.split(/\s+/).filter(w => w.length > 0);
@@ -43,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Actualizar contador
         if (contador) contador.textContent = `${words.length} / 60 palabras`;
 
-        // Ajustar altura automáticamente
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
     });
@@ -52,7 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
     textarea.addEventListener('keydown', (e) => {
         let words = textarea.value.split(/\s+/).filter(w => w.length > 0);
 
-        // Permitir borrar o mover el cursor
         const allowedKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Control', 'Meta', 'Shift', 'Tab'];
 
         if (words.length >= 60 && !allowedKeys.includes(e.key)) {

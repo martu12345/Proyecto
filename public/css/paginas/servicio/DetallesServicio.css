@@ -1,0 +1,119 @@
+body {
+    background-color: #ff914d;
+    font-family: 'Lexend', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.detalle-servicio-container {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.detalle-servicio {
+    display: flex;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    max-width: 900px;
+    width: 100%;
+    padding: 30px;
+    gap: 30px;
+    min-height: 350px; 
+}
+
+.imagen-contenedor {
+    flex: 0 0 250px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    overflow: hidden;
+    background: transparent;
+}
+
+.imagen-contenedor img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.info-contenedor {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.info-contenedor h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #222;
+    font-size: 26px;
+}
+
+.info-contenedor .precio {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ff914d;
+    margin: 6px 0 12px 0;
+}
+
+.info-contenedor p {
+    margin: 4px 0;
+    color: #444;
+}
+
+.botones-servicio {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: auto; 
+}
+
+.boton-servicio {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #ff914d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.boton-servicio:hover {
+    transform: scale(1.1);
+}
+
+.boton-servicio img {
+    width: 24px;
+    height: 24px;
+}
+
+.mensaje-error {
+    color: #b00020;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+@media(max-width: 768px) {
+    .detalle-servicio {
+        flex-direction: column;
+        align-items: center;
+        min-height: auto;
+    }
+    .imagen-contenedor {
+        width: 80%;
+        height: auto;
+    }
+    .info-contenedor {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .botones-servicio {
+        justify-content: center;
+    }
+}

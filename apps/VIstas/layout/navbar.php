@@ -39,8 +39,8 @@
 
     <div class="navbar-right">
         <div class="busqueda">
-            <form action="/Proyecto/apps/controlador/BuscarControlador.php" method="POST">
-                <input type="text" name="q" placeholder="Buscar...">
+            <form action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST">
+            <input type="text" name="q" id="buscador" placeholder="Buscar...">
                 <button type="submit">
                     <img src="/Proyecto/public/imagen/icono/icono_busqueda.png" alt="Buscar">
                 </button>
@@ -62,4 +62,7 @@
             </div>
         </div>
     </div>
+
+    <script src="/Proyecto/public/js/servicio/buscador.js"></script>
+
 </nav>

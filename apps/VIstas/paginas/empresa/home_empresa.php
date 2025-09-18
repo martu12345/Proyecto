@@ -21,8 +21,8 @@
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/modal_servicio.php'; ?>
         <link rel="stylesheet" href="/Proyecto/public/css/layout/modal_servicio.css">
 
-        <script src="/Proyecto/public/js/secciones.js"></script>
-        <script src="/Proyecto/public/js/modal_servicio.js"></script>
+        <script src="/Proyecto/public/js/servicio/secciones.js"></script>
+        <script src="/Proyecto/public/js/servicio/modal_servicio.js"></script>
 
 
         <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>

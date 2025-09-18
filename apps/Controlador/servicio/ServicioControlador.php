@@ -1,8 +1,11 @@
-<?php
+
+<?php // Este controaldor guarda el servicio cuando se crea 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/servicio.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+    
+    {
 
     // 1. Recibir datos del formulario
     $titulo = $_POST['titulo'] ?? '';
@@ -44,10 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
 
     // 4. Guardar en BD
-    if ($servicio->guardar($conn)) {
-        if ($servicio->guardar($conn)) {
-            header('Location: /Proyecto/apps/vistas/paginas/empresa/perfil_empresa.php'); // por ejemplo
-            exit;
+    if ($servicio->guardar($conn)) 
+        {
+        header('Location: /Proyecto/apps/vistas/paginas/empresa/perfil_empresa.php'); 
+        exit;
+        } 
+    else 
+        {
+        die("Error al guardar el servicio");
         }
     }
-}
+

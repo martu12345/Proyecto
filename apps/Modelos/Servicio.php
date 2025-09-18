@@ -15,7 +15,7 @@ class Servicio {
         $categoria = '',
         $descripcion = '',
         $precio = 0,
-        $departamento,
+        $departamento = '',
         $disponibilidad = null,
         $imagen = ''
     ) {
@@ -39,7 +39,7 @@ class Servicio {
     public function getDepartamento() { return $this->departamento; }
     public function getImagen() { return $this->imagen; }
 
-    // Setters
+    //  Setters
     public function setIdServicio($idServicio) { $this->idServicio = $idServicio; }
     public function setTitulo($titulo) { $this->titulo = $titulo; }
     public function setCategoria($categoria) { $this->categoria = $categoria; }
@@ -49,7 +49,7 @@ class Servicio {
     public function setDepartamento($departamento) { $this->departamento = $departamento; }
     public function setImagen($imagen) { $this->imagen = $imagen; }
 
-    // Guardar en base de datos
+    //  Guardar en base de datos
     public function guardar($conn) {
         $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, disponibilidad, departamento, imagen) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -74,6 +74,36 @@ class Servicio {
         } else {
             die("Error al guardar servicio: " . $stmt->error);
         }
+    }
+
+    //  Obtener servicio por ID
+    public static function obtenerPorId($conn, $idServicio) {
+        $sql = "SELECT * FROM Servicio WHERE IdServicio = ?";
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            die("Error al preparar la consulta: " . $conn->error);
+        }
+
+        $stmt->bind_param("i", $idServicio);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        if ($row = $resultado->fetch_assoc()) {
+
+    
+            return new Servicio(
+                $row['IdServicio'] ?? null,
+                $row['Titulo'] ?? '',
+                $row['Categoria'] ?? '',
+                $row['Descripcion'] ?? '',
+                $row['Precio'] ?? 0,
+                $row['departamento'] ?? '',           // tienen que quedar en minuscula porq asi estan en la base
+                null,                         // disponibilidad (lo dejamos null)
+                $row['imagen'] ?? ''          // tienen que quedar en minuscula porq asi estan en la base
+            );
+        }
+
+        return null;
     }
 }
 ?>
