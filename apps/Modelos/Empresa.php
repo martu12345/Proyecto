@@ -47,4 +47,19 @@ class Empresa extends Usuario
         $stmt->bind_param("si", $this->imagen, $this->idUsuario);
         return $stmt->execute();
     }
+    
+    //guardar empresa en la base y telefono 
+    public function guardarEmpresa($conn, $telefono = null)
+    {
+        if (parent::guardar($conn)) {
+            $this->idUsuario = $conn->insert_id;
+            $sql = "INSERT INTO empresa (IdUsuario, NombreEmpresa, Calle, Numero) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssi", $this->idUsuario, $this->nombreEmpresa, $this->calle, $this->numero);
+            Telefono::insertarTelefono($conn, $this->idUsuario, $telefono);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
+    }
 }
