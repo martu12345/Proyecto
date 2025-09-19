@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const campos = document.querySelectorAll(".campo-perfil");
     const form = document.getElementById("formPerfil");
 
-    // Botón Editar
     btnEditar.addEventListener("click", () => {
         campos.forEach(campo => {
             campo.classList.add("editando");
@@ -17,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
         btnCancelar.style.display = "inline-block";
     });
 
-    // Botón Cancelar
     btnCancelar.addEventListener("click", () => {
         campos.forEach(campo => {
             campo.classList.remove("editando");
@@ -30,13 +28,12 @@ document.addEventListener("DOMContentLoaded", function () {
         btnCancelar.style.display = "none";
     });
 
-    // Botón Guardar
     btnGuardar.addEventListener("click", (e) => {
         e.preventDefault();
         const formData = new FormData(form);
 
-        if (!formData.get("email") || !formData.get("contrasena")) {
-            alert("Email y contraseña son obligatorios");
+        if (!formData.get("email")) {
+            alert("Email es obligatorio");
             return;
         }
 
@@ -47,15 +44,14 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(res => res.json())
         .then(data => {
             if(data.ok){
-                // Actualizar campos con datos confirmados por el servidor
                 campos.forEach(campo => {
                     const input = campo.querySelector(".input-campo");
                     const texto = campo.querySelector(".texto");
-                    const nombreCampo = input.name; // "nombre", "apellido", "email"
+                    const name = input.name;
 
-                    if(data[nombreCampo] !== undefined){
-                        texto.textContent = data[nombreCampo];
-                        input.value = data[nombreCampo];
+                    if(data[name] !== undefined){
+                        texto.textContent = data[name];
+                        input.value = data[name];
                     }
 
                     texto.style.display = "inline-block";
@@ -63,9 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     campo.classList.remove("editando");
                 });
 
-                // Actualizar nombre completo lateral
-                const nombreCol = document.getElementById("nombreColumna");
-                nombreCol.textContent = data.nombre + " " + data.apellido;
+                document.getElementById("nombreColumna").textContent = data.nombre + " " + data.apellido;
 
                 btnEditar.style.display = "inline-block";
                 btnGuardar.style.display = "none";

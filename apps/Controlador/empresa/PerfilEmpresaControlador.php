@@ -12,7 +12,7 @@ if (!isset($_SESSION['idUsuario'])) {
 $idUsuario = $_SESSION['idUsuario'];
 
 $stmt = $conn->prepare("
-    SELECT u.Email, e.NombreEmpresa, e.Calle, e.Numero
+    SELECT u.Email, e.NombreEmpresa, e.Calle, e.Numero, e.Imagen
     FROM usuario u
     JOIN empresa e ON u.IdUsuario = e.IdUsuario
     WHERE u.IdUsuario = ?
@@ -25,5 +25,4 @@ $stmt->bind_param("i", $idUsuario);
 $stmt->execute();
 $result = $stmt->get_result();
 $datos = $result->fetch_assoc();
-
 $stmt->close();

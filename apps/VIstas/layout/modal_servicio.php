@@ -3,7 +3,7 @@
         <span class="cerrar">&times;</span>
         <h2>Crear Servicio</h2>
 
-        <form id="formServicio" action="/Proyecto/apps/controlador/ServicioControlador.php" method="POST" enctype="multipart/form-data">
+        <form id="formServicio" action="/Proyecto/apps/controlador/servicio/ServicioControlador.php" method="POST" enctype="multipart/form-data">
             <div class="form-top">
                 <div class="form-image">
                     <label for="imagen">Foto del servicio</label>

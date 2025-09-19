@@ -1,4 +1,4 @@
-<?php
+<?php 
 $hasServicio = (isset($servicio) && is_object($servicio));
 $mensajeError = $errorMessage ?? (!$hasServicio ? 'No se encontró el servicio solicitado.' : null);
 ?>
@@ -32,8 +32,9 @@ $mensajeError = $errorMessage ?? (!$hasServicio ? 'No se encontró el servicio s
                     $ruta = "/Proyecto/public/imagen/servicios/placeholder.png";
                 }
                 ?>
-                <img src="<?= $ruta ?>" alt="<?= htmlspecialchars($servicio->getTitulo()) ?>">
+                <img src="<?= $ruta ?>" alt="<?= htmlspecialchars($servicio->getTitulo()) ?>" style="display:block; margin:0 auto;">
             </div>
+
             <div class="info-contenedor">
                 <h2><?= htmlspecialchars($servicio->getTitulo()) ?></h2>
                 <p class="precio">$<?= number_format($servicio->getPrecio(), 2) ?></p>
@@ -41,6 +42,12 @@ $mensajeError = $errorMessage ?? (!$hasServicio ? 'No se encontró el servicio s
                 <p><strong>Departamento:</strong> <?= htmlspecialchars($servicio->getDepartamento()) ?></p>
                 <p><strong>Descripción:</strong></p>
                 <p><?= nl2br(htmlspecialchars($servicio->getDescripcion())) ?></p>
+
+                <?php if (!empty($empresa)): ?>
+                    <p><strong>Empresa:</strong> <?= htmlspecialchars($empresa['NombreEmpresa']) ?></p>
+                <?php else: ?>
+                    <p><strong>Empresa:</strong> No disponible</p>
+                <?php endif; ?>
 
                 <div class="botones-servicio">
                     <a href="#" class="boton-servicio mensaje" title="Mensaje"><img src="/Proyecto/public/imagen/icono/icono_mensaje.png" alt="Mensaje"></a>

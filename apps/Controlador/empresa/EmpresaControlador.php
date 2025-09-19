@@ -1,36 +1,46 @@
-<?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/empresa.php');
+<?php 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/servicio.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Brinda.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Empresa.php');
 
+$idRaw = $_POST['IdServicio'] ?? null;
+$servicio = null;
+$empresa = null;
+$errorMessage = null;
 
-$email    = $_POST['emailEmpresa'] ?? '';
-$contrasena = $_POST['contrasenaEmpresa'] ?? '';
-$nombreEmpresa = $_POST['nombreEmpresa'] ?? '';
-$telefono = $_POST['telefonoEmpresa'] ?? '';
-$calle = $_POST['calle'] ?? '';
-$numero = $_POST['numero'] ?? '';
-
-
-// validaciones 
-if (empty($email)) {
-    die("El email no puede estar vacío");
-}
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    die("Email inválido");
-}
-
-if (empty($contrasena)) {
-    die("La contraseña no puede estar vacía");
-}
-if (strlen($contrasena) < 8) {
-    die("La contraseña debe tener al menos 8 caracteres");
-}
-
-// crear empresa
-$unaEmpresa = new Empresa(null, $email, $contrasena, $telefono, $nombreEmpresa, $calle, $numero);
-
-if ($unaEmpresa->guardarEmpresa($conn, $telefono)) {
-    header("Location: /Proyecto/apps/vistas/autenticacion/login.php");
+// Validar que se reciba el ID por POST
+if ($idRaw === null) {
+    $errorMessage = "No se recibió el Id del servicio. Asegurate de llamar a este controlador desde el formulario.";
 } else {
-    echo "Error al guardar el Empresa.";
+    $id = intval($idRaw);
+
+    if ($id <= 0) {
+        $errorMessage = "Id de servicio inválido.";
+    } else {
+        // Obtener servicio
+        $servicio = Servicio::obtenerPorId($conn, $id);
+
+        if (!$servicio) {
+            $errorMessage = "No se encontró el servicio con Id {$id}.";
+        } else {
+            // Obtener la empresa que brinda este servicio
+            $stmt = $conn->prepare("
+                SELECT e.IdUsuario, e.NombreEmpresa, e.Calle, e.Numero, e.Imagen
+                FROM brinda b
+                JOIN empresa e ON b.IdUsuario = e.IdUsuario
+                WHERE b.IdServicio = ?
+            ");
+            if (!$stmt) die("Error prepare empresa: " . $conn->error);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+            $empresa = $resultado->fetch_assoc();
+            $stmt->close();
+        }
+    }
 }
+
+// Llamar a la vista
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/servicio/DetallesServicio.php');
+exit;

@@ -9,38 +9,37 @@ if (!isset($_SESSION['idUsuario'])) {
     exit();
 }
 
-$idUsuario = $_SESSION['idUsuario'];
+$idUsuario = (int)$_SESSION['idUsuario'];
 
+// Obtener datos del usuario
 $stmt = $conn->prepare("
-    SELECT u.Email, c.Nombre, c.Apellido, c.Imagen
-    FROM usuario u 
-    JOIN cliente c ON u.IdUsuario = c.IdUsuario 
+    SELECT u.Email, u.Contraseña, c.Nombre, c.Apellido, c.Imagen
+    FROM usuario u
+    JOIN cliente c ON u.IdUsuario = c.IdUsuario
     WHERE u.IdUsuario = ?
 ");
-if(!$stmt) {
-    die("Error prepare: " . $conn->error);
-}
+if(!$stmt) die("Error prepare select: ".$conn->error);
+
 $stmt->bind_param("i", $idUsuario);
 $stmt->execute();
-$result = $stmt->get_result();
-$datos = $result->fetch_assoc();
+$datos = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
+if(!$datos) die("No se encontraron datos del usuario");
+
+// Subida de imagen
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
     $nombreArchivo = $_FILES['imagen']['name'];
     $tmpName = $_FILES['imagen']['tmp_name'];
 
     $directorio = $_SERVER['DOCUMENT_ROOT'] . "/Proyecto/public/imagen/clientes/";
-    if (!file_exists($directorio)) {
-        mkdir($directorio, 0777, true);
-    }
+    if (!file_exists($directorio)) mkdir($directorio, 0777, true);
 
     $rutaFinal = $directorio . uniqid() . "_" . basename($nombreArchivo);
 
     if (move_uploaded_file($tmpName, $rutaFinal)) {
         $rutaRelativa = "/Proyecto/public/imagen/clientes/" . basename($rutaFinal);
 
-        // actualizar cliente 
         $cliente = new Cliente($idUsuario, $datos['Email'], null, $datos['Nombre'], $datos['Apellido'], $rutaRelativa);
         $cliente->setImagen($rutaRelativa);
         $cliente->actualizarCliente($conn);

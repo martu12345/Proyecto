@@ -19,16 +19,24 @@ $numero = $_POST['numero'] ?? '';
 $email = $_POST['email'] ?? '';
 $contrasena = $_POST['contrasena'] ?? '';
 
-// Actualizar contraseña si se puso
+// Actualizar contraseña y email si se proporcionan
 if (!empty($contrasena)) {
     $hash = password_hash($contrasena, PASSWORD_DEFAULT);
     $stmt2 = $conn->prepare("UPDATE usuario SET Email = ?, Contraseña = ? WHERE IdUsuario = ?");
+    if(!$stmt2) die("Error prepare update usuario: ".$conn->error);
     $stmt2->bind_param("ssi", $email, $hash, $idUsuario);
+    $stmt2->execute();
+    $stmt2->close();
+} else {
+    // Solo actualizar email si no hay contraseña
+    $stmt2 = $conn->prepare("UPDATE usuario SET Email = ? WHERE IdUsuario = ?");
+    if(!$stmt2) die("Error prepare update email: ".$conn->error);
+    $stmt2->bind_param("si", $email, $idUsuario);
     $stmt2->execute();
     $stmt2->close();
 }
 
-// Traer la empresa
+// Traer datos actuales de la empresa
 $stmt = $conn->prepare("SELECT NombreEmpresa, Calle, Numero, Imagen FROM empresa WHERE IdUsuario = ?");
 $stmt->bind_param("i", $idUsuario);
 $stmt->execute();
