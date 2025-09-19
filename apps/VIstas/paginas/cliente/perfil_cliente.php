@@ -15,13 +15,23 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/cliente/Per
 </head>
 
 <body>
-
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
     <div class="perfil-container">
         <div class="perfil-box">
             <div class="perfil-opciones">
-                <button class="foto-circulo">+</button>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <label for="imagenInput">
+                        <?php if (!empty($datos['Imagen'])): ?>
+                            <img src="<?php echo htmlspecialchars($datos['Imagen']); ?>" class="foto-circulo" alt="Foto de perfil">
+                        <?php else: ?>
+                            <div class="foto-circulo">+</div>
+                        <?php endif; ?>
+                    </label>
+                    <input type="file" id="imagenInput" name="imagen" style="display:none;" onchange="this.form.submit()">
+                </form>
+
+
                 <div class="nombre-usuario" id="nombreColumna">
                     <?php echo htmlspecialchars($datos['Nombre'] . ' ' . $datos['Apellido']); ?>
                 </div>
@@ -73,7 +83,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/cliente/Per
 
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
     <script src="/Proyecto/public/js/cliente/perfil_cliente.js"></script>
-
 </body>
 
 </html>

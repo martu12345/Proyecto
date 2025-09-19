@@ -35,27 +35,23 @@ body {
 }
 
 .foto-circulo {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    background-color: #ddd;
+    width: 100px;        
+    height: 100px;
+    border-radius: 50%;  
+    overflow: hidden;     
     display: flex;
+    align-items: center;  
     justify-content: center;
-    align-items: center;
-    font-size: 36px;
-    color: #555;
+    background-color: #ddd; 
     cursor: pointer;
-    margin-bottom: 15px;
-    border: none;
-    overflow: hidden;
 }
 
 .foto-circulo img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
+    object-fit: cover;   
 }
+
 
 .nombre-usuario {
     font-weight: 600;

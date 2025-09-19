@@ -6,12 +6,13 @@ class Cliente extends Usuario
 {
     private $nombre;
     private $apellido;
-
-    public function __construct($idUsuario, $email, $contrasena, $nombre, $apellido)
+    private $imagen; 
+    public function __construct($idUsuario, $email, $contrasena, $nombre, $apellido, $imagen = null)
     {
         parent::__construct($idUsuario, $email, $contrasena);
         $this->nombre = $nombre;
         $this->apellido = $apellido;
+        $this->imagen = $imagen;
     }
 
     // getters
@@ -25,6 +26,11 @@ class Cliente extends Usuario
         return $this->apellido;
     }
 
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+
     // setters
     public function setNombre($nombre)
     {
@@ -36,10 +42,15 @@ class Cliente extends Usuario
         $this->apellido = $apellido;
     }
 
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+    }
+
     // actualizar datos existentes
     public function actualizarCliente($conn)
     {
-        // actualizar tabla usuario (solo email)
+        // actualizar  usuario (solo email)
         $stmt1 = $conn->prepare("UPDATE usuario SET Email = ? WHERE IdUsuario = ?");
         if(!$stmt1) die("Error prepare usuario: ".$conn->error);
 
@@ -49,11 +60,11 @@ class Cliente extends Usuario
         if(!$stmt1->execute()) die("Error update usuario: ".$stmt1->error);
         $stmt1->close();
 
-        // actualizar tabla cliente (nombre y apellido)
-        $stmt2 = $conn->prepare("UPDATE cliente SET Nombre = ?, Apellido = ? WHERE IdUsuario = ?");
+        // actualizar  cliente (nombre, apellido, imagen)
+        $stmt2 = $conn->prepare("UPDATE cliente SET Nombre = ?, Apellido = ?, Imagen = ? WHERE IdUsuario = ?");
         if(!$stmt2) die("Error prepare cliente: ".$conn->error);
 
-        $stmt2->bind_param("ssi", $this->nombre, $this->apellido, $this->idUsuario);
+        $stmt2->bind_param("sssi", $this->nombre, $this->apellido, $this->imagen, $this->idUsuario);
 
         if(!$stmt2->execute()) die("Error update cliente: ".$stmt2->error);
         $stmt2->close();
@@ -66,13 +77,23 @@ class Cliente extends Usuario
     {
         if (parent::guardar($conn)) {
             $this->idUsuario = $conn->insert_id;
-            $sql = "INSERT INTO cliente (IdUsuario, Nombre, Apellido) VALUES (?, ?, ?)";
+            $sql = "INSERT INTO cliente (IdUsuario, Nombre, Apellido, Imagen) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("iss", $this->idUsuario, $this->nombre, $this->apellido);
+            $stmt->bind_param("isss", $this->idUsuario, $this->nombre, $this->apellido, $this->imagen);
             Telefono::insertarTelefono($conn, $this->idUsuario, $telefono);
             return $stmt->execute();
         } else {
             return false;
         }
+    }
+
+    // actualizar solo la imagen
+    public function actualizarImagen($conn)
+    {
+        $stmt = $conn->prepare("UPDATE cliente SET Imagen = ? WHERE IdUsuario = ?");
+        if(!$stmt) die("Error prepare update imagen: ".$conn->error);
+
+        $stmt->bind_param("si", $this->imagen, $this->idUsuario);
+        return $stmt->execute();
     }
 }

@@ -51,7 +51,7 @@ $stmt->close();
                 <?php endif; ?>
             </div>
 
-            <form id="formFoto" action="/Proyecto/apps/controlador/empresa/EditarFotoEmpresaControlador.php" method="POST" enctype="multipart/form-data" style="display:none;">
+            <form id="formFoto" action="/Proyecto/apps/controlador/empresa/SubirFotoEmpresaControlador.php" method="POST" enctype="multipart/form-data" style="display:none;">
                 <input type="file" id="fotoInput" name="imagen" accept="image/*">
             </form>
 

@@ -23,7 +23,7 @@ if (empty($email) || empty($contrasena)) {
     exit();
 }
 
-$stmt = $conn->prepare("SELECT u.Email, c.Nombre, c.Apellido 
+$stmt = $conn->prepare("SELECT u.Email, c.Nombre, c.Apellido, c.Imagen 
                         FROM usuario u 
                         JOIN cliente c ON u.IdUsuario = c.IdUsuario 
                         WHERE u.IdUsuario = ?");
@@ -39,8 +39,8 @@ if(!$datos) {
     exit();
 }
 
-// crea  cliente con datos actuales mas los cambios
-$cliente = new Cliente($idUsuario, $email, $contrasena, $nombre, $apellido);
+// crea cliente con datos actuales más los cambios
+$cliente = new Cliente($idUsuario, $email, $contrasena, $nombre, $apellido, $datos['Imagen']);
 
 // actualizar email
 $cliente->setEmail($email);
@@ -54,7 +54,7 @@ $stmt2->bind_param("si", $hash, $idUsuario);
 if(!$stmt2->execute()) die("Error update contraseña: ".$stmt2->error);
 $stmt2->close();
 
-// actualizar cliente ( osea el nombre, apellido, email)
+// actualizar cliente con sus datos-nombre, apellido, email, imagen 
 if ($cliente->actualizarCliente($conn)) {
     echo json_encode(['ok' => true]);
 } else {

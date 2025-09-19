@@ -10,11 +10,6 @@ if (formLogin) {
         if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)) {
             alert("Email inválido");
             return;
-        }
-        if (contrasena.length < 8) {
-            alert("La contraseña debe tener al menos 8 caracteres");
-            return;
-        }
 
         try {
             // Verifico si existe el email antes de enviar

@@ -2,31 +2,14 @@
 session_start();
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/conexion.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Cliente.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Usuario.php');
 
 if (!isset($_SESSION['idUsuario'])) {
     header("Location: /Proyecto/apps/vistas/autenticacion/login.php");
     exit();
 }
 
-$idUsuario = $_SESSION['idUsuario'];
-
-$stmt = $conn->prepare("
-    SELECT u.Email, c.Nombre, c.Apellido, c.Imagen
-    FROM usuario u 
-    JOIN cliente c ON u.IdUsuario = c.IdUsuario 
-    WHERE u.IdUsuario = ?
-");
-if(!$stmt) {
-    die("Error prepare: " . $conn->error);
-}
-$stmt->bind_param("i", $idUsuario);
-$stmt->execute();
-$result = $stmt->get_result();
-$datos = $result->fetch_assoc();
-$stmt->close();
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+    $idUsuario = $_SESSION['idUsuario'];
     $nombreArchivo = $_FILES['imagen']['name'];
     $tmpName = $_FILES['imagen']['tmp_name'];
 
@@ -36,18 +19,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && $_FILES
     }
 
     $rutaFinal = $directorio . uniqid() . "_" . basename($nombreArchivo);
-
     if (move_uploaded_file($tmpName, $rutaFinal)) {
         $rutaRelativa = "/Proyecto/public/imagen/clientes/" . basename($rutaFinal);
 
-        // actualizar cliente 
-        $cliente = new Cliente($idUsuario, $datos['Email'], null, $datos['Nombre'], $datos['Apellido'], $rutaRelativa);
+        $cliente = new Cliente($idUsuario, null, null, null, null, $rutaRelativa);
         $cliente->setImagen($rutaRelativa);
-        $cliente->actualizarCliente($conn);
-
-        header("Location: /Proyecto/apps/vistas/paginas/cliente/perfil_cliente.php");
-        exit;
-    } else {
-        echo "Error al subir la imagen.";
+        $cliente->actualizarImagen($conn);
     }
 }
+
+header("Location: /Proyecto/apps/vistas/paginas/cliente/perfil_cliente.php");
+exit();
