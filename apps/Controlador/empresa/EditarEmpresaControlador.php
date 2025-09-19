@@ -25,38 +25,43 @@ if (!$email) {
     exit();
 }
 
-// --- Actualizar usuario ---
-if (!empty($contrasena)) {
-    $hash = password_hash($contrasena, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("UPDATE usuario SET Email = ?, Contraseña = ? WHERE IdUsuario = ?");
-    if (!$stmt) die("Error prepare update usuario: ".$conn->error);
-    $stmt->bind_param("ssi", $email, $hash, $idUsuario);
-} else {
-    $stmt = $conn->prepare("UPDATE usuario SET Email = ? WHERE IdUsuario = ?");
-    if (!$stmt) die("Error prepare update email: ".$conn->error);
-    $stmt->bind_param("si", $email, $idUsuario);
-}
-$stmt->execute();
-$stmt->close();
+try {
+    // --- Actualizar usuario ---
+    if (!empty($contrasena)) {
+        $hash = password_hash($contrasena, PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("UPDATE usuario SET Email = ?, Contraseña = ? WHERE IdUsuario = ?");
+        if (!$stmt) throw new Exception("Error prepare update usuario: ".$conn->error);
+        $stmt->bind_param("ssi", $email, $hash, $idUsuario);
+    } else {
+        $stmt = $conn->prepare("UPDATE usuario SET Email = ? WHERE IdUsuario = ?");
+        if (!$stmt) throw new Exception("Error prepare update email: ".$conn->error);
+        $stmt->bind_param("si", $email, $idUsuario);
+    }
+    $stmt->execute();
+    $stmt->close();
 
-// --- Traer datos actuales de la empresa ---
-$stmt = $conn->prepare("SELECT NombreEmpresa, Calle, Numero, Imagen FROM empresa WHERE IdUsuario = ?");
-$stmt->bind_param("i", $idUsuario);
-$stmt->execute();
-$result = $stmt->get_result();
-$data = $result->fetch_assoc();
-$stmt->close();
+    // --- Traer datos actuales de la empresa ---
+    $stmt = $conn->prepare("SELECT NombreEmpresa, Calle, Numero, Imagen FROM empresa WHERE IdUsuario = ?");
+    $stmt->bind_param("i", $idUsuario);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    $stmt->close();
 
-// --- Si no se envía algún dato, usamos los actuales ---
-$nombreEmpresa = $nombreEmpresa ?: $data['NombreEmpresa'];
-$calle = $calle ?: $data['Calle'];
-$numero = $numero ?: $data['Numero'];
+    // --- Si no se envía algún dato, usamos los actuales ---
+    $nombreEmpresa = $nombreEmpresa ?: $data['NombreEmpresa'];
+    $calle = $calle ?: $data['Calle'];
+    $numero = $numero ?: $data['Numero'];
 
-// --- Actualizar empresa ---
-$empresa = new Empresa($idUsuario, $email, '', null, $nombreEmpresa, $calle, $numero, $data['Imagen']);
+    // --- Actualizar empresa directamente sin depender de la clase ---
+    $stmt = $conn->prepare("UPDATE empresa SET NombreEmpresa=?, Calle=?, Numero=? WHERE IdUsuario=?");
+    if (!$stmt) throw new Exception("Error prepare update empresa: ".$conn->error);
+    $stmt->bind_param("sssi", $nombreEmpresa, $calle, $numero, $idUsuario);
+    $stmt->execute();
+    $stmt->close();
 
-if ($empresa->actualizarEmpresa($conn)) {
     echo json_encode(['ok' => true]);
-} else {
-    echo json_encode(['ok' => false, 'error' => 'No se pudo actualizar empresa']);
+} catch (Exception $e) {
+    echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
 }
+?>
