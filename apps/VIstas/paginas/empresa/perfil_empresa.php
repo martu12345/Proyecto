@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/conexion.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Usuario.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Empresa.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/Usuario.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/Empresa.php');
 
 if (!isset($_SESSION['idUsuario'])) {
     header("Location: /Proyecto/apps/vistas/autenticacion/login.php");
@@ -26,6 +26,7 @@ $stmt->close();
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,84 +36,87 @@ $stmt->close();
     <link rel="stylesheet" href="/Proyecto/public/css/layout/footer.css">
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/empresa/perfil_empresa.css">
 </head>
+
 <body>
 
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
-<div class="perfil-container">
-    <div class="perfil-box">
+    <div class="perfil-container">
+        <div class="perfil-box">
 
-        <div class="perfil-opciones">
-            <div class="foto-circulo">
-                <?php if(!empty($datos['Imagen'])): ?>
-                    <img src="/Proyecto/public/imagen/empresas/<?php echo htmlspecialchars($datos['Imagen']); ?>" class="foto-perfil" alt="Foto Empresa">
-                <?php else: ?>
-                    +
-                <?php endif; ?>
+            <div class="perfil-opciones">
+                <div class="foto-circulo">
+                    <?php if (!empty($datos['Imagen'])): ?>
+                        <img src="/Proyecto/public/imagen/empresas/<?php echo htmlspecialchars($datos['Imagen']); ?>" class="foto-perfil" alt="Foto Empresa">
+                    <?php else: ?>
+                        +
+                    <?php endif; ?>
+                </div>
+
+                <form id="formFoto" action="/Proyecto/apps/controlador/empresa/SubirFotoEmpresaControlador.php" method="POST" enctype="multipart/form-data" style="display:none;">
+                    <input type="file" id="fotoInput" name="imagen" accept="image/*">
+                </form>
+
+                <div class="nombre-usuario" id="nombreColumna">
+                    <?php echo htmlspecialchars($datos['NombreEmpresa']); ?>
+                </div>
+
+                <div class="opciones-lista">
+                    <a href="#" class="opcion activa">Mi perfil</a>
+                    <a href="#" class="opcion">Mensajes</a>
+                    <a href="#" class="opcion">Servicios</a>
+                </div>
             </div>
 
-            <form id="formFoto" action="/Proyecto/apps/controlador/empresa/SubirFotoEmpresaControlador.php" method="POST" enctype="multipart/form-data" style="display:none;">
-                <input type="file" id="fotoInput" name="imagen" accept="image/*">
-            </form>
+            <div class="perfil-info">
+                <h2>Mi Perfil Empresa</h2>
+                <form id="formPerfilEmpresa">
+                    <input type="checkbox" id="editarToggle" style="display:none;">
 
-            <div class="nombre-usuario" id="nombreColumna">
-                <?php echo htmlspecialchars($datos['NombreEmpresa']); ?>
+                    <div class="campo-perfil">
+                        <label>Nombre Empresa:</label>
+                        <span class="texto"><?php echo htmlspecialchars($datos['NombreEmpresa']); ?></span>
+                        <input type="text" name="nombreEmpresa" class="input-campo" value="<?php echo htmlspecialchars($datos['NombreEmpresa']); ?>">
+                    </div>
+
+                    <div class="campo-perfil">
+                        <label>Calle:</label>
+                        <span class="texto"><?php echo htmlspecialchars($datos['Calle']); ?></span>
+                        <input type="text" name="calle" class="input-campo" value="<?php echo htmlspecialchars($datos['Calle']); ?>">
+                    </div>
+
+                    <div class="campo-perfil">
+                        <label>Número:</label>
+                        <span class="texto"><?php echo htmlspecialchars($datos['Numero']); ?></span>
+                        <input type="text" name="numero" class="input-campo" value="<?php echo htmlspecialchars($datos['Numero']); ?>">
+                    </div>
+
+                    <div class="campo-perfil">
+                        <label>Email:</label>
+                        <span class="texto"><?php echo htmlspecialchars($datos['Email']); ?></span>
+                        <input type="email" name="email" class="input-campo" value="<?php echo htmlspecialchars($datos['Email']); ?>">
+                    </div>
+
+                    <div class="campo-perfil">
+                        <label>Contraseña:</label>
+                        <span class="texto">********</span>
+                        <input type="password" name="contrasena" class="input-campo" placeholder="Nueva contraseña">
+                    </div>
+
+                    <div class="botones-perfil">
+                        <button type="button" id="btnEditar">Editar</button>
+                        <button type="button" id="btnGuardar">Guardar</button>
+                        <button type="button" id="btnCancelar">Cancelar</button>
+                    </div>
+
+                </form>
             </div>
 
-            <div class="opciones-lista">
-                <a href="#" class="opcion activa">Mi perfil</a>
-                <a href="#" class="opcion">Mensajes</a>
-                <a href="#" class="opcion">Servicios</a>
-            </div>
         </div>
-
-        <div class="perfil-info">
-            <h2>Mi Perfil Empresa</h2>
-            <form id="formPerfilEmpresa">
-                <input type="checkbox" id="editarToggle" style="display:none;">
-
-                <div class="campo-perfil">
-                    <label>Nombre Empresa:</label>
-                    <span class="texto"><?php echo htmlspecialchars($datos['NombreEmpresa']); ?></span>
-                    <input type="text" name="nombreEmpresa" class="input-campo" value="<?php echo htmlspecialchars($datos['NombreEmpresa']); ?>">
-                </div>
-
-                <div class="campo-perfil">
-                    <label>Calle:</label>
-                    <span class="texto"><?php echo htmlspecialchars($datos['Calle']); ?></span>
-                    <input type="text" name="calle" class="input-campo" value="<?php echo htmlspecialchars($datos['Calle']); ?>">
-                </div>
-
-                <div class="campo-perfil">
-                    <label>Número:</label>
-                    <span class="texto"><?php echo htmlspecialchars($datos['Numero']); ?></span>
-                    <input type="text" name="numero" class="input-campo" value="<?php echo htmlspecialchars($datos['Numero']); ?>">
-                </div>
-
-                <div class="campo-perfil">
-                    <label>Email:</label>
-                    <span class="texto"><?php echo htmlspecialchars($datos['Email']); ?></span>
-                    <input type="email" name="email" class="input-campo" value="<?php echo htmlspecialchars($datos['Email']); ?>">
-                </div>
-
-                <div class="campo-perfil">
-                    <label>Contraseña:</label>
-                    <span class="texto">********</span>
-                    <input type="password" name="contrasena" class="input-campo" placeholder="Nueva contraseña">
-                </div>
-
-                <div class="botones-perfil">
-                    <label id="btnEditar">Editar</label>
-                    <button type="submit" id="btnGuardar">Guardar</button>
-                    <label id="btnCancelar">Cancelar</label>
-                </div>
-            </form>
-        </div>
-
     </div>
-</div>
 
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
-<script src="/Proyecto/public/js/empresa/perfil_empresa.js"></script>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
+    <script src="/Proyecto/public/js/empresa/perfil_empresa.js"></script>
 </body>
+
 </html>
