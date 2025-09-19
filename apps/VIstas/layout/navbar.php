@@ -10,8 +10,8 @@
         </div>
 
         <div class="departamentos">
-            <form action="departamento.php" method="POST">
-                <select name="departamento">
+            <form action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST">
+                <select name="departamento" onchange="this.form.submit()">
                     <option value="">Departamento</option>
                     <option value="montevideo">Montevideo</option>
                     <option value="canelones">Canelones</option>

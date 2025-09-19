@@ -1,4 +1,4 @@
-const formLogin = document.getElementById("formulario-login");
+/* const formLogin = document.getElementById("formulario-login");
 if (formLogin) {
     formLogin.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -10,7 +10,7 @@ if (formLogin) {
         if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)) {
             alert("Email inválido");
             return;
-
+        }
         try {
             // Verifico si existe el email antes de enviar
             const resEmail = await fetch(`/Proyecto/apps/Controlador/VerificarEmail.php?email=${encodeURIComponent(email)}`);
@@ -37,6 +37,7 @@ if (formLogin) {
         } catch (err) {
             console.error("Error al verificar email o login:", err);
             alert("No se pudo verificar el email o iniciar sesión. Intenta de nuevo.");
-        }
+        
+    }
     });
 }
