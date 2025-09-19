@@ -13,9 +13,9 @@
             <img src="/Proyecto/public/imagen/icono/icono_tecnologia.png">
             <span>Tecnologia</span>
         </div>
-        <div class="cuadro" data-busqueda="Auto">
-            <img src="/Proyecto/public/imagen/icono/icono_auto.png">
-            <span>Auto</span>
+        <div class="cuadro" data-busqueda="Cuidados">
+            <img src="/Proyecto/public/imagen/icono/icono_cuidado.png">
+            <span>Cuidados</span>
         </div>
     </div>
 </section>

@@ -2,16 +2,21 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const buscador = document.querySelector('.busqueda input[name="q"]');
-    const form = buscador.closest('form');
+    if (!buscador) return; // si no hay buscador, salimos
 
-    // Recupera lo que la persina guardo en el busca
+    const form = buscador.closest('form');
+    if (!form) return; // si no hay form, salimos
+
+    // Recupera lo que la persona guardó en el buscador
     const valorGuardado = sessionStorage.getItem('ultimaBusqueda');
 
-    if (valorGuardado && buscador && !form.dataset.submitAutomático) {
+    if (valorGuardado && !form.dataset.submitAutomatico) {
         buscador.value = valorGuardado;
-        form.dataset.submitAutomático = "true";
+        form.dataset.submitAutomatico = "true";
 
-        if (!document.querySelector('#resultados').innerHTML.trim()) {
+        // Solo hacemos submit si existe el contenedor de resultados
+        const resultados = document.querySelector('#resultados');
+        if (resultados && !resultados.innerHTML.trim()) {
             form.submit();
         }
     }
