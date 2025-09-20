@@ -39,8 +39,9 @@
 
     <div class="navbar-right">
         <div class="busqueda">
-            <form action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST">
-            <input type="text" name="q" id="buscador" placeholder="Buscar...">
+            <!-- agregué id="form-buscador" (no rompe nada, solo ayuda al script) -->
+            <form id="form-buscador" action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST">
+                <input type="text" name="q" id="buscador" placeholder="Buscar...">
                 <button type="submit">
                     <img src="/Proyecto/public/imagen/icono/icono_busqueda.png" alt="Buscar">
                 </button>
@@ -63,6 +64,7 @@
         </div>
     </div>
 
-    <script src="/Proyecto/public/js/servicio/buscador.js"></script>
+    <!-- cargamos el JS con defer para que no interfiera -->
+    <script src="/Proyecto/public/js/servicio/buscador.js" defer></script>
 
 </nav>
