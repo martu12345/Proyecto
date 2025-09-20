@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Escribimos la categoría en el input
             inputBusqueda.value = categoria;
 
-            // Guardamos la búsqueda en sessionStorage para mantenerla como si el usuario la hubiera escrito
             sessionStorage.setItem('ultimaBusqueda', categoria);
             sessionStorage.removeItem('ultimosResultados'); // opcional: limpiar resultados previos
 
