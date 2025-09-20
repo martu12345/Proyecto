@@ -1,31 +1,47 @@
+
 <?php
-// Iniciamos sesión solo si no hay activa
+// filtros para al bsuqueda 
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php'); 
 
+// Recibimos datos del formulario
 $q = isset($_POST['q']) ? trim($_POST['q']) : '';
 $departamento = isset($_POST['departamento']) ? trim($_POST['departamento']) : '';
 
 $stopWords = ['a','de','y','el','la','en','con','por','para','que','los','las','un','una','del'];
+$categorias = ['Hogar','Autos','Belleza','Cuidado de niños','Digital','Cocina','Salud','Mascotas','Eventos','Educación','Transporte','Arte y Cultura'];
 
-// Arrays para WHERE
 $wherePalabra = [];
 $whereDep = [];
+$whereCat = [];
 
 // Filtro por palabra
 if (!empty($q)) {
     $q_escapado = $conn->real_escape_string($q);
 
-    if (strlen($q) >= 4) {
-        $wherePalabra[] = "Titulo LIKE '%$q_escapado%'";
+    // Chequeamos si la palabra coincide con alguna categoría (ignorando mayúsculas/minúsculas)
+    foreach ($categorias as $cat) {
+        if (strcasecmp($q, $cat) === 0) {
+            $cat_escapada = $conn->real_escape_string($cat);
+            $whereCat[] = "LOWER(categoria) = LOWER('$cat_escapada')";
+            break; 
+        }
     }
 
-    $q_lower = strtolower($q);
-    if (!in_array($q_lower, $stopWords) && strlen($q) >= 4) {
-        $wherePalabra[] = "Descripcion REGEXP '\\\\b$q_escapado\\\\b'";
+    // Si no es categoría, buscamos en Titulo y Descripcion
+    if (empty($whereCat)) {
+        if (strlen($q) >= 4) {
+            $wherePalabra[] = "Titulo LIKE '%$q_escapado%'";
+        }
+
+        $q_lower = strtolower($q);
+        if (!in_array($q_lower, $stopWords) && strlen($q) >= 4) {
+            $wherePalabra[] = "Descripcion REGEXP '\\\\b$q_escapado\\\\b'";
+        }
     }
 }
 
@@ -35,23 +51,25 @@ if (!empty($departamento)) {
     $whereDep[] = "LOWER(departamento) = '$departamento_escapado'";
 }
 
-// Construcción de la consulta
 $sql = "SELECT * FROM Servicio";
 $finalWhere = [];
 
+// Combinamos filtros
 if (!empty($wherePalabra)) {
     $finalWhere[] = "(" . implode(" OR ", $wherePalabra) . ")";
 }
-
 if (!empty($whereDep)) {
     $finalWhere[] = implode(" AND ", $whereDep);
 }
+if (!empty($whereCat)) {
+    $finalWhere[] = implode(" AND ", $whereCat);
+}
 
+// Unimos todos los filtros 
 if (!empty($finalWhere)) {
-    // Aquí está la clave: usamos AND entre palabra y departamento
     $sql .= " WHERE " . implode(" AND ", $finalWhere);
 } else {
-    $sql .= " WHERE 1"; // Si no hay filtros, muestra todos
+    $sql .= " WHERE 1"; // si no hay filtros, muestra todos
 }
 
 // Ejecutamos la consulta
@@ -66,7 +84,6 @@ $_SESSION['servicios'] = $servicios;
 $_SESSION['departamento_seleccionado'] = $departamento;
 $_SESSION['ultima_busqueda'] = $q;
 
-// Redirigimos
 header("Location: /Proyecto/apps/vistas/paginas/busqueda.php");
 exit();
 ?>
