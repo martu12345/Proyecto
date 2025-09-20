@@ -4,9 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const formCliente = document.getElementById("formulario-cliente");
     if (formCliente) {
         const emailCliente = document.getElementById("email");
+        const mensajeErrorCliente = document.getElementById("mensaje-error-cliente");
 
         formCliente.addEventListener("submit", async (e) => {
             e.preventDefault();
+            mensajeErrorCliente.textContent = ""; // limpio mensajes previos
 
             const nombre = document.getElementById("nombre").value.trim();
             const apellido = document.getElementById("apellido").value.trim();
@@ -16,21 +18,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // VALIDACIONES
             if (nombre.length < 2 || !/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/.test(nombre)) {
-                alert("Nombre inválido (solo letras, mínimo 2)"); return;
+                mensajeErrorCliente.textContent = "Nombre inválido (solo letras, mínimo 2)"; return;
             }
             if (apellido.length < 2 || !/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/.test(apellido)) {
-                alert("Apellido inválido (solo letras, mínimo 2)"); return;
+                mensajeErrorCliente.textContent = "Apellido inválido (solo letras, mínimo 2)"; return;
             }
             if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)) {
-                alert("Email inválido"); return;
+                mensajeErrorCliente.textContent = "Email inválido"; return;
             }
-            // Teléfono uruguayo (09 + 7 dígitos = total 9)
             if (!/^09[0-9]{7}$/.test(telefono)) {
-                alert("Teléfono inválido. Debe ser uruguayo y tener 9 dígitos (ej: 09xxxxxxx)"); return;
+                mensajeErrorCliente.textContent = "Teléfono inválido. Debe ser uruguayo y tener 9 dígitos (ej: 09xxxxxxx)"; return;
             }
-            // Contraseña fuerte
             if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&.,;:])[A-Za-z\d@$!%*#?&.,;:]{8,}$/.test(contrasena)) {
-                alert("La contraseña debe tener al menos 8 caracteres, con mayúscula, minúscula, número y símbolo"); return;
+                mensajeErrorCliente.textContent = "La contraseña debe tener al menos 8 caracteres, con mayúscula, minúscula, número y símbolo"; return;
             }
 
             // VERIFICAR EMAIL
@@ -38,13 +38,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 const res = await fetch(`/Proyecto/apps/Controlador/VerificarEmail.php?email=${encodeURIComponent(email)}`);
                 const data = await res.json();
                 if (data.existe) {
-                    alert("Este email ya está registrado. Usa otro.");
+                    mensajeErrorCliente.textContent = "Este email ya está registrado. Usa otro.";
                     emailCliente.focus();
                     return;
                 }
             } catch (err) {
                 console.error("Error al verificar email:", err);
-                alert("No se pudo verificar el email. Intenta de nuevo.");
+                mensajeErrorCliente.textContent = "No se pudo verificar el email. Intenta de nuevo.";
                 return;
             }
 
@@ -58,9 +58,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const formEmpresa = document.getElementById("formulario-empresa");
     if (formEmpresa) {
         const emailEmpresa = document.getElementById("emailEmpresa");
+        const mensajeErrorEmpresa = document.getElementById("mensaje-error-empresa");
 
         formEmpresa.addEventListener("submit", async (e) => {
             e.preventDefault();
+            mensajeErrorEmpresa.textContent = "";
 
             const nombreEmpresa = document.getElementById("nombreEmpresa").value.trim();
             const email = emailEmpresa.value.trim();
@@ -71,24 +73,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // VALIDACIONES
             if (nombreEmpresa.length < 2 || !/^[A-Za-z0-9ÁÉÍÓÚáéíóúñÑ\s]+$/.test(nombreEmpresa)) {
-                alert("Nombre de empresa inválido"); return;
+                mensajeErrorEmpresa.textContent = "Nombre de empresa inválido"; return;
             }
             if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)) {
-                alert("Email inválido"); return;
+                mensajeErrorEmpresa.textContent = "Email inválido"; return;
             }
-            // Teléfono uruguayo (09 + 7 dígitos = total 9)
             if (!/^09[0-9]{7}$/.test(telefono)) {
-                alert("Teléfono inválido. Debe ser uruguayo y tener 9 dígitos (ej: 09xxxxxxx)"); return;
+                mensajeErrorEmpresa.textContent = "Teléfono inválido. Debe ser uruguayo y tener 9 dígitos (ej: 09xxxxxxx)"; return;
             }
             if (calle.length < 2 || calle.length > 50) {
-                alert("Calle inválida (mínimo 2, máximo 50 caracteres)"); return;
+                mensajeErrorEmpresa.textContent = "Calle inválida (mínimo 2, máximo 50 caracteres)"; return;
             }
             if (!/^[0-9]{1,5}$/.test(numero)) {
-                alert("Número de calle inválido (solo hasta 5 dígitos)"); return;
+                mensajeErrorEmpresa.textContent = "Número de calle inválido (solo hasta 5 dígitos)"; return;
             }
-            // Contraseña fuerte
             if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&.,;:])[A-Za-z\d@$!%*#?&.,;:]{8,}$/.test(contrasena)) {
-                alert("La contraseña debe tener al menos 8 caracteres, con mayúscula, minúscula, número y símbolo"); return;
+                mensajeErrorEmpresa.textContent = "La contraseña debe tener al menos 8 caracteres, con mayúscula, minúscula, número y símbolo"; return;
             }
 
             // VERIFICAR EMAIL
@@ -96,13 +96,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 const res = await fetch(`/Proyecto/apps/Controlador/VerificarEmail.php?email=${encodeURIComponent(email)}`);
                 const data = await res.json();
                 if (data.existe) {
-                    alert("Este email ya está registrado. Usa otro.");
+                    mensajeErrorEmpresa.textContent = "Este email ya está registrado. Usa otro.";
                     emailEmpresa.focus();
                     return;
                 }
             } catch (err) {
                 console.error("Error al verificar email:", err);
-                alert("No se pudo verificar el email. Intenta de nuevo.");
+                mensajeErrorEmpresa.textContent = "No se pudo verificar el email. Intenta de nuevo.";
                 return;
             }
 

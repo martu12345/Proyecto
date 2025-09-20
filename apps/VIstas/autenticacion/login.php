@@ -13,7 +13,7 @@
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
     <div class="login-background">
-        <div class="login-box" id="formulario-login">
+        <div class="login-box" >
             <h2>Inicio de sesión</h2>
             <form action="../../Controlador/LoginControlador.php" method="POST" id="formulario-login"> 
 
@@ -27,6 +27,8 @@
                     <button type="submit">Iniciar sesión</button>
                     <button type="button" onclick="window.location.href='registro.php'"> Registrarse</button>
                     <button type="button" onclick="window.location.href='/Proyecto/public/index.php'">Cancelar</button>
+                        <div id="mensaje-error" style="color:red; margin-top:10px;"></div>
+
                 </div>
             </form>
         </div>
