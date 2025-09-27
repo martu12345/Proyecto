@@ -1,10 +1,11 @@
 <?php
+session_start(); 
+$usuario_id = $_SESSION['idUsuario'] ?? null; 
 $hasServicio = (isset($servicio) && is_object($servicio));
 $mensajeError = $errorMessage ?? (!$hasServicio ? 'No se encontró el servicio solicitado.' : null);
 ?>
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <title>Detalles del Servicio</title>
@@ -16,7 +17,7 @@ $mensajeError = $errorMessage ?? (!$hasServicio ? 'No se encontró el servicio s
 </head>
 
 <body>
-
+    
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
     <div class="detalle-servicio-container">
@@ -52,7 +53,11 @@ $mensajeError = $errorMessage ?? (!$hasServicio ? 'No se encontró el servicio s
                     <?php endif; ?>
 
                     <div class="botones-servicio">
-                        <a href="#" class="boton-servicio mensaje" title="Mensaje"><img src="/Proyecto/public/imagen/icono/icono_mensaje.png" alt="Mensaje"></a>
+                    <a href="#" class="boton-servicio mensaje" title="Mensaje">
+                  <img src="/Proyecto/public/imagen/icono/icono_mensaje.png" alt="Mensaje">
+                    </a>
+
+
                         <a href="#" class="boton-servicio agendar" title="Agendar"><img src="/Proyecto/public/imagen/icono/icono_mas.png" alt="Agendar"></a>
                         <a href="javascript:history.back()" class="boton-servicio volver" title="Volver"><img src="/Proyecto/public/imagen/icono/icono_volver.png" alt="Volver"></a>
                     </div>
@@ -60,6 +65,10 @@ $mensajeError = $errorMessage ?? (!$hasServicio ? 'No se encontró el servicio s
             </div>
         <?php endif; ?>
     </div>
+ <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/VIstas/layout/modal_mensaje.php'; ?>
+<link rel="stylesheet" href="/Proyecto/public/css/layout/modal_mensaje.css">
+<script src="/Proyecto/public/js/mensaje/modal_mensaje.js"></script>
+
 
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
 
