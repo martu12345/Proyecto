@@ -12,8 +12,8 @@
             <textarea id="contenido" name="contenido" rows="4" placeholder="Escribe tu mensaje..." required></textarea>
             <div id="contadorMensaje">0 / 1000 caracteres</div>
 
-            <div class="boton-contenedor">
-                <button type="submit">Enviar</button>
+            <div class="boton-contenedor" >
+                <button type="submit" >Enviar</button>
             </div>
         </form>
     </div>

@@ -1,3 +1,4 @@
+/* Modal general */
 .modal {
     display: none; /* oculto por defecto */
     position: fixed;
@@ -31,21 +32,26 @@
     color: red;
 }
 
-input, textarea, button {
+/* Solo inputs, textarea y botones dentro del modal */
+.modal-content input,
+.modal-content textarea,
+.modal-content button {
     width: 100%;
     margin-top: 10px;
     padding: 8px;
     box-sizing: border-box;
 }
 
-button {
+/* Botón enviar modal específico */
+.modal-content button {
     background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
 }
 
-button:hover {
+.modal-content button:hover {
     background-color: #45a049;
 }
