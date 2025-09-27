@@ -1,6 +1,9 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/controlador/empresa/PerfilEmpresaControlador.php');
-?> 
+
+// Detectar la sección que se quiere mostrar
+$seccion = $_GET['seccion'] ?? 'perfil';
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -12,6 +15,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/controlador/empresa/Perfi
     <link rel="stylesheet" href="/Proyecto/public/css/layout/navbar.css">
     <link rel="stylesheet" href="/Proyecto/public/css/layout/footer.css">
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/empresa/perfil_empresa.css">
+    <link rel="stylesheet" href="/Proyecto/public/css/paginas/empresa/perfilsecciones/servicios.css">
 </head>
 <body>
 
@@ -38,59 +42,36 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/controlador/empresa/Perfi
             </div>
 
             <div class="opciones-lista">
-                <a href="#" class="opcion activa">Mi perfil</a>
-                <a href="#" class="opcion">Mensajes</a>
-                <a href="#" class="opcion">Servicios</a>
+                <a href="?seccion=perfil" class="opcion <?php echo $seccion=='perfil' ? 'activa' : ''; ?>">Mi perfil</a>
+                <a href="?seccion=mensajes" class="opcion <?php echo $seccion=='mensajes' ? 'activa' : ''; ?>">Mensajes</a>
+                <a href="?seccion=servicios" class="opcion <?php echo $seccion=='servicios' ? 'activa' : ''; ?>">Servicios</a>
             </div>
         </div>
 
-        <div class="perfil-info">
-            <h2>Mi Perfil Empresa</h2>
-            <form id="formPerfilEmpresa">
-                <input type="checkbox" id="editarToggle" style="display:none;">
-
-                <div class="campo-perfil">
-                    <label>Nombre Empresa:</label>
-                    <span class="texto"><?php echo htmlspecialchars($datos['NombreEmpresa']); ?></span>
-                    <input type="text" name="nombreEmpresa" class="input-campo" value="<?php echo htmlspecialchars($datos['NombreEmpresa']); ?>">
-                </div>
-
-                <div class="campo-perfil">
-                    <label>Calle:</label>
-                    <span class="texto"><?php echo htmlspecialchars($datos['Calle']); ?></span>
-                    <input type="text" name="calle" class="input-campo" value="<?php echo htmlspecialchars($datos['Calle']); ?>">
-                </div>
-
-                <div class="campo-perfil">
-                    <label>Número:</label>
-                    <span class="texto"><?php echo htmlspecialchars($datos['Numero']); ?></span>
-                    <input type="text" name="numero" class="input-campo" value="<?php echo htmlspecialchars($datos['Numero']); ?>">
-                </div>
-
-                <div class="campo-perfil">
-                    <label>Email:</label>
-                    <span class="texto"><?php echo htmlspecialchars($datos['Email']); ?></span>
-                    <input type="email" name="email" class="input-campo" value="<?php echo htmlspecialchars($datos['Email']); ?>">
-                </div>
-
-                <div class="campo-perfil">
-                    <label>Contraseña:</label>
-                    <span class="texto">********</span>
-                    <input type="password" name="contrasena" class="input-campo" placeholder="Nueva contraseña">
-                </div>
-
-                <div class="botones-perfil">
-                    <label id="btnEditar">Editar</label>
-                    <button type="submit" id="btnGuardar">Guardar</button>
-                    <label id="btnCancelar">Cancelar</label>
-                </div>
-            </form>
+        <div class="perfil-info" id="contenido-seccion">
+            <?php
+            // Cargar la sección correspondiente
+            switch($seccion){
+                case 'perfil':
+                    include $_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Vistas/paginas/empresa/PerfilSecciones/datos.php';
+                    break;
+                case 'mensajes':
+                    include $_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Vistas/paginas/empresa/PerfilSecciones/mensajes.php';
+                    break;
+                case 'servicios':
+                    include $_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Vistas/paginas/empresa/PerfilSecciones/servicios.php';
+                    break;
+                default:
+                    echo "<p>Sección no encontrada</p>";
+            }
+            ?>
         </div>
 
     </div>
 </div>
 
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
+
 <script src="/Proyecto/public/js/empresa/perfil_empresa.js"></script>
 </body>
 </html>

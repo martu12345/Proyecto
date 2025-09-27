@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const campos = document.querySelectorAll(".campo-perfil");
     const form = document.getElementById("formPerfilEmpresa");
 
-    // Previene envío accidental del form
+    // --- Previene envío accidental del form ---
     form.addEventListener("submit", function(e){
         e.preventDefault();
     });
@@ -94,6 +94,24 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         })
         .catch(err => console.error(err));
+    });
+
+    // --- CAMBIO DE SECCIÓN ---
+    const opciones = document.querySelectorAll('.opcion');
+    opciones.forEach(opcion => {
+        opcion.addEventListener('click', function(e){
+            e.preventDefault();
+            const seccion = this.getAttribute('data-seccion');
+
+            // Cambiar clase activa
+            opciones.forEach(o => o.classList.remove('activa'));
+            this.classList.add('activa');
+
+            // Recargar página con la sección correspondiente
+            const url = new URL(window.location.href);
+            url.searchParams.set('seccion', seccion);
+            window.location.href = url.toString();
+        });
     });
 
 });

@@ -11,19 +11,19 @@ if (!$idUsuario) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // 1. Recibir datos del formulario
+    // 1️ Recibir datos del formulario
     $titulo = $_POST['titulo'] ?? '';
     $categoria = $_POST['categoria'] ?? '';
     $descripcion = $_POST['descripcion'] ?? '';
     $precio = $_POST['precio'] ?? 0;
     $departamento = $_POST['departamento'] ?? null; 
-    $disponibilidad = null; 
+    $disponibilidad = null; // por ahora
 
     if (!$departamento) {
         die(json_encode(['success' => false, 'mensaje' => 'Debe seleccionar un departamento']));
     }
 
-    // 2. Procesar imagen
+    // 2️ Procesar imagen
     $imagenNombre = '';
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         $carpetaDestino = $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/public/imagen/servicios/';
@@ -38,30 +38,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // 3. Crear objeto Servicio
+    // 3️ Crear objeto Servicio
     $servicio = new Servicio(
         null,
         $titulo,
         $categoria,
         $descripcion,
         $precio,
-        $departamento,   
+        $departamento,
         $disponibilidad,
         $imagenNombre
     );
 
-    // 4. Guardar en BD
+    // 4️ Guardar servicio en BD
     if ($servicio->guardar($conn)) {
 
         $idServicioCreado = $conn->insert_id;
-        $stmt = $conn->prepare("INSERT INTO Brinda (IdServicio, IdUsuario) VALUES (?, ?)");
-        if (!$stmt) die("Error prepare Brinda: " . $conn->error);
-        $stmt->bind_param("ii", $idServicioCreado, $idUsuario);
-        $stmt->execute();
-        $stmt->close();
+
+        // Crear objeto Brinda y guardar relación
+        $brinda = new Brinda($idServicioCreado, $idUsuario);
+        if (!$brinda->guardar($conn)) {
+            die("Error al guardar la relación Brinda");
+        }
 
         header('Location: /Proyecto/apps/vistas/paginas/empresa/home_empresa.php'); 
         exit;
+
     } else {
         die("Error al guardar el servicio");
     }
