@@ -4,7 +4,9 @@
         <h2>Crear Servicio</h2>
 
         <form id="formServicio" action="/Proyecto/apps/controlador/servicio/ServicioControlador.php" method="POST" enctype="multipart/form-data">
-            <div class="form-top">
+       <input type="hidden" id="idServicio" name="idServicio" value="">
+
+        <div class="form-top">
                 <div class="form-image">
                     <label for="imagen">Foto del servicio</label>
                     <input type="file" id="imagen" name="imagen" accept="image/*">

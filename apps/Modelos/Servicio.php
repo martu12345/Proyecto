@@ -105,5 +105,33 @@ class Servicio {
 
         return null;
     }
+// ACTUALIZAR UN SERVICIO
+    public function actualizar($conn) {
+    $sql = "UPDATE servicio SET 
+                Titulo = ?, 
+                Categoria = ?, 
+                Descripcion = ?, 
+                Precio = ?, 
+                departamento = ?, 
+                imagen = ?
+            WHERE idServicio = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param(
+        "sssdssi",
+        $this->titulo,
+        $this->categoria,
+        $this->descripcion,
+        $this->precio,
+        $this->departamento,
+        $this->imagen,
+        $this->idServicio
+    );
+
+    return $stmt->execute();
 }
+
+}
+
+
 ?>
