@@ -53,6 +53,12 @@ try {
     $calle = $calle ?: $data['Calle'];
     $numero = $numero ?: $data['Numero'];
 
+    if (!preg_match("/^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com)$/i", $email)) {
+    echo json_encode(['ok' => false, 'error' => 'El email debe terminar en @gmail.com o @hotmail.com']);
+    exit();
+}
+
+
     // --- Actualizar empresa directamente sin depender de la clase ---
     $stmt = $conn->prepare("UPDATE empresa SET NombreEmpresa=?, Calle=?, Numero=? WHERE IdUsuario=?");
     if (!$stmt) throw new Exception("Error prepare update empresa: ".$conn->error);

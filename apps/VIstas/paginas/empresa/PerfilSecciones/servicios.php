@@ -6,7 +6,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/modelos/brinda.php');
 // Obtenemos los servicios que brinda la empresa
 $servicios = Brinda::obtenerServiciosPorEmpresa($conn, $idUsuario);
 ?>
-
+<h2>Mis servicios</h2>
 <div class="lista-servicios">
 <?php if (empty($servicios)): ?>
     <p>La empresa no tiene servicios registrados.</p>
@@ -48,9 +48,8 @@ $servicios = Brinda::obtenerServiciosPorEmpresa($conn, $idUsuario);
 <?php endif; ?>
 </div>
 
-<!-- Incluir tu modal existente -->
+<!-- inlcuimos el modal  -->
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/modal_servicio.php'; ?>
 <link rel="stylesheet" href="/Proyecto/public/css/layout/modal_servicio.css">
 
-<!-- JS para abrir modal y llenar campos -->
 <script  src="/Proyecto/public/js/empresa/editar_servicios.js"></script>

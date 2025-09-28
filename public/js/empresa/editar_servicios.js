@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-// Muestra modal para eidtar servicio con la info del servicio cargado 
+// Muestra el modal para eidtar servicio con la info del servicio cargado 
 // Referencias al modal
 const modal = document.getElementById('modalServicio');
 const cerrar = modal.querySelector('.cerrar');
@@ -14,7 +14,7 @@ const departamentoInput = document.getElementById('departamento');
 const precioInput = document.getElementById('precio');
 const descripcionInput = document.getElementById('descripcion');
 const previewImagen = document.getElementById('previewImagen');
-const inputImagen = document.getElementById('imagen'); // input tipo file
+const inputImagen = document.getElementById('imagen'); 
 
 // Abrir modal para editar servicio
 document.querySelectorAll('.btn-editar').forEach(btn => {
@@ -38,13 +38,11 @@ document.querySelectorAll('.btn-editar').forEach(btn => {
             previewImagen.src = '';
             previewImagen.style.display = 'none';
         }
-
-        // Limpiar input file para nueva selección
         if(inputImagen) inputImagen.value = "";
     });
 });
 
-// Previsualizar imagen seleccionada usando FileReader
+// Poder ver la imagen 
 if(inputImagen){
     inputImagen.addEventListener('change', () => {
         const file = inputImagen.files[0];

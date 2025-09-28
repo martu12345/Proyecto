@@ -1,9 +1,9 @@
-<h2>Mi Perfil Empresa</h2>
+<h2>Mi Perfil </h2>
 <form id="formPerfilEmpresa">
     <input type="checkbox" id="editarToggle" style="display:none;">
 
     <div class="campo-perfil">
-        <label>Nombre Empresa:</label>
+        <label>Nombre:</label>
         <span class="texto"><?php echo htmlspecialchars($datos['NombreEmpresa']); ?></span>
         <input type="text" name="nombreEmpresa" class="input-campo" value="<?php echo htmlspecialchars($datos['NombreEmpresa']); ?>">
     </div>
@@ -15,9 +15,9 @@
     </div>
 
     <div class="campo-perfil">
-        <label>Número:</label>
+        <label>Número de calle:</label>
         <span class="texto"><?php echo htmlspecialchars($datos['Numero']); ?></span>
-        <input type="text" name="numero" class="input-campo" value="<?php echo htmlspecialchars($datos['Numero']); ?>">
+<input type="text" name="numero" class="input-campo" value="<?php echo htmlspecialchars($datos['Numero']); ?>" maxlength="4" pattern="\d{1,4}" title="Máximo 4 números">
     </div>
 
     <div class="campo-perfil">

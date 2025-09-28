@@ -1,10 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    // --- ELEMENTOS DEL PERFIL ---
     const btnEditar = document.getElementById("btnEditar");
     const btnGuardar = document.getElementById("btnGuardar");
     const btnCancelar = document.getElementById("btnCancelar");
     const campos = document.querySelectorAll(".campo-perfil");
     const form = document.getElementById("formPerfilEmpresa");
+    const emailInput = document.querySelector('input[name="email"]'); // <--- asegurarse que el name sea "email"
+
+    if(!emailInput){
+        console.error("No se encontró el input de email");
+        return;
+    }
 
     // --- Previene envío accidental del form ---
     form.addEventListener("submit", function(e){
@@ -34,40 +41,31 @@ document.addEventListener("DOMContentLoaded", function () {
         btnCancelar.style.display = "none";
     });
 
-    btnGuardar.addEventListener("click", (e) => {
-        e.preventDefault();
+    // GUARDAR DATOS 
+  btnGuardar.addEventListener("click", (e) => {
+    e.preventDefault();
 
-        const formData = new FormData(form);
+    const formData = new FormData(form);
+    const email = formData.get("email")?.trim();
 
-        if (!formData.get("email")) {
-            alert("El email es obligatorio");
-            return;
-        }
+    if (!email) {
+        alert("El email es obligatorio");
+        emailInput.focus();
+        return;
+    }
 
-        fetch("/Proyecto/apps/controlador/empresa/EditarEmpresaControlador.php", {
-            method: "POST",
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.ok) {
-                campos.forEach(campo => {
-                    const input = campo.querySelector(".input-campo");
-                    const texto = campo.querySelector(".texto");
-                    texto.textContent = input.value;
-                    texto.style.display = "inline-block";
-                    input.style.display = "none";
-                });
-                document.getElementById("nombreColumna").textContent = formData.get("nombreEmpresa");
-                btnEditar.style.display = "inline-block";
-                btnGuardar.style.display = "none";
-                btnCancelar.style.display = "none";
-            } else {
-                alert("Error al guardar: " + (data.error || "Desconocido"));
-            }
-        })
-        .catch(err => console.error("Error fetch:", err));
-    });
+    const emailValido = /^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com)$/i;
+    if (!emailValido.test(email)) {
+        alert("El email debe terminar en @gmail.com o @hotmail.com");
+        emailInput.focus();
+        return; // <--- importante, corta la ejecución aquí
+    }
+
+    // Solo si pasó la validación, hacemos el fetch
+    fetch("/Proyecto/apps/controlador/empresa/EditarEmpresaControlador.php", {
+        method: "POST",
+        body: formData
+    })
 
     // --- SUBIR FOTO ---
     const fotoCirculo = document.querySelector('.foto-circulo');
@@ -77,23 +75,33 @@ document.addEventListener("DOMContentLoaded", function () {
     fotoCirculo.addEventListener('click', () => fotoInput.click());
 
     fotoInput.addEventListener('change', function() {
+        if(!fotoInput.files.length) return;
+
         const formData = new FormData(formFoto);
 
         fetch(formFoto.action, { method: 'POST', body: formData })
-        .then(res => res.json())
+        .then(async res => {
+            const text = await res.text();
+            try {
+                return JSON.parse(text);
+            } catch(e) {
+                throw new Error("Respuesta no es JSON: " + text);
+            }
+        })
         .then(data => {
             if(data.ok){
-                const img = fotoCirculo.querySelector('img.foto-perfil');
+                let img = fotoCirculo.querySelector('img.foto-perfil');
                 if(img){
                     img.src = `/Proyecto/public/imagen/empresas/${data.imagen}?t=${Date.now()}`;
                 } else {
                     fotoCirculo.innerHTML = `<img src="/Proyecto/public/imagen/empresas/${data.imagen}?t=${Date.now()}" class="foto-perfil" alt="Foto Empresa"><span class="cambiar-foto">+</span>`;
                 }
+                console.log("Foto subida correctamente:", data.imagen);
             } else {
                 alert('Error al subir la foto: ' + data.error);
             }
         })
-        .catch(err => console.error(err));
+        .catch(err => console.error("Error fetch subir foto:", err));
     });
 
     // --- CAMBIO DE SECCIÓN ---
