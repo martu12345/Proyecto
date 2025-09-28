@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($idServicio) {
         // EDITAR
         if ($servicio->actualizar($conn)) {
-            header('Location: /Proyecto/apps/vistas/paginas/empresa/home_empresa.php'); 
+            header('Location: /Proyecto/apps/vistas/paginas/empresa/perfil_empresa.php?seccion=servicios'); 
             exit;
         } else {
             die("Error al actualizar el servicio");

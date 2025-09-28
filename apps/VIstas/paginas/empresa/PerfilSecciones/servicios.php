@@ -57,7 +57,17 @@ $servicios = Brinda::obtenerServiciosPorEmpresa($conn, $idUsuario);
 // Referencias al modal
 const modal = document.getElementById('modalServicio');
 const cerrar = modal.querySelector('.cerrar');
-const modalTitulo = modal.querySelector('h2'); // tu <h2> que dice "Crear Servicio"
+const modalTitulo = modal.querySelector('h2');
+
+// Campos del formulario
+const idInput = document.getElementById('idServicio');
+const tituloInput = document.getElementById('titulo');
+const categoriaInput = document.getElementById('categoria');
+const departamentoInput = document.getElementById('departamento');
+const precioInput = document.getElementById('precio');
+const descripcionInput = document.getElementById('descripcion');
+const previewImagen = document.getElementById('previewImagen');
+const inputImagen = document.getElementById('imagen'); // input tipo file
 
 // Abrir modal para editar servicio
 document.querySelectorAll('.btn-editar').forEach(btn => {
@@ -65,28 +75,49 @@ document.querySelectorAll('.btn-editar').forEach(btn => {
         modal.style.display = 'block';
         modalTitulo.textContent = 'Editar Servicio';
 
-        // Llenar campos del formulario
-        document.getElementById('idServicio').value = btn.dataset.id;
-        document.getElementById('titulo').value = btn.dataset.titulo;
-        document.getElementById('categoria').value = btn.dataset.categoria;
-        document.getElementById('departamento').value = btn.dataset.departamento;
-        document.getElementById('precio').value = btn.dataset.precio;
-        document.getElementById('descripcion').value = btn.dataset.descripcion;
+        // Llenar campos
+        idInput.value = btn.dataset.id;
+        tituloInput.value = btn.dataset.titulo;
+        categoriaInput.value = btn.dataset.categoria;
+        departamentoInput.value = btn.dataset.departamento;
+        precioInput.value = btn.dataset.precio;
+        descripcionInput.value = btn.dataset.descripcion;
 
-        // Preview de la imagen
-        if (btn.dataset.imagen) {
-            document.getElementById('previewImagen').src = '/Proyecto/public/imagen/servicios/' + btn.dataset.imagen;
+        // Mostrar imagen actual del servicio
+        if (btn.dataset.imagen && btn.dataset.imagen.trim() !== "") {
+            previewImagen.src = '/Proyecto/public/imagen/servicios/' + btn.dataset.imagen;
+            previewImagen.style.display = 'block';
         } else {
-            document.getElementById('previewImagen').src = '';
+            previewImagen.src = '';
+            previewImagen.style.display = 'none';
         }
+
+        // Limpiar input file para nueva selección
+        if(inputImagen) inputImagen.value = "";
     });
 });
 
-// Cerrar modal 
+// Previsualizar imagen seleccionada usando FileReader
+if(inputImagen){
+    inputImagen.addEventListener('change', () => {
+        const file = inputImagen.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                previewImagen.src = e.target.result;
+                previewImagen.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            previewImagen.src = '';
+            previewImagen.style.display = 'none';
+        }
+    });
+}
+
+// Cerrar modal
 cerrar.addEventListener('click', () => modal.style.display = 'none');
 window.addEventListener('click', e => {
-    if (e.target === modal) modal.style.display = 'none';
+    if(e.target === modal) modal.style.display = 'none';
 });
-
-
 </script>

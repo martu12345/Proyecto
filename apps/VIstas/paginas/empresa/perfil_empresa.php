@@ -1,8 +1,11 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/controlador/empresa/PerfilEmpresaControlador.php');
 
-// Detectar la sección que se quiere mostrar
 $seccion = $_GET['seccion'] ?? 'perfil';
+if ($seccion === "null") {
+    $seccion = 'perfil';
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -41,11 +44,12 @@ $seccion = $_GET['seccion'] ?? 'perfil';
                 <?php echo htmlspecialchars($datos['NombreEmpresa']); ?>
             </div>
 
-            <div class="opciones-lista">
-                <a href="?seccion=perfil" class="opcion <?php echo $seccion=='perfil' ? 'activa' : ''; ?>">Mi perfil</a>
-                <a href="?seccion=mensajes" class="opcion <?php echo $seccion=='mensajes' ? 'activa' : ''; ?>">Mensajes</a>
-                <a href="?seccion=servicios" class="opcion <?php echo $seccion=='servicios' ? 'activa' : ''; ?>">Servicios</a>
-            </div>
+           <div class="opciones-lista">
+    <a href="?seccion=perfil" data-seccion="perfil" class="opcion <?php echo $seccion=='perfil' ? 'activa' : ''; ?>">Mi perfil</a>
+    <a href="?seccion=mensajes" data-seccion="mensajes" class="opcion <?php echo $seccion=='mensajes' ? 'activa' : ''; ?>">Mensajes</a>
+    <a href="?seccion=servicios" data-seccion="servicios" class="opcion <?php echo $seccion=='servicios' ? 'activa' : ''; ?>">Servicios</a>
+</div>
+
         </div>
 
         <div class="perfil-info" id="contenido-seccion">
