@@ -1,4 +1,4 @@
-<div class="servicio">
+<div class="servicio"> 
     <?php if (!empty($servicio['imagen'])): ?>
         <img src="/Proyecto/public/imagen/servicios/<?= htmlspecialchars($servicio['imagen']) ?>"
             alt="<?= htmlspecialchars($servicio['Titulo']) ?>" class="imagen-servicio">
@@ -14,12 +14,9 @@
             <p class="precio-servicio">$<?= htmlspecialchars($servicio['Precio']) ?></p>
         </div>
 
-        <!--  Ver más -->
         <form action="/Proyecto/apps/controlador/servicio/DetallesServicioControlador.php" method="post">
-            <input type="hidden" name="IdServicio" value="<?= $servicio['idServicio'] ?? $servicio['IdServicio'] ?? '' ?>">
-            <button type="submit" class="btn-ver-mas">
-                Ver más <span class="plus">+</span>
-            </button>
+            <input type="hidden" name="IdServicio" value="<?= $servicio['IdServicio'] ?? $servicio['idServicio'] ?>">
+            <button type="submit" class="btn-ver-mas">Ver más +</button>
         </form>
     </div>
 </div>

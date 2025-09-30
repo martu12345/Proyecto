@@ -1,46 +1,35 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/servicio.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Servicio.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Brinda.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Empresa.php');
 
-$idRaw = $_POST['IdServicio'] ?? null;
+// Aceptar POST (Ver más) o GET (Volver desde empresa)
+$idRaw = $_POST['IdServicio'] ?? $_GET['id'] ?? null;
+
 $servicio = null;
 $empresa = null;
-$errorMessage = null;
+$mensajeError = null;
 
-// Validar que se reciba el ID por POST
 if ($idRaw === null) {
-    $errorMessage = "No se recibió el Id del servicio. Asegurate de llamar a este controlador desde el formulario.";
+    $mensajeError = "No se recibió el Id del servicio.";
 } else {
     $id = intval($idRaw);
-
     if ($id <= 0) {
-        $errorMessage = "Id de servicio inválido.";
+        $mensajeError = "Id de servicio inválido.";
     } else {
-        // Obtener servicio
         $servicio = Servicio::obtenerPorId($conn, $id);
-
         if (!$servicio) {
-            $errorMessage = "No se encontró el servicio con Id {$id}.";
+            $mensajeError = "No se encontró el servicio con Id {$id}.";
         } else {
-            // Obtener la empresa que brinda este servicio
-            $stmt = $conn->prepare("
-                SELECT e.IdUsuario, e.NombreEmpresa, e.Calle, e.Numero, e.Imagen
-                FROM brinda b
-                JOIN empresa e ON b.IdUsuario = e.IdUsuario
-                WHERE b.IdServicio = ?
-            ");
-            if (!$stmt) die("Error prepare empresa: " . $conn->error);
-            $stmt->bind_param("i", $id);
-            $stmt->execute();
-            $resultado = $stmt->get_result();
-            $empresa = $resultado->fetch_assoc();
-            $stmt->close();
+            $idEmpresa = Brinda::obtenerIdEmpresaPorServicio($conn, $id);
+            if ($idEmpresa) {
+                $empresa = Empresa::obtenerPorId($conn, $idEmpresa);
+            }
         }
     }
 }
 
-// Llamar a la vista
+// Cargar vista
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/servicio/DetallesServicio.php');
 exit;

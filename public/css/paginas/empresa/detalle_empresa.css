@@ -5,13 +5,13 @@ body {
     padding: 0;
 }
 
-.detalle-servicio-container {
+.detalle-empresa-container {
     display: flex;
     justify-content: center;
     padding: 40px 20px;
 }
 
-.detalle-servicio {
+.detalle-empresa {
     display: flex;
     background: #fff;
     border-radius: 12px;
@@ -53,26 +53,19 @@ body {
     font-size: 26px;
 }
 
-.info-contenedor .precio {
-    font-size: 22px;
-    font-weight: 700;
-    color: #ff914d;
-    margin: 6px 0 12px 0;
-}
-
 .info-contenedor p {
     margin: 4px 0;
     color: #444;
 }
 
-.botones-servicio {
+.botones-empresa {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
     margin-top: auto; 
 }
 
-.boton-servicio {
+.boton-empresa {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -84,43 +77,25 @@ body {
     transition: transform 0.2s;
 }
 
-.boton-servicio:hover {
+.boton-empresa:hover {
     transform: scale(1.1);
 }
 
-.boton-servicio img {
+.boton-empresa img {
     width: 24px;
     height: 24px;
 }
+
+
 
 .mensaje-error {
     color: #b00020;
     font-weight: 600;
     margin-bottom: 8px;
 }
-.empresa-btn {
-    all: unset;               /* Quita casi todos los estilos por defecto */
-    display: inline-block;
-    background-color: #222;
-    color: #fff;
-    font-family: 'Lexend', sans-serif;
-    font-size: 16px;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s ease;
-}
-
-.empresa-btn:hover {
-    background-color: #ff914d;
-}
-
-
-
 
 @media(max-width: 768px) {
-    .detalle-servicio {
+    .detalle-empresa {
         flex-direction: column;
         align-items: center;
         min-height: auto;
@@ -133,7 +108,7 @@ body {
         width: 100%;
         margin-top: 20px;
     }
-    .botones-servicio {
+    .botones-empresa {
         justify-content: center;
     }
 }

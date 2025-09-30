@@ -1,6 +1,6 @@
 <?php
-require_once('Usuario.php'); 
-require_once('Telefono.php'); 
+require_once('Usuario.php');
+require_once('Telefono.php');
 
 class Empresa extends Usuario
 {
@@ -19,15 +19,73 @@ class Empresa extends Usuario
     }
 
     // getters y setters
-    public function getNombreEmpresa() { return $this->nombreEmpresa; }
-    public function getCalle() { return $this->calle; }
-    public function getNumero() { return $this->numero; }
-    public function getImagen() { return $this->imagen; }
+    public function getNombreEmpresa()
+    {
+        return $this->nombreEmpresa;
+    }
+    public function getCalle()
+    {
+        return $this->calle;
+    }
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
 
-    public function setNombreEmpresa($nombreEmpresa) { $this->nombreEmpresa = $nombreEmpresa; }
-    public function setCalle($calle) { $this->calle = $calle; }
-    public function setNumero($numero) { $this->numero = $numero; }
-    public function setImagen($imagen) { $this->imagen = $imagen; }
+    public function setNombreEmpresa($nombreEmpresa)
+    {
+        $this->nombreEmpresa = $nombreEmpresa;
+    }
+    public function setCalle($calle)
+    {
+        $this->calle = $calle;
+    }
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+    }
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+    }
+
+
+    public static function obtenerPorId($conn, $idUsuario)
+    {
+        $stmt = $conn->prepare("
+      SELECT u.IdUsuario, u.Email, u.Contraseña,
+       e.NombreEmpresa, e.Calle, e.Numero, e.Imagen
+FROM empresa e
+JOIN usuario u ON e.IdUsuario = u.IdUsuario
+WHERE e.IdUsuario = ?
+
+    ");
+        if (!$stmt) die("Error prepare Empresa: " . $conn->error);
+        $stmt->bind_param("i", $idUsuario);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $datos = $res->fetch_assoc();
+        $stmt->close();
+
+        if ($datos) {
+            return new Empresa(
+                $datos['IdUsuario'],
+                $datos['Email'],
+                $datos['Contraseña'],
+                null, // Teléfono null
+                $datos['NombreEmpresa'],
+                $datos['Calle'],
+                $datos['Numero'],
+                $datos['Imagen']
+            );
+        }
+        return null;
+    }
+
 
     // Actualiza los datos de la empresa (incluyendo imagen)
     public function actualizarEmpresa($conn)
@@ -47,7 +105,7 @@ class Empresa extends Usuario
         $stmt->bind_param("si", $this->imagen, $this->idUsuario);
         return $stmt->execute();
     }
-    
+
     //guardar empresa en la base y telefono 
     public function guardarEmpresa($conn, $telefono = null)
     {
