@@ -4,7 +4,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/empresa/Per
 $seccion = $_GET['seccion'] ?? 'perfil';
 if ($seccion === "null") {
     $seccion = 'perfil';
+
 }
+
 
 ?>
 
@@ -58,19 +60,20 @@ if ($seccion === "null") {
                 <?php
                 // Cargar la sección correspondiente
                 switch ($seccion) {
-                    case 'perfil':
-                        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Vistas/paginas/empresa/PerfilSecciones/datos.php';
-                        break;
-                    case 'mensajes':
-                        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Vistas/paginas/empresa/PerfilSecciones/mensajes.php';
-                        break;
-                    case 'servicios':
-                        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Vistas/paginas/empresa/PerfilSecciones/servicios.php';
-                        break;
-                    default:
-                        echo "<p>Sección no encontrada</p>";
-                }
-                ?>
+    case 'perfil':
+        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/datos.php';
+        break;
+    case 'mensajes':
+        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/mensajes.php';
+        break;
+    case 'servicios':
+        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/servicios.php';
+        break;
+    default:
+        echo "<p>Sección no encontrada</p>";
+}
+
+?> 
             </div>
 
         </div>
