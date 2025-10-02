@@ -57,9 +57,13 @@ $mensajeError = $mensajeError ?? (!$hasServicio ? 'No se encontró el servicio s
                 <?php endif; ?>
 
                 <div class="botones-servicio">
-                    <a href="#" class="boton-servicio mensaje" title="Mensaje">
-                        <img src="/Proyecto/public/imagen/icono/icono_mensaje.png" alt="Mensaje">
-                    </a>
+    <a href="#" 
+   class="boton-servicio mensaje" 
+   title="Mensaje"
+   data-empresaid="<?= $empresa ? $empresa->getIdUsuario() : '' ?>"
+   data-nombre="<?= $empresa ? htmlspecialchars($empresa->getNombreEmpresa()) : '' ?>">
+    <img src="/Proyecto/public/imagen/icono/icono_mensaje.png" alt="Mensaje">
+    </a>
                     <a href="#" class="boton-servicio agendar" title="Agendar">
                         <img src="/Proyecto/public/imagen/icono/icono_mas.png" alt="Agendar">
                     </a>
@@ -71,6 +75,11 @@ $mensajeError = $mensajeError ?? (!$hasServicio ? 'No se encontró el servicio s
         </div>
     <?php endif; ?>
 </div>
+
+
+ <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/VIstas/layout/modal_mensaje.php'; ?>
+<link rel="stylesheet" href="/Proyecto/public/css/layout/modal_mensaje.css">
+<script src="/Proyecto/public/js/mensaje/modal_mensaje.js"></script>
 
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
 </body>

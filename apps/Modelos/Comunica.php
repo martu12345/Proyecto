@@ -38,7 +38,7 @@ class Comunica
 
     // Función para enviar mensaje
     public function enviar($conn) {
-        $sql = "INSERT INTO comunica (idUsuarioCliente, idUsuarioEmpresa, asunto, contenido, fecha) 
+        $sql = "INSERT INTO comunica (idUsuarioCliente, idUsuarioEmpresa, asunto, contenido, FechaHora) 
                 VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(

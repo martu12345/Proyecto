@@ -1,4 +1,6 @@
 <?php
+var_dump($_POST);
+
 session_start();
 require_once '../Modelos/Comunica.php';
 require_once '../Modelos/conexion.php';
@@ -14,11 +16,11 @@ $idUsuarioEmpresa = $_POST['empresa_id'] ?? null;
 $asunto = $_POST['asunto'] ?? '';
 $contenido = $_POST['contenido'] ?? '';
 
-if ($empresa_id && $asunto && $contenido) {
+if ($idUsuarioEmpresa && $asunto && $contenido) {
     $fecha = date("Y-m-d H:i:s");
 
     // Crear objeto Comunica con asunto
-    $mensaje = new Comunica($idUsuarioCliente, $idUsarioEmpresa, 0, $asunto, $contenido, $fecha);
+    $mensaje = new Comunica($idUsuarioCliente, $idUsuarioEmpresa, 0, $asunto, $contenido, $fecha);
 
     // Enviar mensaje usando la función enviar de la misma clase
     if ($mensaje->enviar($conn)) {
