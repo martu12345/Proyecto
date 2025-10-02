@@ -1,0 +1,134 @@
+/* ========================================== */
+/* Fondo de toda la página */
+body {
+    background-color: #ff914d;
+    font-family: 'Lexend', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* ========================================== */
+/* Contenedor principal del formulario y calendario */
+.contratar-servicio-container {
+    max-width: 500px; /* ancho moderado */
+    margin: 50px auto;
+    padding: 25px;
+    background-color: white; /* contenedor blanco */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Títulos y texto */
+.contratar-servicio-container h2 {
+    text-align: center;
+    color: #ff914d;
+    margin-bottom: 10px;
+}
+
+.contratar-servicio-container p {
+    text-align: center;
+    font-size: 15px;
+    margin: 5px 0;
+    color: #333;
+}
+
+/* ========================================== */
+/* Formulario */
+.contratar-servicio-container form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+}
+
+/* Labels e inputs */
+.contratar-servicio-container label {
+    font-weight: bold;
+    color: #333;
+}
+
+.contratar-servicio-container input[type="time"],
+.contratar-servicio-container input[type="date"] {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+/* Botón de enviar */
+.contratar-servicio-container button[type="submit"] {
+    padding: 12px;
+    background-color: #ff914d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.contratar-servicio-container button[type="submit"]:hover {
+    background-color: #e6833c;
+}
+
+/* ========================================== */
+/* Calendario */
+.calendario-titulo {
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+    margin: 15px 0 10px;
+    color: #ff914d;
+}
+
+/* Grid del calendario */
+.calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    width: 100%;
+}
+
+/* Días de la semana */
+.dias-semana {
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+    padding: 5px 0;
+}
+
+/* Días del mes */
+.dia {
+    background-color: white;
+    color: #333;
+    text-align: center;
+    padding: 8px 0;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.dia:hover {
+    background-color: #ffe6d1;
+}
+
+/* Día seleccionado */
+.dia.seleccionado {
+    background-color: #ff914d;
+    color: white;
+    border: 1px solid #ff914d;
+}
+
+/* Días pasados */
+.dia.pasado {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+    color: #888;
+    border: 1px solid #ddd;
+}

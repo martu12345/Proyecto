@@ -12,13 +12,14 @@ if (!$idUsuario) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Recibir datos del formulario
-    $idServicio = $_POST['idServicio'] ?? null; // si viene, estamos editando
+    $idServicio = $_POST['idServicio'] ?? null; 
     $titulo = $_POST['titulo'] ?? '';
     $categoria = $_POST['categoria'] ?? '';
     $descripcion = $_POST['descripcion'] ?? '';
     $precio = $_POST['precio'] ?? 0;
     $departamento = $_POST['departamento'] ?? null;
     $disponibilidad = null; // por ahora
+    $duracion = $_POST['duracion'] ?? 0; 
 
     if (!$departamento) {
         die(json_encode(['success' => false, 'mensaje' => 'Debe seleccionar un departamento']));
@@ -44,14 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Crear objeto Servicio
     $servicio = new Servicio(
-        $idServicio, // null → creación, id → edición
+        $idServicio, 
         $titulo,
         $categoria,
         $descripcion,
         $precio,
         $departamento,
         $disponibilidad,
-        $imagenNombre
+        $imagenNombre,
+        $duracion 
     );
 
     // Guardar o actualizar
