@@ -1,5 +1,4 @@
-/* ========================================== */
-/* Fondo de toda la página */
+
 body {
     background-color: #ff914d;
     font-family: 'Lexend', sans-serif;
@@ -7,13 +6,12 @@ body {
     padding: 0;
 }
 
-/* ========================================== */
 /* Contenedor principal del formulario y calendario */
 .contratar-servicio-container {
-    max-width: 500px; /* ancho moderado */
+    max-width: 500px;
     margin: 50px auto;
     padding: 25px;
-    background-color: white; /* contenedor blanco */
+    background-color: white;
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     display: flex;
@@ -21,7 +19,6 @@ body {
     align-items: center;
 }
 
-/* Títulos y texto */
 .contratar-servicio-container h2 {
     text-align: center;
     color: #ff914d;
@@ -35,7 +32,6 @@ body {
     color: #333;
 }
 
-/* ========================================== */
 /* Formulario */
 .contratar-servicio-container form {
     display: flex;
@@ -44,12 +40,7 @@ body {
     gap: 15px;
 }
 
-/* Labels e inputs */
-.contratar-servicio-container label {
-    font-weight: bold;
-    color: #333;
-}
-
+/* Inputs de tiempo y fecha */
 .contratar-servicio-container input[type="time"],
 .contratar-servicio-container input[type="date"] {
     padding: 10px;
@@ -75,17 +66,49 @@ body {
     background-color: #e6833c;
 }
 
-/* ========================================== */
-/* Calendario */
+/* Mensaje de error */
+#errorHora {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    white-space: pre-line;
+    font-weight: bold;
+}
+
+/* Header del calendario con flechas */
+.calendario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.calendario-header button {
+    background-color: #ff914d;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.calendario-header button:hover {
+    background-color: #e6833c;
+}
+
 .calendario-titulo {
     text-align: center;
     font-size: 17px;
     font-weight: bold;
-    margin: 15px 0 10px;
     color: #ff914d;
+    flex-grow: 1;
 }
 
-/* Grid del calendario */
+
 .calendario {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -93,7 +116,7 @@ body {
     width: 100%;
 }
 
-/* Días de la semana */
+
 .dias-semana {
     text-align: center;
     font-weight: bold;
@@ -101,7 +124,6 @@ body {
     padding: 5px 0;
 }
 
-/* Días del mes */
 .dia {
     background-color: white;
     color: #333;
@@ -118,14 +140,12 @@ body {
     background-color: #ffe6d1;
 }
 
-/* Día seleccionado */
 .dia.seleccionado {
-    background-color: #ff914d;
+    background-color: #FF914D;
     color: white;
-    border: 1px solid #ff914d;
+    border: 1px solid #FF914D;
 }
 
-/* Días pasados */
 .dia.pasado {
     background-color: #f0f0f0;
     cursor: not-allowed;
