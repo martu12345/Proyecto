@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+$titulo = $_SESSION['confirmacionServicio']['titulo'] ?? null;
+$dia = $_SESSION['confirmacionServicio']['dia'] ?? null;
+$hora = $_SESSION['confirmacionServicio']['hora'] ?? null;
+
+unset($_SESSION['confirmacionServicio']);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,15 +22,23 @@
 <body>
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
-<!-- Fondo sólido naranja -->
 <div class="confirmacion-background"></div>
 
 <div class="confirmacion-wrapper">
     <div class="confirmacion-container">
         <h1>¡Servicio Agendado con Éxito!</h1>
+
+        <?php if ($titulo && $dia && $hora): ?>
+            <p><strong>Servicio:</strong> <?= htmlspecialchars($titulo) ?></p>
+            <p><strong>Día:</strong> <?= htmlspecialchars($dia) ?></p>
+            <p><strong>Hora:</strong> <?= htmlspecialchars($hora) ?></p>
+        <?php endif; ?>
+
         <p>Te avisaremos  cuando la empresa confirme el horario.</p>
         <button onclick="window.location.href='/Proyecto/apps/vistas/paginas/busqueda.php'">Volver</button>
     </div>
 </div>
 
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
+</body>
+</html>

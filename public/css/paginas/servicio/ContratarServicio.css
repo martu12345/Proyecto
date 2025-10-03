@@ -1,4 +1,3 @@
-
 body {
     background-color: #ff914d;
     font-family: 'Lexend', sans-serif;
@@ -6,7 +5,7 @@ body {
     padding: 0;
 }
 
-/* Contenedor principal del formulario y calendario */
+/* Contenedor principal */
 .contratar-servicio-container {
     max-width: 500px;
     margin: 50px auto;
@@ -40,7 +39,6 @@ body {
     gap: 15px;
 }
 
-/* Inputs de tiempo y fecha */
 .contratar-servicio-container input[type="time"],
 .contratar-servicio-container input[type="date"] {
     padding: 10px;
@@ -49,7 +47,6 @@ body {
     font-size: 15px;
 }
 
-/* Botón de enviar */
 .contratar-servicio-container button[type="submit"] {
     padding: 12px;
     background-color: #ff914d;
@@ -70,52 +67,55 @@ body {
 #errorHora {
     color: red;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 25px; /* espacio desde el calendario */
     white-space: pre-line;
     font-weight: bold;
 }
 
-/* Header del calendario con flechas */
+/* Header del calendario */
 .calendario-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    width: 100%;
-    margin-bottom: 10px;
+    gap: 5px;           /* espacio entre flechas y mes */
+    margin-bottom: 5px; /* pegué el mes al calendario */
+    flex-wrap: wrap;
 }
 
-.calendario-header button {
+.flecha {
     background-color: #ff914d;
-    border: none;
     color: white;
-    font-size: 18px;
+    font-size: 12px;   /* más pequeño */
     font-weight: bold;
-    padding: 5px 12px;
-    border-radius: 6px;
+    padding: 3px 6px;
+    border-radius: 5px;
     cursor: pointer;
+    user-select: none;
+    text-align: center;
     transition: 0.3s;
 }
 
-.calendario-header button:hover {
+.flecha:hover {
     background-color: #e6833c;
 }
 
-.calendario-titulo {
-    text-align: center;
-    font-size: 17px;
+/* Mes y año en dos líneas */
+.tituloMes {
+    font-size: 16px;
     font-weight: bold;
     color: #ff914d;
-    flex-grow: 1;
+    text-align: center;
+    line-height: 1.2;  /* mes y año más pegados */
 }
 
-
+/* Calendario */
 .calendario {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
     width: 100%;
+    margin-bottom: 0; /* calendario pegado al mes */
 }
-
 
 .dias-semana {
     text-align: center;

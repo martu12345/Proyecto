@@ -1,9 +1,9 @@
 <div class="servicio"> 
     <?php if (!empty($servicio['imagen'])): ?>
         <img src="/Proyecto/public/imagen/servicios/<?= htmlspecialchars($servicio['imagen']) ?>"
-            alt="<?= htmlspecialchars($servicio['Titulo']) ?>" class="imagen-servicio">
+             alt="<?= htmlspecialchars($servicio['Titulo']) ?>" class="imagen-servicio">
     <?php else: ?>
-        <img src="/Proyecto/public/imagen/servicios/placeholder.png" alt="Sin imagen" class="imagen-servicio">
+        <div class="imagen-servicio no-imagen"></div>
     <?php endif; ?>
 
     <div class="info-servicio">

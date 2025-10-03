@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/servicio/Co
         <form action="" method="POST" id="formServicio">
             <input type="hidden" name="idServicio" value="<?= $servicio->getIdServicio() ?>">
             <input type="hidden" name="dia" id="inputDia">
-            <input type="time" name="hora" id="hora" required>
+<input type="time" name="hora" id="hora" required min="00:00" max="23:59" step="60">
             <button type="submit">Agendar Servicio</button>
         </form>
         

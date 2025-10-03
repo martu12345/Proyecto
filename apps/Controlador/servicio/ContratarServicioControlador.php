@@ -71,18 +71,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     // Guardar cita
                     $cita = new Contrata($idUsuario, $idServicio, null, $dia, $hora, null, null);
-                    header("Location: /Proyecto/apps/vistas/paginas/servicio/ConfirmacionServicio.php");
-                    if (!$cita->guardar($conn)) $mensajeError = "Ocurrió un error al agendar el servicio.";
-                    
+                    if ($cita->guardar($conn)) {
+                        // Guardamos datos en sesión para la confirmación
+                        $_SESSION['confirmacionServicio'] = [
+                            'titulo' => $servicio->getTitulo(),
+                            'dia' => $dia,
+                            'hora' => $hora
+                        ];
+                        header("Location: /Proyecto/apps/vistas/paginas/servicio/ConfirmacionServicio.php");
+                        exit();
+                    } else {
+                        $mensajeError = "Ocurrió un error al agendar el servicio.";
+                    }
                 }
             }
         }
     }
 }
 
+// Obtener datos del servicio para mostrar en la página
 $servicio = Servicio::obtenerPorId($conn, $_GET['idServicio'] ?? null);
 if (!$servicio) die("Servicio no encontrado.");
 
+// Obtener empresa que brinda el servicio
 $idEmpresa = Brinda::obtenerIdEmpresaPorServicio($conn, $servicio->getIdServicio());
 $empresa = null;
 if ($idEmpresa) {
@@ -93,7 +104,6 @@ if ($idEmpresa) {
     $stmt->close();
 }
 
-// Variables para el calendario inicial
 $mesActual = date('m');
 $anioActual = date('Y');
 
@@ -112,10 +122,8 @@ $meses = [
     12 => 'Diciembre'
 ];
 
-// Traer todas las citas del servicio
 $citasOcupadas = Contrata::obtenerCitasPorServicio($conn, $servicio->getIdServicio());
 
-// Duración del servicio
 $duracion = $servicio->getDuracion();
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/servicio/ContratarServicio.php');

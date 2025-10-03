@@ -18,12 +18,20 @@
 }
 
 .imagen-servicio {
-    width: 130px;
-    height: 130px;
+    width: 250px;
+    height: 150px;
     object-fit: cover;
     border-radius: 12px;
-    flex-shrink: 0;
 }
+
+.no-imagen {
+    background-color: #f2f2f2; /* color gris claro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+}
+
 
 .info-servicio {
     display: flex;

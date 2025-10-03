@@ -47,7 +47,6 @@ function renderCalendario(mes, anio) {
                 document.querySelectorAll(".dia").forEach(d => d.classList.remove("seleccionado"));
                 div.classList.add("seleccionado");
                 inputDia.value = fecha;
-                inputHora.value = "";
                 errorHora.textContent = "";
             });
         }
@@ -100,17 +99,34 @@ function calcularLibres(diaSeleccionado) {
     return {ocupadosDia, libres};
 }
 
-inputHora.addEventListener('input', function() {
+form.addEventListener('submit', function(e){
+    e.preventDefault(); // Siempre detener envío para controlar errores
     errorHora.textContent = '';
-    const diaSeleccionado = inputDia.value;
-    if(!diaSeleccionado) return;
 
-    const [h,m] = this.value.split(':').map(Number);
+    const diaSeleccionado = inputDia.value;
+    if(!diaSeleccionado){
+        errorHora.textContent = "⚠️ Debes seleccionar un día.";
+        return;
+    }
+
+    const partes = inputHora.value.split(':');
+    if(partes.length !== 2){
+        errorHora.textContent = "⚠️ Formato de hora inválido.";
+        return;
+    }
+
+    const [h, m] = partes.map(Number);
+    if(isNaN(h) || isNaN(m) || m < 0 || m > 59){
+        errorHora.textContent = "⚠️ Minutos inválidos. Deben estar entre 00 y 59.";
+        return;
+    }
+
+    
     const inicio = h*60 + m;
     const fin = inicio + duracionServicio*60;
 
     if(fin > 24*60){
-        errorHora.textContent = " No se puede agendar este horario, se pasa del final del día.";
+        errorHora.textContent = "⚠️ No se puede agendar este horario, se pasa del final del día.";
         return;
     }
 
@@ -118,7 +134,7 @@ inputHora.addEventListener('input', function() {
     let choque = ocupadosDia.find(c => inicio < c.fin && fin > c.inicio);
 
     if(choque){
-        let msg = ` Este horario no se puede agendar porque tu servicio de ${duracionServicio}h choca con servicios existentes:\n`;
+        let msg = `⚠️ Este horario no se puede agendar porque tu servicio de ${duracionServicio}h choca con servicios existentes:\n`;
         ocupadosDia.forEach(c => {
             if(inicio < c.fin && fin > c.inicio) msg += `• ${minutosAHora(c.inicio)} - ${minutosAHora(c.fin)}\n`;
         });
@@ -127,11 +143,11 @@ inputHora.addEventListener('input', function() {
             msg += `• ${minutosAHora(l.inicio)} - ${minutosAHora(l.fin)}\n`;
         });
         errorHora.textContent = msg;
+        return;
     }
-});
 
-form.addEventListener('submit', function(e){
-    if(errorHora.textContent.startsWith('⚠️')) e.preventDefault();
+    // Si todo está bien, se envía el formulario manualmente
+    form.submit();
 });
 
 renderCalendario(mesVisible, anioVisible);

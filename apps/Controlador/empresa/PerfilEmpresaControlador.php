@@ -1,5 +1,4 @@
 <?php
-// COREGIR QUE NO TRAIGA NADA DE LA BASE 
 session_start();
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/conexion.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Usuario.php');
@@ -12,19 +11,18 @@ if (!isset($_SESSION['idUsuario'])) {
 
 $idUsuario = $_SESSION['idUsuario'];
 
-$stmt = $conn->prepare("
-    SELECT u.Email, e.NombreEmpresa, e.Calle, e.Numero, e.Imagen
-    FROM usuario u
-    JOIN empresa e ON u.IdUsuario = e.IdUsuario
-    WHERE u.IdUsuario = ?
-");
-if(!$stmt) {
-    die("Error prepare: " . $conn->error);
+$empresa = Empresa::obtenerPorId($conn, $idUsuario);
+
+if (!$empresa) {
+    // Manejar error si no existe
+    die("No se encontraron datos de la empresa para este usuario.");
 }
 
-$stmt->bind_param("i", $idUsuario);
-$stmt->execute();
-$result = $stmt->get_result();
-$datos = $result->fetch_assoc();
-$stmt->close();
 
+$datos = [
+    "Email" => $empresa->getEmail(), // heredado de Usuario
+    "NombreEmpresa" => $empresa->getNombreEmpresa(),
+    "Calle" => $empresa->getCalle(),
+    "Numero" => $empresa->getNumero(),
+    "Imagen" => $empresa->getImagen()
+];
