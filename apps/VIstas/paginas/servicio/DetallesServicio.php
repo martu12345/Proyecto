@@ -59,21 +59,6 @@ $mensajeError = $mensajeError ?? (!$hasServicio ? 'No se encontró el servicio s
                         <p>Empresa: No disponible</p>
                     <?php endif; ?>
 
-<<<<<<< HEAD
-                    <div class="botones-servicio">
-                        <a href="#" class="boton-servicio mensaje" title="Mensaje">
-                            <img src="/Proyecto/public/imagen/icono/icono_mensaje.png" alt="Mensaje">
-                        </a>
-                        <a href="/Proyecto/apps/vistas/paginas/servicio/ContratarServicio.php?idServicio=<?= $servicio->getIdServicio() ?>"
-                            class="boton-servicio agendar" title="Agendar">
-                            <img src="/Proyecto/public/imagen/icono/icono_mas.png" alt="Agendar">
-                        </a>
-
-                        <a href="/Proyecto/apps/vistas/paginas/busqueda.php" class="boton-servicio volver" title="Volver">
-                            <img src="/Proyecto/public/imagen/icono/icono_volver.png" alt="Volver">
-                        </a>
-                    </div>
-=======
                 <div class="botones-servicio">
     <a href="#" 
    class="boton-servicio mensaje" 
@@ -82,28 +67,24 @@ $mensajeError = $mensajeError ?? (!$hasServicio ? 'No se encontró el servicio s
    data-nombre="<?= $empresa ? htmlspecialchars($empresa->getNombreEmpresa()) : '' ?>">
     <img src="/Proyecto/public/imagen/icono/icono_mensaje.png" alt="Mensaje">
     </a>
-                    <a href="#" class="boton-servicio agendar" title="Agendar">
-                        <img src="/Proyecto/public/imagen/icono/icono_mas.png" alt="Agendar">
-                    </a>
+                     <a href="/Proyecto/apps/vistas/paginas/servicio/ContratarServicio.php?idServicio=<?= $servicio->getIdServicio() ?>"
+                            class="boton-servicio agendar" title="Agendar">
+                            <img src="/Proyecto/public/imagen/icono/icono_mas.png" alt="Agendar">
+                        </a>
                     <a href="/Proyecto/apps/vistas/paginas/busqueda.php" class="boton-servicio volver" title="Volver">
                         <img src="/Proyecto/public/imagen/icono/icono_volver.png" alt="Volver">
                     </a>
->>>>>>> d3cbda0ecc60a82fc34dc8341b7dbf75b7f5c5e8
                 </div>
             </div>
         <?php endif; ?>
     </div>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
 
-<<<<<<< HEAD
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
-=======
 
  <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/VIstas/layout/modal_mensaje.php'; ?>
 <link rel="stylesheet" href="/Proyecto/public/css/layout/modal_mensaje.css">
 <script src="/Proyecto/public/js/mensaje/modal_mensaje.js"></script>
 
-<?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
->>>>>>> d3cbda0ecc60a82fc34dc8341b7dbf75b7f5c5e8
 </body>
 
 </html>
