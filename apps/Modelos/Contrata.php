@@ -8,8 +8,9 @@ class Contrata
     private $hora;
     private $calificacion;
     private $resena;
+    private $estado; 
 
-    public function __construct($idUsuario, $idServicio, $idCita, $fecha, $hora, $calificacion, $resena) {
+    public function __construct($idUsuario, $idServicio, $idCita, $fecha, $hora, $calificacion, $resena, $estado = 'Pendiente') {
         $this->idUsuario = $idUsuario;
         $this->idServicio = $idServicio;
         $this->idCita = $idCita;
@@ -17,8 +18,10 @@ class Contrata
         $this->hora = $hora;
         $this->calificacion = $calificacion;
         $this->resena = $resena;
+        $this->estado = $estado; 
     }
 
+    // GETTERS
     public function getIdUsuario() { return $this->idUsuario; }
     public function getIdServicio() { return $this->idServicio; }
     public function getIdCita() { return $this->idCita; }
@@ -26,7 +29,9 @@ class Contrata
     public function getHora() { return $this->hora; }
     public function getCalificacion() { return $this->calificacion; }
     public function getResena() { return $this->resena; }
+    public function getEstado() { return $this->estado; } 
 
+    // SETTERS
     public function setIdUsuario($idUsuario) { $this->idUsuario = $idUsuario; }
     public function setIdServicio($idServicio) { $this->idServicio = $idServicio; }
     public function setIdCita($idCita) { $this->idCita = $idCita; }
@@ -34,15 +39,21 @@ class Contrata
     public function setHora($hora) { $this->hora = $hora; }
     public function setCalificacion($calificacion) { $this->calificacion = $calificacion; }
     public function setResena($resena) { $this->resena = $resena; }
+    public function setEstado($estado) { $this->estado = $estado; } 
 
+    // GUARDAR
     public function guardar($conn) {
-        $stmt = $conn->prepare("INSERT INTO Contrata (IdUsuario, IdServicio, Fecha, Hora) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("iiss", $this->idUsuario, $this->idServicio, $this->fecha, $this->hora);
+        $stmt = $conn->prepare("
+            INSERT INTO Contrata (IdUsuario, IdServicio, Fecha, Hora, Estado) 
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $stmt->bind_param("iisss", $this->idUsuario, $this->idServicio, $this->fecha, $this->hora, $this->estado);
         $resultado = $stmt->execute();
         $stmt->close();
         return $resultado;
     }
 
+    // MÉTODO PARA VERIFICAR DISPONIBILIDAD
     public static function estaDisponible($conn, $idServicio, $fecha, $hora, $duracion) {
         $stmt = $conn->prepare("
             SELECT c.Hora, s.Duracion
@@ -63,7 +74,6 @@ class Contrata
             $inicioExistente = $ch*60 + $cm;
             $finExistente = $inicioExistente + (int)$row['Duracion']*60;
 
-            // Solo bloquear si realmente se solapan (se permite desde fin+1 minuto)
             if (!($finNuevo <= $inicioExistente || $inicioNuevo >= $finExistente)) {
                 return false;
             }
@@ -73,9 +83,10 @@ class Contrata
         return true;
     }
 
+    // OBTENER CITAS POR SERVICIO
     public static function obtenerCitasPorServicio($conn, $idServicio) {
         $stmt = $conn->prepare("
-            SELECT c.Fecha, c.Hora, s.Duracion
+            SELECT c.Fecha, c.Hora, s.Duracion, c.Estado
             FROM Contrata c
             INNER JOIN Servicio s ON c.IdServicio = s.IdServicio
             WHERE c.IdServicio = ?
@@ -93,4 +104,19 @@ class Contrata
         $stmt->close();
         return $citas;
     }
+
+    // MÉTODO PARA ACTUALIZAR ESTADO
+    public function actualizarEstado($conn, $nuevoEstado) {
+        $stmt = $conn->prepare("
+            UPDATE Contrata
+            SET Estado = ?
+            WHERE IdCita = ?
+        ");
+        $stmt->bind_param("si", $nuevoEstado, $this->idCita);
+        $resultado = $stmt->execute();
+        if ($resultado) $this->estado = $nuevoEstado;
+        $stmt->close();
+        return $resultado;
+    }
 }
+?>

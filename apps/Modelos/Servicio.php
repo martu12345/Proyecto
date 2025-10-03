@@ -5,10 +5,9 @@ class Servicio {
     private $categoria;
     private $descripcion;
     private $precio;
-    private $disponibilidad;
     private $departamento;
     private $imagen;
-    private $duracion; // NUEVO CAMPO
+    private $duracion; 
 
     public function __construct(
         $idServicio = null,
@@ -17,9 +16,8 @@ class Servicio {
         $descripcion = '',
         $precio = 0,
         $departamento = '',
-        $disponibilidad = null,
         $imagen = '',
-        $duracion = 0 // NUEVO CAMPO
+        $duracion = 0 
     ) {
         $this->idServicio = $idServicio;
         $this->titulo = $titulo;
@@ -27,9 +25,8 @@ class Servicio {
         $this->descripcion = $descripcion;
         $this->precio = $precio;
         $this->departamento = $departamento;
-        $this->disponibilidad = $disponibilidad;
         $this->imagen = $imagen;
-        $this->duracion = $duracion; // asignamos valor
+        $this->duracion = $duracion; /
     }
 
     // Getters
@@ -38,10 +35,9 @@ class Servicio {
     public function getCategoria() { return $this->categoria; }
     public function getDescripcion() { return $this->descripcion; }
     public function getPrecio() { return $this->precio; }
-    public function getDisponibilidad() { return $this->disponibilidad; }
     public function getDepartamento() { return $this->departamento; }
     public function getImagen() { return $this->imagen; }
-    public function getDuracion() { return $this->duracion; } // NUEVO GETTER
+    public function getDuracion() { return $this->duracion; } 
 
     // Setters
     public function setIdServicio($idServicio) { $this->idServicio = $idServicio; }
@@ -49,27 +45,25 @@ class Servicio {
     public function setCategoria($categoria) { $this->categoria = $categoria; }
     public function setDescripcion($descripcion) { $this->descripcion = $descripcion; }
     public function setPrecio($precio) { $this->precio = $precio; }
-    public function setDisponibilidad($disponibilidad) { $this->disponibilidad = $disponibilidad; }
     public function setDepartamento($departamento) { $this->departamento = $departamento; }
     public function setImagen($imagen) { $this->imagen = $imagen; }
-    public function setDuracion($duracion) { $this->duracion = $duracion; } // NUEVO SETTER
+    public function setDuracion($duracion) { $this->duracion = $duracion; } 
 
     // Guardar en base de datos
     public function guardar($conn) {
-        $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, disponibilidad, departamento, imagen, duracion) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, departamento, imagen, duracion) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
             die("Error al preparar la consulta: " . $conn->error);
         }
 
         $stmt->bind_param(
-            "sssdissi",
+            "sssdssi",
             $this->titulo,
             $this->categoria,
             $this->descripcion,
             $this->precio,
-            $this->disponibilidad,
             $this->departamento,
             $this->imagen,
             $this->duracion
@@ -102,7 +96,6 @@ class Servicio {
                 $row['Descripcion'] ?? '',
                 $row['Precio'] ?? 0,
                 $row['departamento'] ?? '',
-                null,
                 $row['imagen'] ?? '',
                 $row['duracion'] ?? 0
             );

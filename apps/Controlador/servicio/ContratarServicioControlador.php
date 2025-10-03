@@ -20,15 +20,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $servicio = Servicio::obtenerPorId($conn, $idServicio);
         if (!$servicio) {
-            $mensajeError = " Servicio no encontrado.";
+            $mensajeError = "Servicio no encontrado.";
         } else {
-            $duracion = $servicio->getDuracion(); 
+            $duracion = $servicio->getDuracion();
             [$h, $m] = array_map('intval', explode(':', $hora));
             $inicioNuevo = $h * 60 + $m;
             $finNuevo = $inicioNuevo + $duracion * 60;
 
             if ($finNuevo > 24 * 60) {
-                $mensajeError = " No se puede agendar este horario. Servicio dura $duracion h, se pasaría del día.";
+                $mensajeError = "No se puede agendar este horario. Servicio dura $duracion h, se pasaría del día.";
             } else {
                 // Obtener todas las citas del mismo día
                 $citasDia = Contrata::obtenerCitasPorServicio($conn, $idServicio);
@@ -57,20 +57,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (24 * 60 - $start >= $duracion * 60) $libres[] = ['inicio' => $start, 'fin' => 24 * 60];
 
                     // Convertir a formato hh:mm
-                    function minutosAHora($minutos)
-                    {
+                    function minutosAHora($minutos) {
                         $h = floor($minutos / 60);
                         $m = $minutos % 60;
                         return sprintf("%02d:%02d", $h, $m);
                     }
 
-                    $mensajeError = " Este horario no se puede agendar porque choca con servicios existentes:\n";
+                    $mensajeError = "Este horario no se puede agendar porque choca con servicios existentes:\n";
                     foreach ($ocupadosDia as $c) $mensajeError .= "• " . minutosAHora($c['inicio']) . " - " . minutosAHora($c['fin']) . "\n";
                     $mensajeError .= "Horarios libres para tu servicio:\n";
                     foreach ($libres as $l) $mensajeError .= "• " . minutosAHora($l['inicio']) . " - " . minutosAHora($l['fin']) . "\n";
                 } else {
-                    // Guardar cita
-                    $cita = new Contrata($idUsuario, $idServicio, null, $dia, $hora, null, null);
+                    // Guardar cita con estado inicial "Pendiente"
+                    $cita = new Contrata(
+                        $idUsuario,   // IdUsuario
+                        $idServicio,  // IdServicio
+                        null,         // IdCita
+                        $dia,         // Fecha
+                        $hora,        // Hora
+                        null,         // Calificación
+                        null,         // Reseña
+                        'Pendiente'   // Estado inicial
+                    );
+
                     if ($cita->guardar($conn)) {
                         // Guardamos datos en sesión para la confirmación
                         $_SESSION['confirmacionServicio'] = [
@@ -127,3 +136,4 @@ $citasOcupadas = Contrata::obtenerCitasPorServicio($conn, $servicio->getIdServic
 $duracion = $servicio->getDuracion();
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/servicio/ContratarServicio.php');
+?>

@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $descripcion = $_POST['descripcion'] ?? '';
     $precio = $_POST['precio'] ?? 0;
     $departamento = $_POST['departamento'] ?? null;
-    $disponibilidad = null; // por ahora
     $duracion = $_POST['duracion'] ?? 0; 
 
     if (!$departamento) {
@@ -43,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $imagenNombre = $servicioExistente ? $servicioExistente->getImagen() : '';
     }
 
-    // Crear objeto Servicio
+    // Crear objeto Servicio (sin disponibilidad)
     $servicio = new Servicio(
         $idServicio, 
         $titulo,
@@ -51,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $descripcion,
         $precio,
         $departamento,
-        $disponibilidad,
         $imagenNombre,
         $duracion 
     );
