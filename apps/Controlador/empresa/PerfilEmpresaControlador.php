@@ -1,4 +1,5 @@
 <?php
+// COREGIR QUE NO TRAIGA NADA DE LA BASE 
 session_start();
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/conexion.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Usuario.php');

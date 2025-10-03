@@ -8,6 +8,7 @@ class Servicio {
     private $disponibilidad;
     private $departamento;
     private $imagen;
+    private $duracion; // NUEVO CAMPO
 
     public function __construct(
         $idServicio = null,
@@ -17,7 +18,8 @@ class Servicio {
         $precio = 0,
         $departamento = '',
         $disponibilidad = null,
-        $imagen = ''
+        $imagen = '',
+        $duracion = 0 // NUEVO CAMPO
     ) {
         $this->idServicio = $idServicio;
         $this->titulo = $titulo;
@@ -27,6 +29,7 @@ class Servicio {
         $this->departamento = $departamento;
         $this->disponibilidad = $disponibilidad;
         $this->imagen = $imagen;
+        $this->duracion = $duracion; // asignamos valor
     }
 
     // Getters
@@ -38,8 +41,9 @@ class Servicio {
     public function getDisponibilidad() { return $this->disponibilidad; }
     public function getDepartamento() { return $this->departamento; }
     public function getImagen() { return $this->imagen; }
+    public function getDuracion() { return $this->duracion; } // NUEVO GETTER
 
-    //  Setters
+    // Setters
     public function setIdServicio($idServicio) { $this->idServicio = $idServicio; }
     public function setTitulo($titulo) { $this->titulo = $titulo; }
     public function setCategoria($categoria) { $this->categoria = $categoria; }
@@ -48,25 +52,27 @@ class Servicio {
     public function setDisponibilidad($disponibilidad) { $this->disponibilidad = $disponibilidad; }
     public function setDepartamento($departamento) { $this->departamento = $departamento; }
     public function setImagen($imagen) { $this->imagen = $imagen; }
+    public function setDuracion($duracion) { $this->duracion = $duracion; } // NUEVO SETTER
 
-    //  Guardar en base de datos
+    // Guardar en base de datos
     public function guardar($conn) {
-        $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, disponibilidad, departamento, imagen) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, disponibilidad, departamento, imagen, duracion) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
             die("Error al preparar la consulta: " . $conn->error);
         }
 
         $stmt->bind_param(
-            "sssdiss",
+            "sssdissi",
             $this->titulo,
             $this->categoria,
             $this->descripcion,
             $this->precio,
             $this->disponibilidad,
             $this->departamento,
-            $this->imagen
+            $this->imagen,
+            $this->duracion
         );
 
         if ($stmt->execute()) {
@@ -76,7 +82,7 @@ class Servicio {
         }
     }
 
-    //  Obtener servicio por ID
+    // Obtener servicio por ID
     public static function obtenerPorId($conn, $idServicio) {
         $sql = "SELECT * FROM Servicio WHERE IdServicio = ?";
         $stmt = $conn->prepare($sql);
@@ -89,49 +95,48 @@ class Servicio {
         $resultado = $stmt->get_result();
 
         if ($row = $resultado->fetch_assoc()) {
-
-    
             return new Servicio(
                 $row['IdServicio'] ?? null,
                 $row['Titulo'] ?? '',
                 $row['Categoria'] ?? '',
                 $row['Descripcion'] ?? '',
                 $row['Precio'] ?? 0,
-                $row['departamento'] ?? '',           // tienen que quedar en minuscula porq asi estan en la base
-                null,                         // disponibilidad (lo dejamos null)
-                $row['imagen'] ?? ''          // tienen que quedar en minuscula porq asi estan en la base
+                $row['departamento'] ?? '',
+                null,
+                $row['imagen'] ?? '',
+                $row['duracion'] ?? 0
             );
         }
 
         return null;
     }
-// ACTUALIZAR UN SERVICIO
+
+    // Actualizar un servicio
     public function actualizar($conn) {
-    $sql = "UPDATE servicio SET 
-                Titulo = ?, 
-                Categoria = ?, 
-                Descripcion = ?, 
-                Precio = ?, 
-                departamento = ?, 
-                imagen = ?
-            WHERE idServicio = ?";
+        $sql = "UPDATE servicio SET 
+                    Titulo = ?, 
+                    Categoria = ?, 
+                    Descripcion = ?, 
+                    Precio = ?, 
+                    departamento = ?, 
+                    imagen = ?,
+                    duracion = ?
+                WHERE idServicio = ?";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param(
-        "sssdssi",
-        $this->titulo,
-        $this->categoria,
-        $this->descripcion,
-        $this->precio,
-        $this->departamento,
-        $this->imagen,
-        $this->idServicio
-    );
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param(
+            "sssdisii",
+            $this->titulo,
+            $this->categoria,
+            $this->descripcion,
+            $this->precio,
+            $this->departamento,
+            $this->imagen,
+            $this->duracion,
+            $this->idServicio
+        );
 
-    return $stmt->execute();
+        return $stmt->execute();
+    }
 }
-
-}
-
-
 ?>

@@ -63,6 +63,12 @@
                 </div>
             </div>
 
+     <label for="duracion">Duración del servicio (horas)</label>
+<input type="number" id="duracion" name="duracion" required min="0.5" step="0.5">
+
+
+
+
             <label for="descripcion">Descripción</label>
             <textarea id="descripcion" name="descripcion" rows="3" style="overflow:hidden;"></textarea>
             <div id="contador">0 / 60 palabras</div>

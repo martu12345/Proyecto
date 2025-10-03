@@ -1,6 +1,4 @@
-<?php
-
-
+<?php 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/modelos/conexion.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/modelos/servicio.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/modelos/brinda.php');
