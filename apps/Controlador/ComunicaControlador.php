@@ -1,5 +1,4 @@
 <?php
-var_dump($_POST);
 
 session_start();
 require_once '../Modelos/Comunica.php';
@@ -24,11 +23,10 @@ if ($idUsuarioEmpresa && $asunto && $contenido) {
 
     // Enviar mensaje usando la función enviar de la misma clase
     if ($mensaje->enviar($conn)) {
-        header("Location: /Proyecto/apps/vistas/paginas/cliente/bandeja.php?exito=1");
-        exit();
+        echo "ok";
     } else {
-        echo "Error al enviar mensaje";
+        echo "error";
     }
 } else {
-    echo "Datos incompletos";
+    echo "incompleto";
 }
