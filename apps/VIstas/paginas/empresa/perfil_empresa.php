@@ -5,6 +5,8 @@ $seccion = $_GET['seccion'] ?? 'perfil';
 if ($seccion === "null") {
     $seccion = 'perfil';
 }
+$_SESSION['idEmpresa'] = $empresa->getIdUsuario();
+ 
 ?>
 
 <!DOCTYPE html>

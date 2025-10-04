@@ -62,16 +62,24 @@ class Comunica
     }
 
     //funcion para obtener msj por empresa
-function obtenerMensajesPorConversacion($idEmpresa, $idUsuarioCliente) {
-    $sql = "SELECT c.idMensaje, c.mensaje, c.fecha, 
-                   u.nombre AS emisor
+public static function obtenerMensajesParaEmpresa($conn, $idEmpresa) {
+    $sql = "SELECT 
+                c.idMensaje,
+                c.contenido AS mensaje,
+                c.FechaHora AS fecha,
+                CASE 
+                    WHEN c.idUsuarioEmisor = c.idUsuarioCliente THEN CONCAT(cl.nombre, ' ', cl.apellido)
+                    ELSE e.nombreEmpresa
+                END AS emisor,
+                c.idUsuarioEmisor
             FROM comunica c
-            JOIN usuario u ON c.idUsuarioEmisor = u.IdUsuario
-            WHERE c.idEmpresa = ? AND c.idUsuarioCliente = ?
-            ORDER BY c.fecha ASC";
+            LEFT JOIN cliente cl ON c.idUsuarioEmisor = cl.idUsuario
+            LEFT JOIN empresa e ON c.idUsuarioEmisor = e.idUsuario
+            WHERE c.idUsuarioEmpresa = ?
+            ORDER BY c.FechaHora ASC";
 
-    $stmt = $this->conexion->prepare($sql);
-    $stmt->bind_param("ii", $idEmpresa, $idUsuarioCliente);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idEmpresa);
     $stmt->execute();
     $resultado = $stmt->get_result();
 
@@ -79,8 +87,10 @@ function obtenerMensajesPorConversacion($idEmpresa, $idUsuarioCliente) {
     while ($fila = $resultado->fetch_assoc()) {
         $mensajes[] = $fila;
     }
-
     return $mensajes;
 }
+
+
+
 }
 
