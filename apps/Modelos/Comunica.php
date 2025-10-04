@@ -31,7 +31,7 @@ class Comunica
     public function getAsunto() { return $this->asunto; }
     public function getContenido() { return $this->contenido; }
     public function getFecha() { return $this->fecha; }
-    public function getIdUsuarioEmisor() { return $this->IdUsuarioEmisor; }
+public function getIdUsuarioEmisor() { return $this->idUsuarioEmisor; }
 
     // Setters
     public function setIdUsuarioCliente($idUsuarioCliente) { $this->idUsuarioCliente = $idUsuarioCliente; }
