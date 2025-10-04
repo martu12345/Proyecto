@@ -33,8 +33,8 @@
     </div>
 
     <div class="botones-perfil">
-        <label id="btnEditar">Editar</label>
-        <button type="submit" id="btnGuardar">Guardar</button>
-        <label id="btnCancelar">Cancelar</label>
-    </div>
+    <button type="button" id="btnEditar">Editar</button>
+    <button type="submit" id="btnGuardar">Guardar</button>
+    <button type="button" id="btnCancelar">Cancelar</button>
+</div>
 </form>
