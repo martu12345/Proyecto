@@ -1,22 +1,28 @@
 <?php
-class Administrador
+require_once('Usuario.php');
+require_once('Telefono.php');
+
+class Administrador extends Usuario
 {
-    private $idUsuario;
 
-    public function __construct($idUsuario)
+    public function __construct($idUsuario, $email, $contrasena)
     {
-        $this->idUsuario = $idUsuario;
+        parent::__construct($idUsuario, $email, $contrasena);
     }
 
-    // Getter
-    public function getIdUsuario()
+
+        public function guardarAdministrador($conn, $telefono = null)
     {
-        return $this->idUsuario;
+        if (parent::guardar($conn)) {
+            $this->idUsuario = $conn->insert_id;
+            $sql = "INSERT INTO administrador (IdUsuario) VALUES (?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $this->idUsuario);
+            Telefono::insertarTelefono($conn, $this->idUsuario, $telefono);
+            return $stmt->execute();
+        } else {
+            return false;
+        }
     }
 
-    // Setter
-    public function setIdUsuario($idUsuario)
-    {
-        $this->idUsuario = $idUsuario;
-    }
 }

@@ -68,6 +68,17 @@ if ($resAdmin && $resAdmin->num_rows > 0) {
 }
 $stmtAdmin->close();
 
+// Propietario
+$stmtPropietario = $conn->prepare("SELECT 1 FROM propietario WHERE idUsuario = ?");
+$stmtPropietario->bind_param("i", $idUsuario);
+$stmtPropietario->execute();
+$resPropietario = $stmtAdmin->get_result();
+if ($resPropietario && $resAdmin->num_rows > 0) {
+    $rol = 'propietario';
+    $redirect = '/Proyecto/apps/vistas/paginas/propietario/home_propietario.php';
+}
+$stmtAdmin->close();
+
 // Guardamos rol en sesión para usarlo en el navbar
 $_SESSION['rol'] = $rol;
 
