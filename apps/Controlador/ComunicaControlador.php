@@ -14,12 +14,13 @@ $idUsuarioCliente = $_SESSION['idUsuario'];
 $idUsuarioEmpresa = $_POST['empresa_id'] ?? null;
 $asunto = $_POST['asunto'] ?? '';
 $contenido = $_POST['contenido'] ?? '';
+$idUsuarioEmisor = $_SESSION['idUsuario']; 
 
 if ($idUsuarioEmpresa && $asunto && $contenido) {
     $fecha = date("Y-m-d H:i:s");
 
     // Crear objeto Comunica con asunto
-    $mensaje = new Comunica($idUsuarioCliente, $idUsuarioEmpresa, 0, $asunto, $contenido, $fecha);
+    $mensaje = new Comunica($idUsuarioCliente, $idUsuarioEmpresa, 0, $asunto, $contenido, $fecha, $idUsuarioEmisor);
 
     // Enviar mensaje usando la función enviar de la misma clase
     if ($mensaje->enviar($conn)) {
