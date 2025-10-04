@@ -1,18 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    // --- ELEMENTOS DEL PERFIL ---
     const btnEditar = document.getElementById("btnEditar");
     const btnGuardar = document.getElementById("btnGuardar");
     const btnCancelar = document.getElementById("btnCancelar");
     const campos = document.querySelectorAll(".campo-perfil");
     const form = document.getElementById("formPerfilEmpresa");
-    const emailInput = document.querySelector('input[name="email"]'); 
 
-    if(!emailInput){
-        console.error("No se encontró el input de email");
-        return;
-    }
-
+    // --- Previene envío accidental del form ---
     form.addEventListener("submit", function(e){
         e.preventDefault();
     });
@@ -40,42 +34,23 @@ document.addEventListener("DOMContentLoaded", function () {
         btnCancelar.style.display = "none";
     });
 
-    // --- GUARDAR DATOS ---
     btnGuardar.addEventListener("click", (e) => {
         e.preventDefault();
 
         const formData = new FormData(form);
-        const email = formData.get("email")?.trim();
 
-        // Validaciones
-        if (!email) {
+        if (!formData.get("email")) {
             alert("El email es obligatorio");
-            emailInput.focus();
             return;
         }
 
-        const emailValido = /^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com)$/i;
-        if (!emailValido.test(email)) {
-            alert("El email debe terminar en @gmail.com o @hotmail.com");
-            emailInput.focus();
-            return;
-        }
-
-        // Fetch para guardar datos
         fetch("/Proyecto/apps/controlador/empresa/EditarEmpresaControlador.php", {
             method: "POST",
             body: formData
         })
-        .then(async res => {
-            const text = await res.text();
-            try {
-                return JSON.parse(text);
-            } catch(err){
-                throw new Error("Respuesta no es JSON: " + text);
-            }
-        })
+        .then(res => res.json())
         .then(data => {
-            if(data.ok){
+            if (data.ok) {
                 campos.forEach(campo => {
                     const input = campo.querySelector(".input-campo");
                     const texto = campo.querySelector(".texto");
@@ -87,12 +62,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 btnEditar.style.display = "inline-block";
                 btnGuardar.style.display = "none";
                 btnCancelar.style.display = "none";
-                console.log("Datos guardados correctamente");
             } else {
                 alert("Error al guardar: " + (data.error || "Desconocido"));
             }
         })
-        .catch(err => console.error("Error fetch guardar datos:", err));
+        .catch(err => console.error("Error fetch:", err));
     });
 
     // --- SUBIR FOTO ---
@@ -103,33 +77,23 @@ document.addEventListener("DOMContentLoaded", function () {
     fotoCirculo.addEventListener('click', () => fotoInput.click());
 
     fotoInput.addEventListener('change', function() {
-        if(!fotoInput.files.length) return;
+        const formData = new FormData(formFoto);
 
-        const formDataFoto = new FormData(formFoto);
-
-        fetch(formFoto.action, { method: 'POST', body: formDataFoto })
-        .then(async res => {
-            const text = await res.text();
-            try {
-                return JSON.parse(text);
-            } catch(e) {
-                throw new Error("Respuesta no es JSON: " + text);
-            }
-        })
+        fetch(formFoto.action, { method: 'POST', body: formData })
+        .then(res => res.json())
         .then(data => {
             if(data.ok){
-                let img = fotoCirculo.querySelector('img.foto-perfil');
+                const img = fotoCirculo.querySelector('img.foto-perfil');
                 if(img){
                     img.src = `/Proyecto/public/imagen/empresas/${data.imagen}?t=${Date.now()}`;
                 } else {
                     fotoCirculo.innerHTML = `<img src="/Proyecto/public/imagen/empresas/${data.imagen}?t=${Date.now()}" class="foto-perfil" alt="Foto Empresa"><span class="cambiar-foto">+</span>`;
                 }
-                console.log("Foto subida correctamente:", data.imagen);
             } else {
                 alert('Error al subir la foto: ' + data.error);
             }
         })
-        .catch(err => console.error("Error fetch subir foto:", err));
+        .catch(err => console.error(err));
     });
 
     // --- CAMBIO DE SECCIÓN ---
@@ -139,13 +103,15 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             const seccion = this.getAttribute('data-seccion');
 
+            // Cambiar clase activa
             opciones.forEach(o => o.classList.remove('activa'));
             this.classList.add('activa');
 
+            // Recargar página con la sección correspondiente
             const url = new URL(window.location.href);
             url.searchParams.set('seccion', seccion);
             window.location.href = url.toString();
         });
     });
 
-}); 
+});

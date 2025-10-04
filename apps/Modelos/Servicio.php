@@ -26,7 +26,7 @@ class Servicio {
         $this->precio = $precio;
         $this->departamento = $departamento;
         $this->imagen = $imagen;
-        $this->duracion = $duracion; /
+        $this->duracion = $duracion; 
     }
 
     // Getters

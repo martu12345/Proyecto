@@ -18,12 +18,24 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
-.imagen-servicio {
+/* Contenedor de la imagen para mantener el espacio */
+.imagen-servicio-contenedor {
     width: 130px;
     height: 130px;
-    object-fit: cover;
     border-radius: 12px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FFF; /* color neutro si no hay imagen */
+}
+
+.imagen-servicio {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block; /* asegura que la imagen se comporte como bloque */
 }
 
 .info-servicio {
@@ -97,6 +109,11 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
+    }
+
+    .imagen-servicio-contenedor {
+        width: 100%;
+        height: auto;
     }
 
     .imagen-servicio {

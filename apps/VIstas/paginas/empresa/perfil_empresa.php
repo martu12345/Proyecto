@@ -4,10 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/empresa/Per
 $seccion = $_GET['seccion'] ?? 'perfil';
 if ($seccion === "null") {
     $seccion = 'perfil';
-
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -52,6 +49,7 @@ if ($seccion === "null") {
                     <a href="?seccion=perfil" data-seccion="perfil" class="opcion <?php echo $seccion == 'perfil' ? 'activa' : ''; ?>">Mi perfil</a>
                     <a href="?seccion=mensajes" data-seccion="mensajes" class="opcion <?php echo $seccion == 'mensajes' ? 'activa' : ''; ?>">Mensajes</a>
                     <a href="?seccion=servicios" data-seccion="servicios" class="opcion <?php echo $seccion == 'servicios' ? 'activa' : ''; ?>">Servicios</a>
+                    <a href="?seccion=agendados" data-seccion="agendados" class="opcion <?php echo $seccion == 'agendados' ? 'activa' : ''; ?>">Agendados</a>
                 </div>
 
             </div>
@@ -60,20 +58,22 @@ if ($seccion === "null") {
                 <?php
                 // Cargar la sección correspondiente
                 switch ($seccion) {
-    case 'perfil':
-        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/datos.php';
-        break;
-    case 'mensajes':
-        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/mensajes.php';
-        break;
-    case 'servicios':
-        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/servicios.php';
-        break;
-    default:
-        echo "<p>Sección no encontrada</p>";
-}
-
-?> 
+                    case 'perfil':
+                        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/datos.php';
+                        break;
+                    case 'mensajes':
+                        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/mensajes.php';
+                        break;
+                    case 'servicios':
+                        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/servicios.php';
+                        break;
+                    case 'agendados':
+                        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/agendados.php';
+                        break;
+                    default:
+                        echo "<p>Sección no encontrada</p>";
+                }
+                ?> 
             </div>
 
         </div>

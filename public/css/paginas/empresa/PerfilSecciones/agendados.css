@@ -1,0 +1,109 @@
+/* Contenedor general */
+.agendados-container {
+    margin-top: 20px;
+    width: 100%;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Botones de filtro */
+.botones-filtro {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.filtro-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #f0f0f0;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.filtro-btn:hover {
+    background: #e0e0e0;
+}
+
+.filtro-btn.activa {
+    background: #007bff;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,123,255,0.4);
+}
+
+/* Tablas */
+.tabla-agendados {
+     display: none; /* Todas ocultas por defecto */
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px; /* espacio entre filas */
+    margin-bottom: 30px;
+}
+.tabla-agendados.activa {
+    display: table; /* Solo la activa se ve */
+}
+
+.tabla-agendados th, .tabla-agendados td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 8px;
+}
+
+.tabla-agendados thead th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+/* Hover de filas */
+.tabla-agendados tbody tr:hover td {
+    background-color: #f0f8ff;
+}
+
+/* Botones dentro de la tabla */
+.btn-aceptar, .btn-rechazar {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+}
+
+.btn-aceptar {
+    background-color: #28a745;
+    color: white;
+    box-shadow: 0 2px 5px rgba(40,167,69,0.4);
+}
+
+.btn-aceptar:hover {
+    background-color: #218838;
+}
+
+.btn-rechazar {
+    background-color: #dc3545;
+    color: white;
+    margin-left: 5px;
+    box-shadow: 0 2px 5px rgba(220,53,69,0.4);
+}
+
+.btn-rechazar:hover {
+    background-color: #c82333;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tabla-agendados th, .tabla-agendados td {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    .filtro-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+}

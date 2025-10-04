@@ -13,12 +13,12 @@ $servicios = Brinda::obtenerServiciosPorEmpresa($conn, $idUsuario);
     <?php foreach ($servicios as $servicio): ?>
         <div class="servicio">
             <?php $imagen = $servicio->getImagen(); ?>
-            <?php if (!empty($imagen)): ?>
-                <img src="/Proyecto/public/imagen/servicios/<?= htmlspecialchars($imagen) ?>"
-                    alt="<?= htmlspecialchars($servicio->getTitulo()) ?>" class="imagen-servicio">
-            <?php else: ?>
-                <img src="/Proyecto/public/imagen/servicios/placeholder.png" alt="Sin imagen" class="imagen-servicio">
-            <?php endif; ?>
+            <div class="imagen-servicio-contenedor">
+                <?php if (!empty($imagen)): ?>
+                    <img src="/Proyecto/public/imagen/servicios/<?= htmlspecialchars($imagen) ?>"
+                        alt="<?= htmlspecialchars($servicio->getTitulo()) ?>" class="imagen-servicio">
+                <?php endif; ?>
+            </div>
 
             <div class="info-servicio">
                 <div class="texto-servicio">
@@ -50,5 +50,4 @@ $servicios = Brinda::obtenerServiciosPorEmpresa($conn, $idUsuario);
 <!-- inlcuimos el modal  -->
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/modal_servicio.php'; ?>
 <link rel="stylesheet" href="/Proyecto/public/css/layout/modal_servicio.css">
-
-<script  src="/Proyecto/public/js/empresa/editar_servicios.js"></script>
+<script src="/Proyecto/public/js/empresa/editar_servicios.js"></script>

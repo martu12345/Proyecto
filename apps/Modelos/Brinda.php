@@ -79,7 +79,6 @@ class Brinda
                 $fila['Descripcion'],
                 $fila['Precio'],
                 $fila['departamento'],
-                $fila['disponibilidad'],
                 $fila['imagen']
             );
         }
