@@ -1,4 +1,3 @@
-/* Fuente general y fondo */
 body, html {
     margin: 0;
     padding: 0;
@@ -6,13 +5,11 @@ body, html {
     background: linear-gradient(135deg, #ff914d, #ffb27d);
 }
 
-/* Contenedor general */
 .agendados-container {
     margin-top: 20px;
     width: 100%;
 }
 
-/* Botones de filtro */
 .botones-filtro {
     margin-bottom: 20px;
     display: flex;
@@ -27,11 +24,11 @@ body, html {
     font-weight: bold;
     color: #333;
     transition: all 0.3s ease;
-    box-shadow: none; /* sin sombra */
+    box-shadow: none;
 }
 
 .filtro-btn:hover {
-    background: #ff914d;
+    background: #a2db80;
     color: #fff;
 }
 
@@ -40,7 +37,6 @@ body, html {
     color: white;
 }
 
-/* Tablas */
 .tabla-agendados {
     display: none;
     width: 100%;
@@ -53,7 +49,7 @@ body, html {
     border: 1px solid #ddd;
     text-align: center;
     background-color: #fff;
-    border-radius: 0; /* esquinas cuadradas */
+    border-radius: 0;
 }
 
 .tabla-agendados thead th {
@@ -65,14 +61,13 @@ body, html {
     background-color: #f5f5f5;
 }
 
-/* Botones dentro de la tabla */
 .btn-aceptar, .btn-rechazar {
     padding: 6px 14px;
     border: none;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.2s ease;
-    border-radius: 0; /* esquinas cuadradas */
+    border-radius: 0;
 }
 
 .btn-aceptar {
@@ -94,7 +89,6 @@ body, html {
     background-color: #c82333;
 }
 
-/* Modal */
 .modal {
     display: none;
     position: fixed; 
@@ -112,50 +106,96 @@ body, html {
     background-color: #fff;
     padding: 30px 20px;
     width: 320px;
+    max-width: 90%;
     text-align: center;
     position: relative;
-    box-shadow: none; /* sin sombra */
-    border-radius: 0; /* esquinas cuadradas */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: #333;
 }
 
 .close {
     position: absolute;
-    top: 10px; right: 15px;
+    top: 12px;
+    right: 15px;
     cursor: pointer;
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
+    color: #333;
+    transition: color 0.2s ease;
 }
 
-/* Botones del modal */
-#btnConfirmar, #btnCancelarModal {
-    margin: 5px;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 0; /* esquinas cuadradas */
-    font-family: 'Lexend', sans-serif;
-    font-weight: bold;
+.close:hover {
+    color: #ff914d;
 }
 
 #btnConfirmar {
+    margin-top: 15px;
     background-color: #ff914d;
     color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    align-self: flex-end;
 }
 
 #btnConfirmar:hover {
     background-color: #e7620f;
 }
 
-#btnCancelarModal {
-    background-color: #dc3545;
+#modalRechazo .modal-content {
+    padding: 25px 20px 40px 20px; 
+    text-align: left;
+}
+
+#modalRechazo .usuario-email {
+    color: #ff914d;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+#formRechazo textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-family: 'Lexend', sans-serif;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+#formRechazo .boton-envio {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#formRechazo button[type="submit"] {
+    background-color: #ff914d;
     color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
 }
 
-#btnCancelarModal:hover {
-    background-color: #c82333;
+#formRechazo button[type="submit"]:hover {
+    background-color: #e7620f;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .tabla-agendados th, .tabla-agendados td {
         padding: 8px 10px;
@@ -167,7 +207,7 @@ body, html {
         font-size: 14px;
     }
 
-    #modalConfirmar .modal-content {
+    .modal-content {
         width: 90%;
         padding: 20px 15px;
     }

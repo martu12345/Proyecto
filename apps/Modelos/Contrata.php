@@ -103,7 +103,6 @@ class Contrata
         return $resultado;
     }
 
-    // MÉTODO PARA VERIFICAR DISPONIBILIDAD
     public static function estaDisponible($conn, $idServicio, $fecha, $hora, $duracion)
     {
         $stmt = $conn->prepare("
@@ -134,7 +133,6 @@ class Contrata
         return true;
     }
 
-    // OBTENER CITAS POR SERVICIO
     public static function obtenerCitasPorServicio($conn, $idServicio)
     {
         $stmt = $conn->prepare("
@@ -167,14 +165,13 @@ class Contrata
     $stmt->close();
 
     if ($fila) {
-        // Pasar todos los datos al constructor
         $contrata = new Contrata(
             $fila['IdUsuario'],
             $fila['IdServicio'],
             $fila['IdCita'],
             $fila['Fecha'],
             $fila['Hora'],
-            $fila['Calificacion'] ?? null, // si la columna puede ser null
+            $fila['Calificacion'] ?? null, 
             $fila['Resena'] ?? null,
             $fila['Estado']
         );
@@ -183,7 +180,6 @@ class Contrata
     return null;
 }
 
-// Actualizar estado sigue igual, solo asegúrate que idCita está seteado
 public function actualizarEstado($conn, $nuevoEstado)
 {
     $stmt = $conn->prepare("
@@ -201,11 +197,12 @@ public function actualizarEstado($conn, $nuevoEstado)
 
     
 
-   public static function obtenerAgendadosPorEmpresa($conn, $idUsuario)
+public static function obtenerAgendadosPorEmpresa($conn, $idUsuario)
 {
     $stmt = $conn->prepare("
         SELECT 
             c.IdCita, c.Fecha, c.Hora, c.Estado,
+            c.Calificacion, c.Resena,          -- <- Asegurate que estén acá
             s.Titulo AS NombreServicio,
             u.Email AS NombreCliente
         FROM Contrata c
@@ -229,6 +226,32 @@ public function actualizarEstado($conn, $nuevoEstado)
     return $agendados;
 }
 
+
+
+public static function finalizarServiciosVencidos($conn) {
+    date_default_timezone_set('America/Montevideo');
+    $now = date('Y-m-d H:i:s');
+
+    $sql = "UPDATE Contrata c
+            JOIN Servicio s ON c.IdServicio = s.IdServicio
+            SET c.Estado = 'Finalizado'
+            WHERE c.Estado = 'En proceso'
+              AND DATE_ADD(STR_TO_DATE(CONCAT(c.Fecha, ' ', c.Hora), '%Y-%m-%d %H:%i:%s'), INTERVAL s.Duracion HOUR) <= ?";
+
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        error_log("Error preparando la consulta: " . $conn->error);
+        return 0;
+    }
+
+    $stmt->bind_param("s", $now);
+    $stmt->execute();
+
+    $afectados = $stmt->affected_rows;
+    $stmt->close();
+
+    return $afectados;
+}
 
 
 }

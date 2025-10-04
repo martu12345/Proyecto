@@ -19,7 +19,9 @@ if ($seccion === "null") {
     <link rel="stylesheet" href="/Proyecto/public/css/layout/footer.css">
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/empresa/perfil_empresa.css">
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/empresa/perfilsecciones/servicios.css">
-        <link rel="stylesheet" href="/Proyecto/public/css/paginas/empresa/perfilsecciones/agendados.css">
+    <link rel="stylesheet" href="/Proyecto/public/css/paginas/empresa/perfilsecciones/agendados.css">
+    <link rel="stylesheet" href="/Proyecto/public/css/paginas/empresa/perfilsecciones/historial.css">
+
 
 </head>
 
@@ -52,13 +54,14 @@ if ($seccion === "null") {
                     <a href="?seccion=mensajes" data-seccion="mensajes" class="opcion <?php echo $seccion == 'mensajes' ? 'activa' : ''; ?>">Mensajes</a>
                     <a href="?seccion=servicios" data-seccion="servicios" class="opcion <?php echo $seccion == 'servicios' ? 'activa' : ''; ?>">Servicios</a>
                     <a href="?seccion=agendados" data-seccion="agendados" class="opcion <?php echo $seccion == 'agendados' ? 'activa' : ''; ?>">Agendados</a>
+                    <a href="?seccion=historial" data-seccion="historial" class="opcion <?php echo $seccion == 'historial' ? 'activa' : ''; ?>">Historial</a>
+
                 </div>
 
             </div>
 
             <div class="perfil-info" id="contenido-seccion">
                 <?php
-                // Cargar la sección correspondiente
                 switch ($seccion) {
                     case 'perfil':
                         include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/datos.php';
@@ -72,10 +75,13 @@ if ($seccion === "null") {
                     case 'agendados':
                         include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/agendados.php';
                         break;
+                    case 'historial':
+                        include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/perfilsecciones/historial.php';
+                        break;
                     default:
                         echo "<p>Sección no encontrada</p>";
                 }
-                ?> 
+                ?>
             </div>
 
         </div>

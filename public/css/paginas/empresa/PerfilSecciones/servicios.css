@@ -1,4 +1,3 @@
-/* Estilos principales */
 .servicio {
     display: flex;
     flex-direction: row;
@@ -18,7 +17,6 @@
     box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
-/* Contenedor de la imagen para mantener el espacio */
 .imagen-servicio-contenedor {
     width: 130px;
     height: 130px;
@@ -27,7 +25,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #FFF; /* color neutro si no hay imagen */
+    background-color: #FFF; 
 }
 
 .imagen-servicio {
@@ -35,7 +33,7 @@
     height: 100%;
     object-fit: cover;
     border-radius: 12px;
-    display: block; /* asegura que la imagen se comporte como bloque */
+    display: block; 
 }
 
 .info-servicio {
@@ -98,7 +96,6 @@
     color: #000;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .servicio {
         flex-direction: column;

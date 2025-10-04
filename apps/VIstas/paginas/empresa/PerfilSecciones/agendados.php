@@ -8,13 +8,11 @@ $empresa = Empresa::obtenerPorId($conn, $_SESSION['idUsuario'] ?? 0);
 
 <h2>Agendados</h2>
 
-<!-- Botones de filtro -->
 <div class="botones-filtro">
     <button class="filtro-btn activa" data-estado="Pendiente">Pendiente</button>
     <button class="filtro-btn" data-estado="En proceso">En Proceso</button>
 </div>
 
-<!-- Tablas -->
 <div class="agendados-container">
 
     <!-- Tabla de pendientes -->
@@ -54,7 +52,21 @@ $empresa = Empresa::obtenerPorId($conn, $_SESSION['idUsuario'] ?? 0);
         <h2>Confirmar Servicio</h2>
         <p id="detalleServicio"></p>
         <button id="btnConfirmar">Confirmar</button>
-        <button id="btnCancelarModal">Cancelar</button>
+    </div>
+</div>
+
+<!-- Modal de rechazo con mensaje -->
+<div id="modalRechazo" class="modal">
+    <div class="modal-content">
+        <span class="close cerrar">&times;</span>
+        <h2>Rechazar Reserva</h2>
+        <p>Enviar mensaje al cliente: <strong id="clienteNombre"></strong></p>
+        <form id="formRechazo">
+            <textarea id="contenido" placeholder="Escribe el mensaje..." maxlength="1000" required></textarea>
+            <p id="contadorMensaje">0 / 1000 caracteres</p>
+            <input type="hidden" id="idContrataInput">
+            <button type="submit">Enviar Rechazo</button>
+        </form>
     </div>
 </div>
 
@@ -104,7 +116,7 @@ function cargarAgendados() {
             }
         });
 
-        // ---- Mostrar automáticamente la tabla correspondiente ----
+        // Mostrar automáticamente la tabla correspondiente
         const btnActivo = document.querySelector('.filtro-btn.activa');
         const estadoActivo = btnActivo ? btnActivo.dataset.estado : "Pendiente";
         document.getElementById('tablaPendiente').style.display = estadoActivo === "Pendiente" ? 'table' : 'none';
@@ -113,8 +125,6 @@ function cargarAgendados() {
     .catch(err => console.error('Error al cargar agendados:', err));
 }
 
-
-// Cambiar entre tablas
 document.querySelectorAll('.filtro-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('activa'));
@@ -126,8 +136,8 @@ document.querySelectorAll('.filtro-btn').forEach(btn => {
     });
 });
 
-// Manejo de botones Aceptar/Rechazar
 document.addEventListener('click', function(e){
+    // --- Aceptar ---
     if(e.target.classList.contains('btn-aceptar')){
         filaSeleccionada = e.target.closest('tr');
         const servicio = filaSeleccionada.children[0].innerText;
@@ -144,24 +154,19 @@ document.addEventListener('click', function(e){
         document.getElementById('modalConfirmar').style.display = 'flex';
     }
 
+    // --- Rechazar --- 
     if(e.target.classList.contains('btn-rechazar')){
-        const fila = e.target.closest('tr');
-        const idContrata = fila.dataset.id;
-        fetch('/Proyecto/apps/controlador/empresa/AgendadosControlador.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `idContrata=${idContrata}&accion=rechazar`
-        })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success) cargarAgendados();
-            else alert(data.error || 'Error al actualizar estado');
-        })
-        .catch(err => console.error(err));
+        filaSeleccionada = e.target.closest('tr');
+        const idContrata = filaSeleccionada.dataset.id;
+        const clienteNombre = filaSeleccionada.children[1].innerText;
+
+        document.getElementById('modalRechazo').style.display = 'flex';
+        document.getElementById('clienteNombre').innerText = clienteNombre;
+        document.getElementById('idContrataInput').value = idContrata;
     }
 });
 
-// Confirmar modal
+// --- Confirmar reserva ---
 document.getElementById('btnConfirmar').addEventListener('click', function(){
     if(!filaSeleccionada) return;
     const idContrata = filaSeleccionada.dataset.id;
@@ -183,16 +188,51 @@ document.getElementById('btnConfirmar').addEventListener('click', function(){
     });
 });
 
-// Cerrar modal
-document.getElementById('cerrarModal').addEventListener('click', () => {
-    document.getElementById('modalConfirmar').style.display = 'none';
-    filaSeleccionada = null;
-});
-document.getElementById('btnCancelarModal').addEventListener('click', () => {
-    document.getElementById('modalConfirmar').style.display = 'none';
-    filaSeleccionada = null;
+// --- Enviar rechazo ---
+document.getElementById('formRechazo').addEventListener('submit', function(e){
+    e.preventDefault();
+    const idContrata = document.getElementById('idContrataInput').value;
+    const contenido = document.getElementById('contenido').value.trim();
+    const asunto = 'Rechazo de reserva';
+
+    if(!contenido){
+        alert('Debes escribir un mensaje de rechazo');
+        return;
+    }
+
+    fetch('/Proyecto/apps/controlador/empresa/RechazoControlador.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `idContrata=${idContrata}&asunto=${encodeURIComponent(asunto)}&contenido=${encodeURIComponent(contenido)}`
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            cargarAgendados();
+            document.getElementById('modalRechazo').style.display = 'none';
+            document.getElementById('formRechazo').reset();
+        } else {
+            alert(data.error || 'Error al enviar rechazo');
+        }
+    })
+    .catch(err => console.error(err));
 });
 
-// Inicial: cargar agendados
+document.querySelectorAll('.modal .close, .modal .cerrar').forEach(span => {
+    span.addEventListener('click', () => {
+        document.querySelectorAll('.modal').forEach(modal => modal.style.display = 'none');
+        filaSeleccionada = null;
+    });
+});
+
+const contenidoTextarea = document.getElementById('contenido');
+const contador = document.getElementById('contadorMensaje');
+if(contenidoTextarea){
+    contenidoTextarea.addEventListener('input', () => {
+        contador.textContent = `${contenidoTextarea.value.length} / 1000 caracteres`;
+    });
+}
+
 cargarAgendados();
+
 </script>

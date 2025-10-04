@@ -45,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 if ($choque) {
-                    // Ordenar ocupados
                     usort($ocupadosDia, fn($a, $b) => $a['inicio'] - $b['inicio']);
                     // Calcular horarios libres
                     $libres = [];
@@ -70,18 +69,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     // Guardar cita con estado inicial "Pendiente"
                     $cita = new Contrata(
-                        $idUsuario,   // IdUsuario
-                        $idServicio,  // IdServicio
+                        $idUsuario,   
+                        $idServicio,  
                         null,         // IdCita
-                        $dia,         // Fecha
-                        $hora,        // Hora
+                        $dia,         
+                        $hora,        
                         null,         // Calificación
                         null,         // Reseña
                         'Pendiente'   // Estado inicial
                     );
 
                     if ($cita->guardar($conn)) {
-                        // Guardamos datos en sesión para la confirmación
                         $_SESSION['confirmacionServicio'] = [
                             'titulo' => $servicio->getTitulo(),
                             'dia' => $dia,
@@ -98,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Obtener datos del servicio para mostrar en la página
+// Obtener datos del servicio 
 $servicio = Servicio::obtenerPorId($conn, $_GET['idServicio'] ?? null);
 if (!$servicio) die("Servicio no encontrado.");
 
