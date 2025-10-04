@@ -1,0 +1,49 @@
+/* mensajes.css */
+
+.mensajes-lista {
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.mensaje-item {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.mensaje-item strong {
+    font-size: 1.1em;
+    color: #333;
+}
+
+.mensaje-item .preview {
+    display: block;
+    margin: 5px 0;
+    color: #555;
+}
+
+.mensaje-item .fecha {
+    font-size: 0.85em;
+    color: #999;
+}
+
+.mensaje-item a {
+    display: inline-block;
+    margin-top: 5px;
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.mensaje-item a:hover {
+    color: #0056b3;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 10px 0;
+}
