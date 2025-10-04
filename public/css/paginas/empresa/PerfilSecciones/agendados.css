@@ -1,8 +1,15 @@
+/* Fuente general y fondo */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lexend', sans-serif;
+    background: linear-gradient(135deg, #ff914d, #ffb27d);
+}
+
 /* Contenedor general */
 .agendados-container {
     margin-top: 20px;
     width: 100%;
-    font-family: 'Arial', sans-serif;
 }
 
 /* Botones de filtro */
@@ -15,35 +22,30 @@
 .filtro-btn {
     padding: 10px 20px;
     border: none;
-    border-radius: 8px;
     cursor: pointer;
     background: #f0f0f0;
-    transition: all 0.3s ease;
     font-weight: bold;
     color: #333;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    box-shadow: none; /* sin sombra */
 }
 
 .filtro-btn:hover {
-    background: #e0e0e0;
+    background: #ff914d;
+    color: #fff;
 }
 
 .filtro-btn.activa {
-    background: #007bff;
+    background: #ff914d;
     color: white;
-    box-shadow: 0 4px 10px rgba(0,123,255,0.4);
 }
 
 /* Tablas */
 .tabla-agendados {
-     display: none; /* Todas ocultas por defecto */
+    display: none;
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 8px; /* espacio entre filas */
+    border-collapse: collapse; 
     margin-bottom: 30px;
-}
-.tabla-agendados.activa {
-    display: table; /* Solo la activa se ve */
 }
 
 .tabla-agendados th, .tabla-agendados td {
@@ -51,7 +53,7 @@
     border: 1px solid #ddd;
     text-align: center;
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 0; /* esquinas cuadradas */
 }
 
 .tabla-agendados thead th {
@@ -59,39 +61,97 @@
     font-weight: bold;
 }
 
-/* Hover de filas */
 .tabla-agendados tbody tr:hover td {
-    background-color: #f0f8ff;
+    background-color: #f5f5f5;
 }
 
 /* Botones dentro de la tabla */
 .btn-aceptar, .btn-rechazar {
     padding: 6px 14px;
     border: none;
-    border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
     transition: all 0.2s ease;
+    border-radius: 0; /* esquinas cuadradas */
 }
 
 .btn-aceptar {
-    background-color: #28a745;
+    background-color: #ff914d;
     color: white;
-    box-shadow: 0 2px 5px rgba(40,167,69,0.4);
 }
 
 .btn-aceptar:hover {
-    background-color: #218838;
+    background-color: #e7620f;
 }
 
 .btn-rechazar {
     background-color: #dc3545;
     color: white;
     margin-left: 5px;
-    box-shadow: 0 2px 5px rgba(220,53,69,0.4);
 }
 
 .btn-rechazar:hover {
+    background-color: #c82333;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed; 
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 30px 20px;
+    width: 320px;
+    text-align: center;
+    position: relative;
+    box-shadow: none; /* sin sombra */
+    border-radius: 0; /* esquinas cuadradas */
+}
+
+.close {
+    position: absolute;
+    top: 10px; right: 15px;
+    cursor: pointer;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* Botones del modal */
+#btnConfirmar, #btnCancelarModal {
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 0; /* esquinas cuadradas */
+    font-family: 'Lexend', sans-serif;
+    font-weight: bold;
+}
+
+#btnConfirmar {
+    background-color: #ff914d;
+    color: #fff;
+}
+
+#btnConfirmar:hover {
+    background-color: #e7620f;
+}
+
+#btnCancelarModal {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+#btnCancelarModal:hover {
     background-color: #c82333;
 }
 
@@ -105,5 +165,10 @@
     .filtro-btn {
         padding: 8px 12px;
         font-size: 14px;
+    }
+
+    #modalConfirmar .modal-content {
+        width: 90%;
+        padding: 20px 15px;
     }
 }

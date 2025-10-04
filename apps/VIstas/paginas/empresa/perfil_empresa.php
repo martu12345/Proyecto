@@ -19,6 +19,8 @@ if ($seccion === "null") {
     <link rel="stylesheet" href="/Proyecto/public/css/layout/footer.css">
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/empresa/perfil_empresa.css">
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/empresa/perfilsecciones/servicios.css">
+        <link rel="stylesheet" href="/Proyecto/public/css/paginas/empresa/perfilsecciones/agendados.css">
+
 </head>
 
 <body>
