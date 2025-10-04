@@ -21,16 +21,16 @@ $empresa = Empresa::obtenerPorId($conn, $_SESSION['idUsuario'] ?? 0);
        <tbody>
     <tr data-id="123">
         <td>
-            <strong>Servicio:</strong> Corte de pelo
+            <strong>Servicio:</strong> 
         </td>
         <td>
-            <strong>Usuario:</strong> Juan Pérez
+            <strong>Usuario:</strong> 
         </td>
         <td>
-            <strong>Fecha:</strong> 10/10/2025
+            <strong>Fecha:</strong> 
         </td>
         <td>
-            <strong>Hora:</strong> 14:00
+            <strong>Hora:</strong> 
         </td>
         <td>
             <button class="btn-aceptar">Aceptar</button>
@@ -46,16 +46,16 @@ $empresa = Empresa::obtenerPorId($conn, $_SESSION['idUsuario'] ?? 0);
         <tbody>
     <tr data-id="123">
         <td>
-            <strong>Servicio:</strong> Corte de pelo
+            <strong>Servicio:</strong> 
         </td>
         <td>
-            <strong>Usuario:</strong> Juan Pérez
+            <strong>Usuario:</strong> 
         </td>
         <td>
-            <strong>Fecha:</strong> 10/10/2025
+            <strong>Fecha:</strong> 
         </td>
         <td>
-            <strong>Hora:</strong> 14:00
+            <strong>Hora:</strong> 
         </td>
         <td>
             <button class="btn-aceptar">Aceptar</button>
