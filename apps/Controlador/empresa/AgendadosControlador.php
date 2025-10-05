@@ -38,7 +38,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         exit;
     }
 
-    $nuevoEstado = ($accion === 'aceptar') ? 'En proceso' : 'Rechazado';
+    // Aquí cambiamos 'Rechazado' a 'Cancelado'
+    $nuevoEstado = ($accion === 'aceptar') ? 'En proceso' : 'Cancelado';
 
     try {
         $exito = $cita->actualizarEstado($conn, $nuevoEstado);
@@ -51,6 +52,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         echo json_encode(['error' => $e->getMessage()]);
     }
     exit;
+
+
+    $nuevoEstado = ($accion === 'aceptar') ? 'En proceso' : 'Cancelado';
+
 }
 
 try {

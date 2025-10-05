@@ -10,12 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // --- Solo si existe el formulario ---
     if (form && btnEditar && btnGuardar && btnCancelar && campos.length > 0) {
 
-        // --- Previene envío accidental del form ---
         form.addEventListener("submit", function(e){
             e.preventDefault();
         });
 
-        // --- EDITAR DATOS ---
         btnEditar.addEventListener("click", () => {
             campos.forEach(campo => {
                 const input = campo.querySelector(".input-campo");
@@ -30,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
             btnCancelar.style.display = "inline-block";
         });
 
-        // --- CANCELAR ---
         btnCancelar.addEventListener("click", () => {
             campos.forEach(campo => {
                 const input = campo.querySelector(".input-campo");
@@ -46,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
             btnCancelar.style.display = "none";
         });
 
-        // --- GUARDAR ---
         btnGuardar.addEventListener("click", (e) => {
             e.preventDefault();
 
@@ -122,15 +118,80 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault();
             const seccion = this.getAttribute('data-seccion');
 
-            // Cambiar clase activa
             opciones.forEach(o => o.classList.remove('activa'));
             this.classList.add('activa');
 
-            // Recargar página con la sección correspondiente
             const url = new URL(window.location.href);
             url.searchParams.set('seccion', seccion);
             window.location.href = url.toString();
         });
     });
 
+    function cargarHistorial() {
+    const tbodyFinal = document.querySelector('#tablaFinalizado tbody');
+    const tbodyCancelado = document.querySelector('#tablaCancelado tbody');
+
+    if(!tbodyFinal || !tbodyCancelado) return;
+
+    fetch('/Proyecto/apps/controlador/empresa/AgendadosControlador.php')
+    .then(res => res.json())
+    .then(data => {
+        tbodyFinal.innerHTML = '';
+        tbodyCancelado.innerHTML = '';
+
+        if(data.error){
+            tbodyFinal.innerHTML = `<tr><td colspan="7">${data.error}</td></tr>`;
+            tbodyCancelado.innerHTML = `<tr><td colspan="5">${data.error}</td></tr>`;
+            return;
+        }
+
+        data.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.dataset.id = item.IdCita;
+
+            if(item.Estado === "Finalizado"){
+                tr.innerHTML = `
+                    <td>${item.NombreServicio}</td>
+                    <td>${item.NombreCliente}</td>
+                    <td>${item.Fecha}</td>
+                    <td>${item.Hora}</td>
+                    <td>${item.Estado}</td>
+                    <td>${item.Calificacion ? '⭐'.repeat(item.Calificacion) : 'No hay'}</td>
+                    <td>${item.Resena ? item.Resena : 'No hay'}</td>
+                `;
+                tbodyFinal.appendChild(tr);
+            } else if(item.Estado === "Cancelado"){
+                tr.innerHTML = `
+                    <td>${item.NombreServicio}</td>
+                    <td>${item.NombreCliente}</td>
+                    <td>${item.Fecha}</td>
+                    <td>${item.Hora}</td>
+                    <td>${item.Estado}</td>
+                `;
+                tbodyCancelado.appendChild(tr);
+            }
+        });
+
+        const btnActivo = document.querySelector('.filtro-btn.activa');
+        const estadoActivo = btnActivo ? btnActivo.dataset.estado : "Finalizado";
+        document.getElementById('tablaFinalizado').style.display = estadoActivo === "Finalizado" ? 'table' : 'none';
+        document.getElementById('tablaCancelado').style.display = estadoActivo === "Cancelado" ? 'table' : 'none';
+    })
+    .catch(err => console.error('Error al cargar historial:', err));
+}
+
+// --- Filtro de tablas ---
+document.querySelectorAll('.filtro-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('activa'));
+        btn.classList.add('activa');
+
+        const estado = btn.dataset.estado;
+        document.getElementById('tablaFinalizado').style.display = estado === "Finalizado" ? 'table' : 'none';
+        document.getElementById('tablaCancelado').style.display = estado === "Cancelado" ? 'table' : 'none';
+    });
 });
+
+// Llamada inicial
+cargarHistorial();
+}); 

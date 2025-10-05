@@ -236,7 +236,7 @@ public static function finalizarServiciosVencidos($conn) {
             JOIN Servicio s ON c.IdServicio = s.IdServicio
             SET c.Estado = 'Finalizado'
             WHERE c.Estado = 'En proceso'
-              AND DATE_ADD(STR_TO_DATE(CONCAT(c.Fecha, ' ', c.Hora), '%Y-%m-%d %H:%i:%s'), INTERVAL s.Duracion HOUR) <= ?";
+            AND DATE_ADD(STR_TO_DATE(CONCAT(c.Fecha, ' ', c.Hora), '%Y-%m-%d %H:%i:%s'), INTERVAL s.Duracion HOUR) <= ?";
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -251,6 +251,20 @@ public static function finalizarServiciosVencidos($conn) {
     $stmt->close();
 
     return $afectados;
+}
+
+public static function obtenerPorUsuarioYEstado($conn, $idUsuario, $estado) {
+    $stmt = $conn->prepare("SELECT * FROM Contrata WHERE IdUsuario = ? AND Estado = ? ORDER BY Fecha, Hora");
+    $stmt->bind_param("is", $idUsuario, $estado);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    $contratas = [];
+    while ($row = $resultado->fetch_assoc()) {
+        $contratas[] = $row;  
+    }
+    $stmt->close();
+    return $contratas;
 }
 
 

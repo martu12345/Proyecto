@@ -34,12 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cita->getIdUsuario(), 
         $idEmpresa,
         null,
-        'Rechazo de reserva',   
+        'Rechazo de reserva',   // <-- mantenemos el asunto igual
         $contenido,
         $fecha,
         $idEmpresa              
     );
-
 
     $exitoMensaje = $mensaje->enviar($conn);
 
@@ -48,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Actualizar estado de la cita a Rechazado
-    $exitoEstado = $cita->actualizarEstado($conn, 'Rechazado');
+    // Actualizar estado de la cita a Cancelado
+    $exitoEstado = $cita->actualizarEstado($conn, 'Cancelado'); // <-- solo esto cambia
 
     if ($exitoEstado) {
         echo json_encode(['success' => true]);

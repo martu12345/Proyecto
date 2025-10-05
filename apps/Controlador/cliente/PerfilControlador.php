@@ -11,7 +11,7 @@ if (!isset($_SESSION['idUsuario'])) {
 
 $idUsuario = (int)$_SESSION['idUsuario'];
 
-// Obtener datos del usuario
+// Obtener datos del cliente
 $stmt = $conn->prepare("
     SELECT u.Email, u.Contraseña, c.Nombre, c.Apellido, c.Imagen
     FROM usuario u
@@ -22,10 +22,29 @@ if(!$stmt) die("Error prepare select: ".$conn->error);
 
 $stmt->bind_param("i", $idUsuario);
 $stmt->execute();
-$datos = $stmt->get_result()->fetch_assoc();
+$result = $stmt->get_result();
+$datosCliente = $result->fetch_assoc();
 $stmt->close();
 
-if(!$datos) die("No se encontraron datos del usuario");
+if(!$datosCliente) die("No se encontraron datos del usuario");
+
+// Crear objeto Cliente (igual que en empresa)
+$cliente = new Cliente(
+    $idUsuario,
+    $datosCliente['Email'],
+    $datosCliente['Contraseña'],
+    $datosCliente['Nombre'],
+    $datosCliente['Apellido'],
+    $datosCliente['Imagen']
+);
+
+// Array $datos para la vista
+$datos = [
+    "Email" => $cliente->getEmail(),
+    "Nombre" => $cliente->getNombre(),
+    "Apellido" => $cliente->getApellido(),
+    "Imagen" => $cliente->getImagen()
+];
 
 // Subida de imagen
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
@@ -40,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && $_FILES
     if (move_uploaded_file($tmpName, $rutaFinal)) {
         $rutaRelativa = "/Proyecto/public/imagen/clientes/" . basename($rutaFinal);
 
-        $cliente = new Cliente($idUsuario, $datos['Email'], null, $datos['Nombre'], $datos['Apellido'], $rutaRelativa);
         $cliente->setImagen($rutaRelativa);
         $cliente->actualizarCliente($conn);
 

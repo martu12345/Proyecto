@@ -88,35 +88,38 @@ function cargarAgendados() {
             return;
         }
 
-        data.forEach(item => {
-            const tr = document.createElement('tr');
-            tr.dataset.id = item.IdCita;
+       data.forEach(item => {
+    const tr = document.createElement('tr');
+    tr.dataset.id = item.IdCita;
 
-            if(item.Estado === "Pendiente"){
-                tr.innerHTML = `
-                    <td>${item.NombreServicio}</td>
-                    <td>${item.NombreCliente}</td>
-                    <td>${item.Fecha}</td>
-                    <td>${item.Hora}</td>
-                    <td>
-                        <button class="btn-aceptar">Aceptar</button>
-                        <button class="btn-rechazar">Rechazar</button>
-                    </td>
-                `;
-                tbodyPend.appendChild(tr);
-            } else if(item.Estado === "En proceso"){
-                tr.innerHTML = `
-                    <td>${item.NombreServicio}</td>
-                    <td>${item.NombreCliente}</td>
-                    <td>${item.Fecha}</td>
-                    <td>${item.Hora}</td>
-                    <td>${item.Estado}</td>
-                `;
-                tbodyProc.appendChild(tr);
-            }
-        });
+    if(item.Estado === "Pendiente"){
+        tr.innerHTML = `
+            <td>${item.NombreServicio}</td>
+            <td>${item.NombreCliente}</td>
+            <td>${item.Fecha}</td>
+            <td>${item.Hora}</td>
+            <td>
+                <div class="botones-acciones">
+                    <button class="btn-aceptar">✔</button>
+                    <button class="btn-rechazar">✖</button>
+                </div>
+            </td>
+        `;
+        tbodyPend.appendChild(tr);
+    } else if(item.Estado === "En proceso"){
+        tr.innerHTML = `
+            <td>${item.NombreServicio}</td>
+            <td>${item.NombreCliente}</td>
+            <td>${item.Fecha}</td>
+            <td>${item.Hora}</td>
+            <td>${item.Estado}</td>
+        `;
+        tbodyProc.appendChild(tr);
+    }
+});
 
-        // Mostrar automáticamente la tabla correspondiente
+
+
         const btnActivo = document.querySelector('.filtro-btn.activa');
         const estadoActivo = btnActivo ? btnActivo.dataset.estado : "Pendiente";
         document.getElementById('tablaPendiente').style.display = estadoActivo === "Pendiente" ? 'table' : 'none';

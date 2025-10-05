@@ -1,3 +1,4 @@
+/* --- Reset y body --- */
 body, html {
     margin: 0;
     padding: 0;
@@ -5,11 +6,13 @@ body, html {
     background: linear-gradient(135deg, #ff914d, #ffb27d);
 }
 
+/* --- Contenedor principal --- */
 .agendados-container {
     margin-top: 20px;
     width: 100%;
 }
 
+/* --- Botones de filtro --- */
 .botones-filtro {
     margin-bottom: 20px;
     display: flex;
@@ -24,7 +27,6 @@ body, html {
     font-weight: bold;
     color: #333;
     transition: all 0.3s ease;
-    box-shadow: none;
 }
 
 .filtro-btn:hover {
@@ -37,10 +39,13 @@ body, html {
     color: white;
 }
 
+/* --- Tablas --- */
 .tabla-agendados {
     display: none;
     width: 100%;
-    border-collapse: collapse; 
+    max-width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
     margin-bottom: 30px;
 }
 
@@ -49,7 +54,7 @@ body, html {
     border: 1px solid #ddd;
     text-align: center;
     background-color: #fff;
-    border-radius: 0;
+    word-wrap: break-word;
 }
 
 .tabla-agendados thead th {
@@ -61,20 +66,30 @@ body, html {
     background-color: #f5f5f5;
 }
 
-.btn-aceptar, .btn-rechazar {
-    padding: 6px 14px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    transition: all 0.2s ease;
-    border-radius: 0;
+/* --- Botones dentro de la celda --- */
+.botones-acciones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap; /* si no entran, se mueven a la siguiente línea */
 }
 
+.btn-aceptar, .btn-rechazar {
+    padding: 6px 14px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    border: none;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* Colores */
 .btn-aceptar {
     background-color: #ff914d;
     color: white;
 }
-
 .btn-aceptar:hover {
     background-color: #e7620f;
 }
@@ -82,20 +97,19 @@ body, html {
 .btn-rechazar {
     background-color: #dc3545;
     color: white;
-    margin-left: 5px;
 }
-
 .btn-rechazar:hover {
     background-color: #c82333;
 }
 
+/* --- Modales --- */
 .modal {
     display: none;
-    position: fixed; 
+    position: fixed;
     z-index: 9999;
     left: 0;
     top: 0;
-    width: 100%; 
+    width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.5);
     justify-content: center;
@@ -137,6 +151,7 @@ body, html {
     color: #ff914d;
 }
 
+/* Botón de confirmar */
 #btnConfirmar {
     margin-top: 15px;
     background-color: #ff914d;
@@ -148,13 +163,13 @@ body, html {
     cursor: pointer;
     align-self: flex-end;
 }
-
 #btnConfirmar:hover {
     background-color: #e7620f;
 }
 
+/* Modal rechazo */
 #modalRechazo .modal-content {
-    padding: 25px 20px 40px 20px; 
+    padding: 25px 20px 40px 20px;
     text-align: left;
 }
 
@@ -196,6 +211,7 @@ body, html {
     background-color: #e7620f;
 }
 
+/* --- Responsive --- */
 @media (max-width: 768px) {
     .tabla-agendados th, .tabla-agendados td {
         padding: 8px 10px;
@@ -210,5 +226,16 @@ body, html {
     .modal-content {
         width: 90%;
         padding: 20px 15px;
+    }
+}
+
+@media (max-width: 500px) {
+    .botones-acciones {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .tabla-agendados td:last-child {
+        padding: 8px;
     }
 }

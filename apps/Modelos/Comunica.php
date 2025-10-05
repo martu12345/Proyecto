@@ -67,11 +67,13 @@ public static function obtenerMensajesParaEmpresa($conn, $idEmpresa) {
                 c.idMensaje,
                 c.contenido AS mensaje,
                 c.FechaHora AS fecha,
+                c.asunto,
                 CASE 
                     WHEN c.idUsuarioEmisor = c.idUsuarioCliente THEN CONCAT(cl.nombre, ' ', cl.apellido)
                     ELSE e.nombreEmpresa
                 END AS emisor,
-                c.idUsuarioEmisor
+                c.idUsuarioEmisor,
+                c.idUsuarioCliente
             FROM comunica c
             LEFT JOIN cliente cl ON c.idUsuarioEmisor = cl.idUsuario
             LEFT JOIN empresa e ON c.idUsuarioEmisor = e.idUsuario

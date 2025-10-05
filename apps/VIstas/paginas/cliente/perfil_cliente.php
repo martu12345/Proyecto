@@ -1,9 +1,15 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/cliente/PerfilControlador.php');
+
+$seccion = $_GET['seccion'] ?? 'perfil';
+if ($seccion === "null") {
+    $seccion = 'perfil';
+}
+$_SESSION['idCliente'] = $cliente->getIdUsuario();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,78 +17,61 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/cliente/Per
     <link rel="stylesheet" href="/Proyecto/public/css/fonts.css">
     <link rel="stylesheet" href="/Proyecto/public/css/layout/navbar.css">
     <link rel="stylesheet" href="/Proyecto/public/css/layout/footer.css">
-    <link rel="stylesheet" href="../../../../public/css/paginas/cliente/perfil_cliente.css">
+    <link rel="stylesheet" href="/Proyecto/public/css/paginas/cliente/perfil_cliente.css">
+    <link rel="stylesheet" href="/Proyecto/public/css/paginas/cliente/perfilsecciones/servicios.css">
 </head>
-
 <body>
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
-    <div class="perfil-container">
-        <div class="perfil-box">
-            <div class="perfil-opciones">
-                <form action="" method="POST" enctype="multipart/form-data">
-                    <label for="imagenInput">
-                        <?php if (!empty($datos['Imagen'])): ?>
-                            <img src="<?php echo htmlspecialchars($datos['Imagen']); ?>" class="foto-circulo" alt="Foto de perfil">
-                        <?php else: ?>
-                            <div class="foto-circulo">+</div>
-                        <?php endif; ?>
-                    </label>
-                    <input type="file" id="imagenInput" name="imagen" style="display:none;" onchange="this.form.submit()">
-                </form>
+<div class="perfil-container">
+    <div class="perfil-box">
 
+        <div class="perfil-opciones">
+            <!-- Subida de imagen -->
+            <form id="formFoto" action="/Proyecto/apps/controlador/cliente/SubirFotoControlador.php" method="POST" enctype="multipart/form-data">
+                <label for="fotoInput" class="foto-circulo">
+                    <?php if (!empty($datos['Imagen'])): ?>
+                        <img src="<?php echo htmlspecialchars($datos['Imagen']); ?>" class="foto-perfil" alt="Foto Cliente">
+                    <?php else: ?>
+                        +
+                    <?php endif; ?>
+                </label>
+                <input type="file" id="fotoInput" name="imagen" accept="image/*" style="display:none;" onchange="this.form.submit()">
+            </form>
 
-                <div class="nombre-usuario" id="nombreColumna">
-                    <?php echo htmlspecialchars($datos['Nombre'] . ' ' . $datos['Apellido']); ?>
-                </div>
-                <div class="opciones-lista">
-                    <a href="#" class="opcion activa">Mi perfil</a>
-                    <a href="#" class="opcion">Mensajes</a>
-                    <a href="#" class="opcion">Servicios</a>
-                </div>
+            <div class="nombre-usuario" id="nombreColumna">
+                <?php echo htmlspecialchars($datos['Nombre'] . ' ' . $datos['Apellido']); ?>
             </div>
 
-            <div class="perfil-info">
-                <h2>Mi Perfil</h2>
-                <form id="formPerfil">
-                    <input type="checkbox" id="editarToggle" style="display:none;">
-
-                    <div class="campo-perfil">
-                        <label>Nombre:</label>
-                        <span class="texto"><?php echo htmlspecialchars($datos['Nombre']); ?></span>
-                        <input type="text" name="nombre" class="input-campo" value="<?php echo htmlspecialchars($datos['Nombre']); ?>">
-                    </div>
-
-                    <div class="campo-perfil">
-                        <label>Apellido:</label>
-                        <span class="texto"><?php echo htmlspecialchars($datos['Apellido']); ?></span>
-                        <input type="text" name="apellido" class="input-campo" value="<?php echo htmlspecialchars($datos['Apellido']); ?>">
-                    </div>
-
-                    <div class="campo-perfil">
-                        <label>Email:</label>
-                        <span class="texto"><?php echo htmlspecialchars($datos['Email']); ?></span>
-                        <input type="email" name="email" class="input-campo" value="<?php echo htmlspecialchars($datos['Email']); ?>">
-                    </div>
-
-                    <div class="campo-perfil">
-                        <label>Contraseña:</label>
-                        <span class="texto">********</span>
-                        <input type="password" name="contrasena" class="input-campo" placeholder="Nueva contraseña">
-                    </div>
-
-                    <div class="botones-perfil">
-                        <label id="btnEditar">Editar</label>
-                        <button type="submit" id="btnGuardar">Guardar</button>
-                        <label id="btnCancelar">Cancelar</label>
-                    </div>
-                </form>
+            <div class="opciones-lista">
+                <a href="?seccion=perfil" data-seccion="perfil" class="opcion <?php echo $seccion == 'perfil' ? 'activa' : ''; ?>">Mi perfil</a>
+                <a href="?seccion=mensajes" data-seccion="mensajes" class="opcion <?php echo $seccion == 'mensajes' ? 'activa' : ''; ?>">Mensajes</a>
+                <a href="?seccion=servicios" data-seccion="servicios" class="opcion <?php echo $seccion == 'servicios' ? 'activa' : ''; ?>">Servicios</a>
             </div>
         </div>
+
+        <div class="perfil-info" id="contenido-seccion">
+            <?php
+            switch ($seccion) {
+                case 'perfil':
+                    include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/cliente/perfilsecciones/datos.php';
+                    break;
+                case 'mensajes':
+                    include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/cliente/perfilsecciones/mensajes.php';
+                    break;
+                case 'servicios':
+                    include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/cliente/perfilsecciones/servicios.php';
+                    break;
+                default:
+                    echo "<p>Sección no encontrada</p>";
+            }
+            ?>
+        </div>
+
     </div>
+</div>
 
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
-    <script src="/Proyecto/public/js/cliente/perfil_cliente.js"></script>
+<?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
+<script src="/Proyecto/public/js/cliente/perfil_cliente.js"></script>
 </body>
-
 </html>
