@@ -267,5 +267,32 @@ public static function obtenerPorUsuarioYEstado($conn, $idUsuario, $estado) {
     return $contratas;
 }
 
+public function guardarCalificacionResena($conn) {
+    $sql = "UPDATE contrata SET calificacion = ?, resena = ? WHERE idCita = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("isi", $this->calificacion, $this->resena, $this->idCita);
+    return $stmt->execute();
+}
+public static function obtenerFinalizadosConCalificacion($conn, $IdUsuario) {
+    $sql = "SELECT c.idCita, c.idServicio, c.fecha, c.hora, c.calificacion, c.resena, 
+                   s.titulo,
+                   e.nombreEmpresa
+            FROM contrata c
+            JOIN servicio s ON c.idServicio = s.idServicio
+            JOIN brinda b ON s.idServicio = b.idServicio
+            JOIN empresa e ON b.idUsuario = e.idUsuario
+            WHERE c.idUsuario = ? AND c.estado = 'Finalizado'";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $IdUsuario);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $finalizados = [];
+    while ($row = $result->fetch_assoc()) {
+        $finalizados[] = $row;
+    }
+    return $finalizados;
+}
 
 }

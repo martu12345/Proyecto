@@ -5,7 +5,7 @@ $controlador = new ServiciosClienteControlador($conn, $idUsuario);
 
 $pendientes = $controlador->obtenerPendientes();
 $enProceso = $controlador->obtenerEnProceso();
-$finalizados = $controlador->obtenerFinalizados();
+$finalizados = $controlador->obtenerFinalizadosConCalificacion($idUsuario);
 $rechazados = $controlador->obtenerCancelados();
 ?>
 
@@ -69,13 +69,27 @@ $rechazados = $controlador->obtenerCancelados();
         <?php else: ?>
             <?php foreach ($finalizados as $f): ?>
                 <div class="card">
-                    <div class="nombre"><?= htmlspecialchars($f['tituloServicio']) ?></div>
+                    <div class="nombre"><?= htmlspecialchars($f['titulo']) ?></div>
                     <div class="empresa">Empresa: <?= htmlspecialchars($f['nombreEmpresa']) ?></div>
                     <div class="fecha">Fecha: <?= htmlspecialchars($f['fecha']) ?> Hora: <?= htmlspecialchars($f['hora']) ?></div>
+
+                    <?php if (isset($f['calificacion']) && $f['calificacion'] > 0): ?>
+                        <button class="btn-ver-calificacion"
+                            data-id="<?= $f['idCita'] ?>"
+                            data-calificacion="<?= $f['calificacion'] ?>"
+                            data-resena="<?= htmlspecialchars($f['resena'], ENT_QUOTES) ?>">
+                            Ver mi calificación
+                        </button>
+                    <?php else: ?>
+                        <button class="btn-calificar" data-id="<?= $f['idCita'] ?>">Calificar</button>
+                    <?php endif; ?>
+
+
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
+
 
     <!-- CANCELADOS -->
     <div class="tab-content" id="Cancelado">
@@ -95,23 +109,62 @@ $rechazados = $controlador->obtenerCancelados();
         <?php endif; ?>
     </div>
 
+    <!-- MODAL cancelar -->
+
     <div id="modalCancelar" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <p>¿Seguro querés cancelar este servicio?</p>
             <div class="modal-buttons">
 
-                <button id="cancelCancel" class="btn-cancel">✔ </button>
-                <button id="confirmCancel" class="btn-confirm"> X </button>
+                <button id="confirmCancel" class="btn-confirm"> ✔</button>
+                <button id="cancelCancel" class="btn-cancel"> X </button>
+
             </div>
             <div id="mensajeModal" class="mensaje-modal" style="display:none;"></div>
         </div>
     </div>
 
+    <!-- MODAL CALIFICAR -->
+    <div id="modalCalificar" class="modal">
+        <div class="modal-content">
+            <h3>Calificar Servicio</h3>
+            <div class="stars" id="stars">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+            </div>
+            <input type="hidden" id="calificacionInput">
+
+            <textarea id="resenaInput" placeholder="Escribí tu reseña aquí..."></textarea>
+
+            <div class="modal-buttons">
+                <button id="btnEnviarCalificacion" class="btn-confirm">✔</button>
+                <button id="btnCancelarCalificacion" class="btn-cancel">X</button>
+            </div>
+
+            <div id="mensajeModalCalificar" class="mensaje-modal" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- MODAL VER CALIFICACIÓN -->
+    <div id="modalVerCalificacion" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Mi calificación</h3>
+            <div class="stars" id="verStars"></div>
+            <p id="verResena"></p>
+        </div>
+    </div>
+
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // PESTAÑAS
+
+            // ------------------ PESTAÑAS ------------------
             const tabs = document.querySelectorAll('.tab');
             const contents = document.querySelectorAll('.tab-content');
 
@@ -124,30 +177,29 @@ $rechazados = $controlador->obtenerCancelados();
                 });
             });
 
-            // MODAL DE CONFIRMACIÓN
-
+            // ------------------ MODAL CANCELAR ------------------
             let citaAEliminar = null;
-            const modal = document.getElementById('modalCancelar');
-            const btnConfirm = document.getElementById('confirmCancel');
-            const btnCancel = document.getElementById('cancelCancel');
-            const spanClose = document.querySelector('.close');
-            const mensajeModal = document.getElementById('mensajeModal');
+            const modalCancelar = document.getElementById('modalCancelar');
+            const btnConfirmCancel = document.getElementById('confirmCancel');
+            const btnCancelCancel = document.getElementById('cancelCancel');
+            const spanCloseCancel = modalCancelar.querySelector('.close');
+            const mensajeModalCancel = document.getElementById('mensajeModal');
 
             document.querySelectorAll('.btn-cancelar').forEach(btn => {
                 btn.addEventListener('click', () => {
                     citaAEliminar = btn.dataset.id;
-                    mensajeModal.style.display = 'none';
-                    modal.style.display = 'flex';
+                    mensajeModalCancel.style.display = 'none';
+                    modalCancelar.style.display = 'flex';
                 });
             });
 
-            btnCancel.onclick = () => modal.style.display = 'none';
-            spanClose.onclick = () => modal.style.display = 'none';
+            btnCancelCancel.onclick = () => modalCancelar.style.display = 'none';
+            spanCloseCancel.onclick = () => modalCancelar.style.display = 'none';
 
-            btnConfirm.onclick = () => {
+            btnConfirmCancel.onclick = () => {
                 if (!citaAEliminar) return;
 
-                fetch('/Proyecto/apps/controlador/cliente/cancelarServicioCliente.php', {
+                fetch('/Proyecto/apps/Controlador/cliente/cancelarServicioCliente.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
@@ -159,32 +211,160 @@ $rechazados = $controlador->obtenerCancelados();
                         if (data.success) {
                             const card = document.querySelector(`.btn-cancelar[data-id="${citaAEliminar}"]`)?.closest('.card');
                             if (card) card.remove();
+                            mensajeModalCancel.style.display = 'block';
+                            mensajeModalCancel.textContent = 'Servicio cancelado';
+                            setTimeout(() => modalCancelar.style.display = 'none', 1500);
+                        } else {
+                            mensajeModalCancel.style.display = 'block';
+                            mensajeModalCancel.textContent = 'Error: ' + data.error;
+                        }
+                    })
+                    .catch(() => {
+                        mensajeModalCancel.style.display = 'block';
+                        mensajeModalCancel.textContent = 'Error en la solicitud';
+                    });
+            };
+
+            // ------------------ MODAL CALIFICAR ------------------
+            const modalCalificar = document.getElementById('modalCalificar');
+            const stars = document.querySelectorAll('#stars .star');
+            const calificacionInput = document.getElementById('calificacionInput');
+            const resenaInput = document.getElementById('resenaInput');
+            const btnEnviar = document.getElementById('btnEnviarCalificacion');
+            const btnCancelar = document.getElementById('btnCancelarCalificacion');
+            const mensajeModal = document.getElementById('mensajeModalCalificar');
+
+            let calificacion = 0;
+            let idCitaActual = null;
+
+            function abrirModalCalificar(idCita) {
+                idCitaActual = idCita;
+                calificacion = 0;
+                calificacionInput.value = '';
+                resenaInput.value = '';
+                mensajeModal.style.display = 'none';
+                stars.forEach(s => s.classList.remove('selected'));
+                resenaInput.style.height = 'auto';
+                modalCalificar.style.display = 'flex';
+            }
+
+            document.querySelectorAll('.btn-calificar').forEach(btn => {
+                btn.addEventListener('click', () => abrirModalCalificar(btn.dataset.id));
+            });
+
+            stars.forEach((star, index) => {
+                star.addEventListener('click', () => {
+                    calificacion = parseInt(star.dataset.value);
+                    calificacionInput.value = calificacion;
+                    stars.forEach(s => s.classList.remove('selected'));
+                    for (let i = 0; i < calificacion; i++) stars[i].classList.add('selected');
+                });
+                star.addEventListener('mouseover', () => {
+                    stars.forEach(s => s.classList.remove('hovered'));
+                    for (let i = 0; i <= index; i++) stars[i].classList.add('hovered');
+                });
+                star.addEventListener('mouseout', () => stars.forEach(s => s.classList.remove('hovered')));
+            });
+
+            resenaInput.addEventListener('input', () => {
+                resenaInput.style.height = 'auto';
+                resenaInput.style.height = resenaInput.scrollHeight + 'px';
+            });
+
+            btnEnviar.addEventListener('click', () => {
+                const resena = resenaInput.value.trim();
+                if (calificacion === 0) {
+                    mensajeModal.style.display = 'block';
+                    mensajeModal.textContent = 'Por favor, seleccioná una calificación.';
+                    return;
+                }
+                if (resena === '') {
+                    mensajeModal.style.display = 'block';
+                    mensajeModal.textContent = 'Por favor, escribí una reseña.';
+                    return;
+                }
+
+                fetch('/Proyecto/apps/Controlador/cliente/CalificarControlador.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `idCita=${idCitaActual}&calificacion=${calificacion}&resena=${encodeURIComponent(resena)}`
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
                             mensajeModal.style.display = 'block';
-                            mensajeModal.textContent = 'Servicio cancelado ✅';
-                            setTimeout(() => modal.style.display = 'none', 1500);
+                            mensajeModal.textContent = 'Servicio calificado correctamente';
+
+                            // --------- CAMBIAR BOTÓN AUTOMÁTICAMENTE ---------
+                            const card = document.querySelector(`.btn-calificar[data-id="${idCitaActual}"]`)?.closest('.card');
+                            if (card) {
+                                const btnCalificar = card.querySelector('.btn-calificar');
+
+                                const nuevoBtn = btnCalificar.cloneNode(true);
+                                nuevoBtn.textContent = 'Ver mi calificación';
+                                nuevoBtn.classList.remove('btn-calificar');
+                                nuevoBtn.classList.add('btn-ver-calificacion');
+                                nuevoBtn.dataset.calificacion = calificacion;
+                                nuevoBtn.dataset.resena = resena;
+
+                                btnCalificar.replaceWith(nuevoBtn);
+
+                                nuevoBtn.addEventListener('click', () => mostrarCalificacion(nuevoBtn.dataset.calificacion, nuevoBtn.dataset.resena));
+                            }
+
+
+                            setTimeout(() => modalCalificar.style.display = 'none', 200);
                         } else {
                             mensajeModal.style.display = 'block';
                             mensajeModal.textContent = 'Error: ' + data.error;
                         }
                     })
-                    .catch(err => {
+                    .catch(() => {
                         mensajeModal.style.display = 'block';
                         mensajeModal.textContent = 'Error en la solicitud';
                     });
-            };
-
-            window.onclick = (event) => {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
-            };
-
-            document.addEventListener('keydown', (e) => {
-                if (modal.style.display === 'flex') {
-                    if (e.key === 'Enter') btnConfirm.click();
-                    if (e.key === 'Escape') modal.style.display = 'none';
-                }
             });
+
+            btnCancelar.addEventListener('click', () => modalCalificar.style.display = 'none');
+            window.addEventListener('click', e => {
+                if (e.target === modalCalificar) modalCalificar.style.display = 'none';
+            });
+            document.addEventListener('keydown', e => {
+                if (modalCalificar.style.display === 'flex' && e.key === 'Escape') modalCalificar.style.display = 'none';
+            });
+
+            // ------------------ MODAL VER CALIFICACIÓN ------------------
+            const modalVer = document.getElementById('modalVerCalificacion');
+            const verStarsContainer = document.getElementById('verStars');
+            const verResena = document.getElementById('verResena');
+            const spanCloseVer = modalVer.querySelector('.close');
+
+            function mostrarCalificacion(cal, res) {
+                verStarsContainer.innerHTML = '';
+                for (let i = 1; i <= 5; i++) {
+                    const star = document.createElement('span');
+                    star.innerHTML = '&#9733;';
+                    star.style.color = i <= cal ? 'gold' : 'lightgray';
+                    verStarsContainer.appendChild(star);
+                }
+                verResena.textContent = res;
+                modalVer.style.display = 'flex';
+            }
+
+            document.querySelectorAll('.btn-ver-calificacion').forEach(btn => {
+                btn.addEventListener('click', () => mostrarCalificacion(btn.dataset.calificacion, btn.dataset.resena));
+            });
+
+            spanCloseVer.onclick = () => modalVer.style.display = 'none';
+            window.addEventListener('click', e => {
+                if (e.target === modalVer) modalVer.style.display = 'none';
+            });
+            document.addEventListener('keydown', e => {
+                if (modalVer.style.display === 'flex' && e.key === 'Escape') modalVer.style.display = 'none';
+            });
+
         });
     </script>
 
