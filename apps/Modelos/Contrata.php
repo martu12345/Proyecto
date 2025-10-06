@@ -267,5 +267,11 @@ public static function obtenerPorUsuarioYEstado($conn, $idUsuario, $estado) {
     return $contratas;
 }
 
+public function guardarCalificacionResena($conn) {
+    $sql = "UPDATE contrata SET calificacion = ?, resena = ? WHERE idCita = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("isi", $this->calificacion, $this->resena, $this->idCita);
+    return $stmt->execute();
+}
 
 }

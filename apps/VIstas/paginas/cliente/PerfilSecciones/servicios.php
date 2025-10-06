@@ -72,6 +72,7 @@ $rechazados = $controlador->obtenerCancelados();
                     <div class="nombre"><?= htmlspecialchars($f['tituloServicio']) ?></div>
                     <div class="empresa">Empresa: <?= htmlspecialchars($f['nombreEmpresa']) ?></div>
                     <div class="fecha">Fecha: <?= htmlspecialchars($f['fecha']) ?> Hora: <?= htmlspecialchars($f['hora']) ?></div>
+                    <button class="btn-calificar" data-id="<?= $f['idCita'] ?>">Calificar</button>
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -95,22 +96,52 @@ $rechazados = $controlador->obtenerCancelados();
         <?php endif; ?>
     </div>
 
+    <!-- MODAL cancelar -->
+
     <div id="modalCancelar" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <p>¿Seguro querés cancelar este servicio?</p>
             <div class="modal-buttons">
 
-                <button id="cancelCancel" class="btn-cancel">✔ </button>
-                <button id="confirmCancel" class="btn-confirm"> X </button>
+                <button id="confirmCancel" class="btn-confirm"> ✔</button>
+                <button id="cancelCancel" class="btn-cancel">X </button>
+
             </div>
             <div id="mensajeModal" class="mensaje-modal" style="display:none;"></div>
         </div>
     </div>
 
+    <!-- MODAL CALIFICAR -->
+    <div id="modalCalificar" class="modal">
+        <div class="modal-content">
+            <h3>Calificar Servicio</h3>
+            <div class="stars" id="stars">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+            </div>
+            <input type="hidden" id="calificacionInput">
+
+            <textarea id="resenaInput" placeholder="Escribí tu reseña aquí..."></textarea>
+
+            <div class="modal-buttons">
+                <button id="btnEnviarCalificacion" class="btn-confirm">✔</button>
+                <button id="btnCancelarCalificacion" class="btn-cancel">X</button>
+            </div>
+
+            <div id="mensajeModalCalificar" class="mensaje-modal" style="display:none;"></div>
+        </div>
+    </div>
+
+
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
             // PESTAÑAS
             const tabs = document.querySelectorAll('.tab');
             const contents = document.querySelectorAll('.tab-content');
@@ -124,27 +155,26 @@ $rechazados = $controlador->obtenerCancelados();
                 });
             });
 
-            // MODAL DE CONFIRMACIÓN
-
+            // MODAL CANCELAR
             let citaAEliminar = null;
-            const modal = document.getElementById('modalCancelar');
-            const btnConfirm = document.getElementById('confirmCancel');
-            const btnCancel = document.getElementById('cancelCancel');
-            const spanClose = document.querySelector('.close');
-            const mensajeModal = document.getElementById('mensajeModal');
+            const modalCancelar = document.getElementById('modalCancelar');
+            const btnConfirmCancel = document.getElementById('confirmCancel');
+            const btnCancelCancel = document.getElementById('cancelCancel');
+            const spanCloseCancel = modalCancelar.querySelector('.close');
+            const mensajeModalCancel = document.getElementById('mensajeModal');
 
             document.querySelectorAll('.btn-cancelar').forEach(btn => {
                 btn.addEventListener('click', () => {
                     citaAEliminar = btn.dataset.id;
-                    mensajeModal.style.display = 'none';
-                    modal.style.display = 'flex';
+                    mensajeModalCancel.style.display = 'none';
+                    modalCancelar.style.display = 'flex';
                 });
             });
 
-            btnCancel.onclick = () => modal.style.display = 'none';
-            spanClose.onclick = () => modal.style.display = 'none';
+            btnCancelCancel.onclick = () => modalCancelar.style.display = 'none';
+            spanCloseCancel.onclick = () => modalCancelar.style.display = 'none';
 
-            btnConfirm.onclick = () => {
+            btnConfirmCancel.onclick = () => {
                 if (!citaAEliminar) return;
 
                 fetch('/Proyecto/apps/controlador/cliente/cancelarServicioCliente.php', {
@@ -159,31 +189,118 @@ $rechazados = $controlador->obtenerCancelados();
                         if (data.success) {
                             const card = document.querySelector(`.btn-cancelar[data-id="${citaAEliminar}"]`)?.closest('.card');
                             if (card) card.remove();
+                            mensajeModalCancel.style.display = 'block';
+                            mensajeModalCancel.textContent = 'Servicio cancelado ';
+                            setTimeout(() => modalCancelar.style.display = 'none', 1500);
+                        } else {
+                            mensajeModalCancel.style.display = 'block';
+                            mensajeModalCancel.textContent = 'Error: ' + data.error;
+                        }
+                    })
+                    .catch(() => {
+                        mensajeModalCancel.style.display = 'block';
+                        mensajeModalCancel.textContent = 'Error en la solicitud';
+                    });
+            };
+
+            // MODAL CALIFICAR
+            const modal = document.getElementById('modalCalificar');
+            const stars = document.querySelectorAll('.star');
+            const calificacionInput = document.getElementById('calificacionInput');
+            const resenaInput = document.getElementById('resenaInput');
+            const btnEnviar = document.getElementById('btnEnviarCalificacion');
+            const btnCancelar = document.getElementById('btnCancelarCalificacion');
+            const mensajeModal = document.getElementById('mensajeModalCalificar');
+
+            let calificacion = 0;
+            let idCitaActual = null;
+
+            document.querySelectorAll('.btn-calificar').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    idCitaActual = btn.dataset.id;
+                    calificacion = 0;
+                    calificacionInput.value = '';
+                    resenaInput.value = '';
+                    mensajeModal.style.display = 'none';
+                    stars.forEach(s => s.classList.remove('selected'));
+                    resenaInput.style.height = 'auto'; // reset altura
+                    modal.style.display = 'flex';
+                });
+            });
+
+            // ESTRELLAS
+            stars.forEach((star, index) => {
+                star.addEventListener('click', () => {
+                    calificacion = parseInt(star.dataset.value);
+                    calificacionInput.value = calificacion;
+                    stars.forEach(s => s.classList.remove('selected'));
+                    for (let i = 0; i < calificacion; i++) {
+                        stars[i].classList.add('selected');
+                    }
+                });
+
+                star.addEventListener('mouseover', () => {
+                    stars.forEach(s => s.classList.remove('hovered'));
+                    for (let i = 0; i <= index; i++) {
+                        stars[i].classList.add('hovered');
+                    }
+                });
+
+                star.addEventListener('mouseout', () => {
+                    stars.forEach(s => s.classList.remove('hovered'));
+                });
+            });
+
+            resenaInput.addEventListener('input', () => {
+                resenaInput.style.height = 'auto';
+                resenaInput.style.height = resenaInput.scrollHeight + 'px';
+            });
+
+            btnEnviar.addEventListener('click', () => {
+                const resena = resenaInput.value.trim();
+                if (calificacion === 0) {
+                    mensajeModal.style.display = 'block';
+                    mensajeModal.textContent = 'Por favor, seleccioná una calificación.';
+                    return;
+                }
+                if (resena === '') {
+                    mensajeModal.style.display = 'block';
+                    mensajeModal.textContent = 'Por favor, escribí una reseña.';
+                    return;
+                }
+
+                fetch('/Proyecto/apps/Controlador/cliente/CalificarControlador.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: `idCita=${idCitaActual}&calificacion=${calificacion}&resena=${encodeURIComponent(resena)}`
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
                             mensajeModal.style.display = 'block';
-                            mensajeModal.textContent = 'Servicio cancelado ✅';
+                            mensajeModal.textContent = 'Servicio calificado ';
                             setTimeout(() => modal.style.display = 'none', 1500);
                         } else {
                             mensajeModal.style.display = 'block';
                             mensajeModal.textContent = 'Error: ' + data.error;
                         }
                     })
-                    .catch(err => {
+                    .catch(() => {
                         mensajeModal.style.display = 'block';
                         mensajeModal.textContent = 'Error en la solicitud';
                     });
-            };
+            });
 
-            window.onclick = (event) => {
-                if (event.target == modal) {
-                    modal.style.display = 'none';
-                }
-            };
+            btnCancelar.addEventListener('click', () => modal.style.display = 'none');
+
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) modal.style.display = 'none';
+            });
 
             document.addEventListener('keydown', (e) => {
-                if (modal.style.display === 'flex') {
-                    if (e.key === 'Enter') btnConfirm.click();
-                    if (e.key === 'Escape') modal.style.display = 'none';
-                }
+                if (modal.style.display === 'flex' && e.key === 'Escape') modal.style.display = 'none';
             });
         });
     </script>
