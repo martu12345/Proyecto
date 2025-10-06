@@ -17,6 +17,7 @@ class CalificarServicioControlador {
             echo json_encode(["success" => false, "error" => "No se pudo guardar la calificación."]);
         }
     }
+
 }
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -27,4 +28,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controlador = new CalificarServicioControlador($conn);
     $controlador->calificarServicio($idCita, $calificacion, $resena);
 }
+
+
 ?>

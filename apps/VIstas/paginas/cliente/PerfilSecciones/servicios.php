@@ -5,7 +5,7 @@ $controlador = new ServiciosClienteControlador($conn, $idUsuario);
 
 $pendientes = $controlador->obtenerPendientes();
 $enProceso = $controlador->obtenerEnProceso();
-$finalizados = $controlador->obtenerFinalizados();
+$finalizados = $controlador->obtenerFinalizadosConCalificacion($idUsuario);
 $rechazados = $controlador->obtenerCancelados();
 ?>
 
@@ -69,14 +69,27 @@ $rechazados = $controlador->obtenerCancelados();
         <?php else: ?>
             <?php foreach ($finalizados as $f): ?>
                 <div class="card">
-                    <div class="nombre"><?= htmlspecialchars($f['tituloServicio']) ?></div>
+                    <div class="nombre"><?= htmlspecialchars($f['titulo']) ?></div>
                     <div class="empresa">Empresa: <?= htmlspecialchars($f['nombreEmpresa']) ?></div>
                     <div class="fecha">Fecha: <?= htmlspecialchars($f['fecha']) ?> Hora: <?= htmlspecialchars($f['hora']) ?></div>
-                    <button class="btn-calificar" data-id="<?= $f['idCita'] ?>">Calificar</button>
+
+                    <?php if (isset($f['calificacion']) && $f['calificacion'] > 0): ?>
+                        <button class="btn-ver-calificacion"
+                            data-id="<?= $f['idCita'] ?>"
+                            data-calificacion="<?= $f['calificacion'] ?>"
+                            data-resena="<?= htmlspecialchars($f['resena'], ENT_QUOTES) ?>">
+                            Ver mi calificación
+                        </button>
+                    <?php else: ?>
+                        <button class="btn-calificar" data-id="<?= $f['idCita'] ?>">Calificar</button>
+                    <?php endif; ?>
+
+
                 </div>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
+
 
     <!-- CANCELADOS -->
     <div class="tab-content" id="Cancelado">
@@ -105,7 +118,7 @@ $rechazados = $controlador->obtenerCancelados();
             <div class="modal-buttons">
 
                 <button id="confirmCancel" class="btn-confirm"> ✔</button>
-                <button id="cancelCancel" class="btn-cancel">X </button>
+                <button id="cancelCancel" class="btn-cancel"> X </button>
 
             </div>
             <div id="mensajeModal" class="mensaje-modal" style="display:none;"></div>
@@ -136,13 +149,22 @@ $rechazados = $controlador->obtenerCancelados();
         </div>
     </div>
 
+    <!-- MODAL VER CALIFICACIÓN -->
+    <div id="modalVerCalificacion" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Mi calificación</h3>
+            <div class="stars" id="verStars"></div>
+            <p id="verResena"></p>
+        </div>
+    </div>
 
 
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // PESTAÑAS
+            // ------------------ PESTAÑAS ------------------
             const tabs = document.querySelectorAll('.tab');
             const contents = document.querySelectorAll('.tab-content');
 
@@ -155,7 +177,7 @@ $rechazados = $controlador->obtenerCancelados();
                 });
             });
 
-            // MODAL CANCELAR
+            // ------------------ MODAL CANCELAR ------------------
             let citaAEliminar = null;
             const modalCancelar = document.getElementById('modalCancelar');
             const btnConfirmCancel = document.getElementById('confirmCancel');
@@ -177,7 +199,7 @@ $rechazados = $controlador->obtenerCancelados();
             btnConfirmCancel.onclick = () => {
                 if (!citaAEliminar) return;
 
-                fetch('/Proyecto/apps/controlador/cliente/cancelarServicioCliente.php', {
+                fetch('/Proyecto/apps/Controlador/cliente/cancelarServicioCliente.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
@@ -190,7 +212,7 @@ $rechazados = $controlador->obtenerCancelados();
                             const card = document.querySelector(`.btn-cancelar[data-id="${citaAEliminar}"]`)?.closest('.card');
                             if (card) card.remove();
                             mensajeModalCancel.style.display = 'block';
-                            mensajeModalCancel.textContent = 'Servicio cancelado ';
+                            mensajeModalCancel.textContent = 'Servicio cancelado';
                             setTimeout(() => modalCancelar.style.display = 'none', 1500);
                         } else {
                             mensajeModalCancel.style.display = 'block';
@@ -203,9 +225,9 @@ $rechazados = $controlador->obtenerCancelados();
                     });
             };
 
-            // MODAL CALIFICAR
-            const modal = document.getElementById('modalCalificar');
-            const stars = document.querySelectorAll('.star');
+            // ------------------ MODAL CALIFICAR ------------------
+            const modalCalificar = document.getElementById('modalCalificar');
+            const stars = document.querySelectorAll('#stars .star');
             const calificacionInput = document.getElementById('calificacionInput');
             const resenaInput = document.getElementById('resenaInput');
             const btnEnviar = document.getElementById('btnEnviarCalificacion');
@@ -215,40 +237,33 @@ $rechazados = $controlador->obtenerCancelados();
             let calificacion = 0;
             let idCitaActual = null;
 
+            function abrirModalCalificar(idCita) {
+                idCitaActual = idCita;
+                calificacion = 0;
+                calificacionInput.value = '';
+                resenaInput.value = '';
+                mensajeModal.style.display = 'none';
+                stars.forEach(s => s.classList.remove('selected'));
+                resenaInput.style.height = 'auto';
+                modalCalificar.style.display = 'flex';
+            }
+
             document.querySelectorAll('.btn-calificar').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    idCitaActual = btn.dataset.id;
-                    calificacion = 0;
-                    calificacionInput.value = '';
-                    resenaInput.value = '';
-                    mensajeModal.style.display = 'none';
-                    stars.forEach(s => s.classList.remove('selected'));
-                    resenaInput.style.height = 'auto'; // reset altura
-                    modal.style.display = 'flex';
-                });
+                btn.addEventListener('click', () => abrirModalCalificar(btn.dataset.id));
             });
 
-            // ESTRELLAS
             stars.forEach((star, index) => {
                 star.addEventListener('click', () => {
                     calificacion = parseInt(star.dataset.value);
                     calificacionInput.value = calificacion;
                     stars.forEach(s => s.classList.remove('selected'));
-                    for (let i = 0; i < calificacion; i++) {
-                        stars[i].classList.add('selected');
-                    }
+                    for (let i = 0; i < calificacion; i++) stars[i].classList.add('selected');
                 });
-
                 star.addEventListener('mouseover', () => {
                     stars.forEach(s => s.classList.remove('hovered'));
-                    for (let i = 0; i <= index; i++) {
-                        stars[i].classList.add('hovered');
-                    }
+                    for (let i = 0; i <= index; i++) stars[i].classList.add('hovered');
                 });
-
-                star.addEventListener('mouseout', () => {
-                    stars.forEach(s => s.classList.remove('hovered'));
-                });
+                star.addEventListener('mouseout', () => stars.forEach(s => s.classList.remove('hovered')));
             });
 
             resenaInput.addEventListener('input', () => {
@@ -280,8 +295,27 @@ $rechazados = $controlador->obtenerCancelados();
                     .then(data => {
                         if (data.success) {
                             mensajeModal.style.display = 'block';
-                            mensajeModal.textContent = 'Servicio calificado ';
-                            setTimeout(() => modal.style.display = 'none', 1500);
+                            mensajeModal.textContent = 'Servicio calificado correctamente';
+
+                            // --------- CAMBIAR BOTÓN AUTOMÁTICAMENTE ---------
+                            const card = document.querySelector(`.btn-calificar[data-id="${idCitaActual}"]`)?.closest('.card');
+                            if (card) {
+                                const btnCalificar = card.querySelector('.btn-calificar');
+
+                                const nuevoBtn = btnCalificar.cloneNode(true);
+                                nuevoBtn.textContent = 'Ver mi calificación';
+                                nuevoBtn.classList.remove('btn-calificar');
+                                nuevoBtn.classList.add('btn-ver-calificacion');
+                                nuevoBtn.dataset.calificacion = calificacion;
+                                nuevoBtn.dataset.resena = resena;
+
+                                btnCalificar.replaceWith(nuevoBtn);
+
+                                nuevoBtn.addEventListener('click', () => mostrarCalificacion(nuevoBtn.dataset.calificacion, nuevoBtn.dataset.resena));
+                            }
+
+
+                            setTimeout(() => modalCalificar.style.display = 'none', 200);
                         } else {
                             mensajeModal.style.display = 'block';
                             mensajeModal.textContent = 'Error: ' + data.error;
@@ -293,15 +327,44 @@ $rechazados = $controlador->obtenerCancelados();
                     });
             });
 
-            btnCancelar.addEventListener('click', () => modal.style.display = 'none');
-
-            window.addEventListener('click', (event) => {
-                if (event.target === modal) modal.style.display = 'none';
+            btnCancelar.addEventListener('click', () => modalCalificar.style.display = 'none');
+            window.addEventListener('click', e => {
+                if (e.target === modalCalificar) modalCalificar.style.display = 'none';
+            });
+            document.addEventListener('keydown', e => {
+                if (modalCalificar.style.display === 'flex' && e.key === 'Escape') modalCalificar.style.display = 'none';
             });
 
-            document.addEventListener('keydown', (e) => {
-                if (modal.style.display === 'flex' && e.key === 'Escape') modal.style.display = 'none';
+            // ------------------ MODAL VER CALIFICACIÓN ------------------
+            const modalVer = document.getElementById('modalVerCalificacion');
+            const verStarsContainer = document.getElementById('verStars');
+            const verResena = document.getElementById('verResena');
+            const spanCloseVer = modalVer.querySelector('.close');
+
+            function mostrarCalificacion(cal, res) {
+                verStarsContainer.innerHTML = '';
+                for (let i = 1; i <= 5; i++) {
+                    const star = document.createElement('span');
+                    star.innerHTML = '&#9733;';
+                    star.style.color = i <= cal ? 'gold' : 'lightgray';
+                    verStarsContainer.appendChild(star);
+                }
+                verResena.textContent = res;
+                modalVer.style.display = 'flex';
+            }
+
+            document.querySelectorAll('.btn-ver-calificacion').forEach(btn => {
+                btn.addEventListener('click', () => mostrarCalificacion(btn.dataset.calificacion, btn.dataset.resena));
             });
+
+            spanCloseVer.onclick = () => modalVer.style.display = 'none';
+            window.addEventListener('click', e => {
+                if (e.target === modalVer) modalVer.style.display = 'none';
+            });
+            document.addEventListener('keydown', e => {
+                if (modalVer.style.display === 'flex' && e.key === 'Escape') modalVer.style.display = 'none';
+            });
+
         });
     </script>
 

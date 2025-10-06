@@ -45,6 +45,11 @@ class ServiciosClienteControlador
         return $this->armarArrayConNombres($contratas);
     }
 
+    public function obtenerFinalizadosConCalificacion() {
+    return Contrata::obtenerFinalizadosConCalificacion($this->conn, $this->idUsuario);
+}
+
+
     //  FUNCION AUXILIAR 
     private function armarArrayConNombres($contratas)
     {
