@@ -149,7 +149,61 @@ public static function obtenerMensajePorId($conn, $idMensaje)
 
     return $mensaje;
 }
+public static function obtenerMensajesRecibidosPorCliente($conn, $idCliente) {
+    $sql = "SELECT 
+                c.idMensaje,
+                c.contenido AS mensaje,
+                c.FechaHora AS fecha,
+                c.asunto,
+                -- Mostramos el nombre del emisor (empresa o cliente que no sos vos)
+                CASE 
+                    WHEN c.idUsuarioEmisor != c.idUsuarioCliente THEN
+                        COALESCE(CONCAT(cl.nombre, ' ', cl.apellido), e.nombreEmpresa)
+                END AS emisor
+            FROM comunica c
+            LEFT JOIN cliente cl ON c.idUsuarioEmisor = cl.idUsuario
+            LEFT JOIN empresa e ON c.idUsuarioEmisor = e.idUsuario
+            WHERE c.idUsuarioCliente = ? AND c.idUsuarioEmisor != ?
+            ORDER BY c.FechaHora ASC";
 
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $idCliente, $idCliente);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    $mensajes = [];
+    while ($fila = $resultado->fetch_assoc()) {
+        $mensajes[] = $fila;
+    }
+    return $mensajes;
+}
+public static function obtenerMensajesEnviadosPorCliente($conn, $idCliente) {
+    $sql = "SELECT 
+                c.idMensaje,
+                c.contenido AS mensaje,
+                c.FechaHora AS fecha,
+                c.asunto,
+                CASE 
+                    WHEN c.idUsuarioEmisor = c.idUsuarioCliente THEN CONCAT(cl.nombre, ' ', cl.apellido)
+                    ELSE e.nombreEmpresa
+                END AS destinatario
+            FROM comunica c
+            LEFT JOIN cliente cl ON c.idUsuarioCliente = cl.idUsuario
+            LEFT JOIN empresa e ON c.idUsuarioCliente = e.idUsuario
+            WHERE c.idUsuarioEmisor = ?
+            ORDER BY c.FechaHora ASC";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idCliente);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    $mensajes = [];
+    while ($fila = $resultado->fetch_assoc()) {
+        $mensajes[] = $fila;
+    }
+    return $mensajes;
+}
 
 
 }

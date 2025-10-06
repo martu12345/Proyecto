@@ -20,7 +20,8 @@
             <div class="contenido">
                 <?= nl2br(htmlspecialchars($mensaje['Contenido'])) ?>
             </div>
-            <a href="/Proyecto/apps/Controlador/Mensaje/listarMensajesControlador.php" class="btn-volver">← Volver</a>
+                        <button onclick="history.back()" class=btn-volver>Volver</button>
+
         </div>
     </div>
 
