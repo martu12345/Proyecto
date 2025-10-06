@@ -91,6 +91,64 @@ public static function obtenerMensajesParaEmpresa($conn, $idEmpresa) {
     }
     return $mensajes;
 }
+//obtener msj por id
+public static function obtenerMensajePorId($conn, $idMensaje)
+{
+
+
+    // Traemos el mensaje base
+    $sql = "
+        SELECT 
+            IdMensaje,
+            IdUsuarioCliente,
+            IdUsuarioEmpresa,
+            Asunto,
+            Contenido,
+            FechaHora,
+            IdUsuarioEmisor
+        FROM comunica
+        WHERE IdMensaje = ?
+    ";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idMensaje);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $mensaje = $resultado->fetch_assoc();
+
+    if (!$mensaje) {
+        return null;
+    }
+
+    // Ahora determinamos si el emisor es un cliente o una empresa
+    $idEmisor = $mensaje['IdUsuarioEmisor'];
+
+    // Primero buscamos en la tabla cliente
+    $sqlCliente = "SELECT CONCAT(Nombre, ' ', Apellido) AS NombreCompleto FROM cliente WHERE IdUsuario = ?";
+    $stmtCliente = $conn->prepare($sqlCliente);
+    $stmtCliente->bind_param("i", $idEmisor);
+    $stmtCliente->execute();
+    $resCliente = $stmtCliente->get_result();
+
+    if ($resCliente->num_rows > 0) {
+        $mensaje['Emisor'] = $resCliente->fetch_assoc()['NombreCompleto'];
+    } else {
+        // Si no es cliente, buscamos en empresa
+        $sqlEmpresa = "SELECT NombreEmpresa FROM empresa WHERE IdUsuario = ?";
+        $stmtEmpresa = $conn->prepare($sqlEmpresa);
+        $stmtEmpresa->bind_param("i", $idEmisor);
+        $stmtEmpresa->execute();
+        $resEmpresa = $stmtEmpresa->get_result();
+
+        if ($resEmpresa->num_rows > 0) {
+            $mensaje['Emisor'] = $resEmpresa->fetch_assoc()['NombreEmpresa'];
+        } else {
+            $mensaje['Emisor'] = "Desconocido";
+        }
+    }
+
+    return $mensaje;
+}
 
 
 

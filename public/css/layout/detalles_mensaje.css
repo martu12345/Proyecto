@@ -1,0 +1,81 @@
+/* Fondo general y fuente */
+body {
+    background-color: #ff914d;
+    font-family: 'Lexend', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor centrador */
+.detalle-mensaje {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+/* Tarjeta blanca del mensaje */
+.mensaje-contenedor {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    max-width: 700px;
+    width: 100%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Título del mensaje */
+.mensaje-contenedor h2 {
+    color: #222;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    font-size: 26px;
+}
+
+/* Info del mensaje (emisor y fecha) */
+.mensaje-contenedor p {
+    margin: 4px 0;
+    color: #444;
+}
+
+.mensaje-contenedor p strong {
+    color: #ff914d;
+}
+
+/* Contenido del mensaje */
+.mensaje-contenedor .contenido {
+    margin-top: 10px;
+    color: #333;
+    line-height: 1.5;
+    white-space: pre-wrap; /* respeta saltos de línea */
+}
+
+/* Botón volver */
+.btn-volver {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background-color: #ff914d;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.btn-volver:hover {
+    background-color: #ff6200;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+    .mensaje-contenedor {
+        padding: 20px;
+    }
+}
