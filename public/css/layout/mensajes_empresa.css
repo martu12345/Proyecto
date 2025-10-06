@@ -47,3 +47,26 @@ hr {
     border-top: 1px solid #eee;
     margin: 10px 0;
 }
+/* Botones de mensajes */
+.botones-mensajes button {
+    background-color: #f0f0f0;
+    border: 1px solid #f0f0f0;
+    padding: 8px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Hover */
+.botones-mensajes button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Activo */
+.botones-mensajes button.active {
+    background-color: #ff914d; /* naranja */
+    color: white;
+    border-color: #ff914d;
+}

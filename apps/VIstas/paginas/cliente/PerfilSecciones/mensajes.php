@@ -9,9 +9,14 @@ $mensajesRecibidos = Comunica::obtenerMensajesRecibidosPorCliente($conn, $idClie
 $mensajesEnviados = Comunica::obtenerMensajesEnviadosPorCliente($conn, $idCliente);
 ?>
 
+<link rel="stylesheet" href="/Proyecto/public/css/layout/mensajes_empresa.css">
+<link rel="stylesheet" href="/Proyecto/public/css/fonts.css">
+
 <h2>Mis mensajes</h2>
-<button onclick="mostrarRecibidos()">Recibidos</button>
-<button onclick="mostrarEnviados()">Enviados</button>
+<div class="botones-mensajes">
+    <button id="btnRecibidos" onclick="mostrarRecibidos()" class="active">Recibidos</button>
+    <button id="btnEnviados" onclick="mostrarEnviados()">Enviados</button>
+</div>
 
 <!-- Recibidos -->
 <div id="recibidos" class="mensajes-lista">
@@ -51,12 +56,13 @@ $mensajesEnviados = Comunica::obtenerMensajesEnviadosPorCliente($conn, $idClient
 function mostrarRecibidos() {
     document.getElementById('recibidos').style.display = 'block';
     document.getElementById('enviados').style.display = 'none';
+    document.getElementById('btnRecibidos').classList.add('active');
+    document.getElementById('btnEnviados').classList.remove('active');
 }
 function mostrarEnviados() {
     document.getElementById('recibidos').style.display = 'none';
     document.getElementById('enviados').style.display = 'block';
+    document.getElementById('btnRecibidos').classList.remove('active');
+    document.getElementById('btnEnviados').classList.add('active');
 }
 </script>
-
-<link rel="stylesheet" href="/Proyecto/public/css/layout/mensajes_empresa.css">
-<link rel="stylesheet" href="/Proyecto/public/css/fonts.css">

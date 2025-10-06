@@ -62,7 +62,7 @@ public function getIdUsuarioEmisor() { return $this->idUsuarioEmisor; }
     }
 
     //funcion para obtener msj por empresa
-public static function obtenerMensajesParaEmpresa($conn, $idEmpresa) {
+public static function obtenerMensajesRecibidosPorEmpresa($conn, $idEmpresa) {
     $sql = "SELECT 
                 c.idMensaje,
                 c.contenido AS mensaje,
@@ -195,6 +195,35 @@ public static function obtenerMensajesEnviadosPorCliente($conn, $idCliente) {
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $idCliente);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    $mensajes = [];
+    while ($fila = $resultado->fetch_assoc()) {
+        $mensajes[] = $fila;
+    }
+    return $mensajes;
+}
+// Mensajes enviados por la empresa
+public static function obtenerMensajesEnviadosPorEmpresa($conn, $idEmpresa) {
+    $sql = "SELECT 
+                c.idMensaje,
+                c.contenido AS mensaje,
+                c.FechaHora AS fecha,
+                c.asunto,
+                -- Mostramos a quién fue enviado
+                CASE 
+                    WHEN c.idUsuarioCliente IS NOT NULL THEN CONCAT(cl.nombre, ' ', cl.apellido)
+                    ELSE e.nombreEmpresa
+                END AS destinatario
+            FROM comunica c
+            LEFT JOIN cliente cl ON c.idUsuarioCliente = cl.idUsuario
+            LEFT JOIN empresa e ON c.idUsuarioCliente = e.idUsuario
+            WHERE c.idUsuarioEmisor = ?
+            ORDER BY c.FechaHora ASC";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idEmpresa);
     $stmt->execute();
     $resultado = $stmt->get_result();
 
