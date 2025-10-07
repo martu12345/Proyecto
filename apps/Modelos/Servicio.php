@@ -97,7 +97,7 @@ class Servicio {
                 $row['Precio'] ?? 0,
                 $row['departamento'] ?? '',
                 $row['imagen'] ?? '',
-                $row['duracion'] ?? 0
+                $row['Duracion'] ?? 0
             );
         }
 

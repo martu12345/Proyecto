@@ -40,13 +40,19 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/servicio/Co
         <div id="calendario" class="calendario"></div>
     </div>
 
+    
+
+
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
 
     <!-- Variables PHP para JS externo -->
     <script>
-        window.citasOcupadas = <?= json_encode($citasOcupadas) ?>;
-        window.duracionServicio = <?= $duracion ?>;
-        window.meses = <?= json_encode($meses) ?>;
+
+    window.citasOcupadas = <?= json_encode($citasOcupadas) ?>;
+
+window.duracionServicio = <?= json_encode($duracion) ?>; // <- esto debe dar 2.0 si el servicio dura 2h
+    window.meses = <?= json_encode($meses) ?>;
+
     </script>
 
     <script src="/Proyecto/public/js/servicio/contratarServicio.js"></script>

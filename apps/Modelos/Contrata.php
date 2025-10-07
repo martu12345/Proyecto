@@ -103,35 +103,55 @@ class Contrata
         return $resultado;
     }
 
-    public static function estaDisponible($conn, $idServicio, $fecha, $hora, $duracion)
-    {
-        $stmt = $conn->prepare("
-            SELECT c.Hora, s.Duracion
-            FROM Contrata c
-            INNER JOIN Servicio s ON c.IdServicio = s.IdServicio
-            WHERE c.IdServicio = ? AND c.Fecha = ?
-        ");
-        $stmt->bind_param("is", $idServicio, $fecha);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
+public static function existeCita($conn, $idUsuario, $idServicio, $fecha, $hora) {
+    $stmt = $conn->prepare("
+        SELECT COUNT(*) as total
+        FROM Contrata
+        WHERE IdUsuario = ? AND IdServicio = ? AND Fecha = ? AND Hora = ?
+    ");
+    $stmt->bind_param("iiss", $idUsuario, $idServicio, $fecha, $hora);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $row = $resultado->fetch_assoc();
+    $stmt->close();
+    return $row['total'] > 0;
+}
 
-        [$h, $m] = array_map('intval', explode(':', $hora));
-        $inicioNuevo = $h * 60 + $m;
-        $finNuevo = $inicioNuevo + $duracion * 60;
 
-        while ($row = $resultado->fetch_assoc()) {
-            [$ch, $cm] = array_map('intval', explode(':', $row['Hora']));
-            $inicioExistente = $ch * 60 + $cm;
-            $finExistente = $inicioExistente + (int)$row['Duracion'] * 60;
 
-            if (!($finNuevo <= $inicioExistente || $inicioNuevo >= $finExistente)) {
-                return false;
-            }
+
+public static function estaDisponible($conn, $fecha, $horaNueva, $duracionNueva)
+{
+    $stmt = $conn->prepare("
+        SELECT c.Hora, s.Duracion
+        FROM Contrata c
+        INNER JOIN Servicio s ON c.IdServicio = s.IdServicio
+        WHERE c.Fecha = ?
+    ");
+    $stmt->bind_param("s", $fecha);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    [$h, $m] = array_map('intval', explode(':', $horaNueva));
+    $inicioNuevo = $h * 60 + $m;
+    $finNuevo = $inicioNuevo + $duracionNueva * 60;
+
+    while ($row = $resultado->fetch_assoc()) {
+        [$ch, $cm] = array_map('intval', explode(':', $row['Hora']));
+        $inicioExistente = $ch * 60 + $cm;
+        $finExistente = $inicioExistente + floatval($row['Duracion']) * 60;
+
+        // Si cualquier parte se superpone, no está disponible
+        if ($inicioNuevo < $finExistente && $finNuevo > $inicioExistente) {
+            return false;
         }
-
-        $stmt->close();
-        return true;
     }
+
+    return true;
+}
+
+
+
 
     public static function obtenerCitasPorServicio($conn, $idServicio)
     {
