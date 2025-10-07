@@ -1,10 +1,31 @@
 <?php
-session_start();
-$usuario_id = $_SESSION['idUsuario'] ?? null;
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Servicio.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Brinda.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Empresa.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Contrata.php'); // para las reseñas
 
-$hasServicio = (isset($servicio) && is_object($servicio));
-$mensajeError = $mensajeError ?? (!$hasServicio ? 'No se encontró el servicio solicitado.' : null);
+$mensajeError = null;
+
+$idServicio = $_GET['idServicio'] ?? null;
+if (!$idServicio) {
+    $mensajeError = "No se recibió el Id del servicio.";
+} else {
+    $idServicio = intval($idServicio);
+    $servicio = Servicio::obtenerPorId($conn, $idServicio);
+    if (!$servicio) {
+        $mensajeError = "Servicio no encontrado.";
+    } else {
+        // Obtener empresa a través de Brinda
+        $idEmpresa = Brinda::obtenerIdEmpresaPorServicio($conn, $idServicio);
+        $empresa = $idEmpresa ? Empresa::obtenerPorId($conn, $idEmpresa) : null;
+
+        // Obtener reseñas
+        $resenas = Contrata::obtenerResenasPorServicio($conn, $idServicio);
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -28,21 +49,21 @@ $mensajeError = $mensajeError ?? (!$hasServicio ? 'No se encontró el servicio s
         <?php else: ?>
             <div class="detalle-servicio">
                 <div class="imagen-contenedor">
-    <?php
-    $imagen = $servicio->getImagen();
-    $ruta = "/Proyecto/public/imagen/servicios/$imagen";
-    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $ruta) || empty($imagen)) {
-        $tieneImagen = false;
-    } else {
-        $tieneImagen = true;
-    }
-    ?>
-    <?php if ($tieneImagen): ?>
-        <img src="<?= $ruta ?>" alt="<?= htmlspecialchars($servicio->getTitulo()) ?>" style="display:block; margin:0 auto;">
-    <?php else: ?>
-        <div class="no-imagen">El servicio no tiene imagen</div>
-    <?php endif; ?>
-</div>
+                    <?php
+                    $imagen = $servicio->getImagen();
+                    $ruta = "/Proyecto/public/imagen/servicios/$imagen";
+                    if (!file_exists($_SERVER['DOCUMENT_ROOT'] . $ruta) || empty($imagen)) {
+                        $tieneImagen = false;
+                    } else {
+                        $tieneImagen = true;
+                    }
+                    ?>
+                    <?php if ($tieneImagen): ?>
+                        <img src="<?= $ruta ?>" alt="<?= htmlspecialchars($servicio->getTitulo()) ?>" style="display:block; margin:0 auto;">
+                    <?php else: ?>
+                        <div class="no-imagen">El servicio no tiene imagen</div>
+                    <?php endif; ?>
+                </div>
 
 
                 <div class="info-contenedor">
@@ -106,6 +127,55 @@ $mensajeError = $mensajeError ?? (!$hasServicio ? 'No se encontró el servicio s
         <?php endif; ?>
     </div>
 
+
+
+    <div class="resenas-container">
+        <h3>Reseñas de este servicio</h3>
+
+        <?php if (!empty($resenas)): ?>
+            <!-- Botón filtrar -->
+            <div class="filtro-estrellas-container">
+                <button id="filtrarEstrellas">Filtrar por estrellas</button>
+                <select id="filtroSelector" style="display:none;">
+                    <option value="1">1 estrella</option>
+                    <option value="2">2 estrellas</option>
+                    <option value="3">3 estrellas</option>
+                    <option value="4">4 estrellas</option>
+                    <option value="5">5 estrellas</option>
+                </select>
+            </div>
+
+            <!-- Reseñas -->
+            <div id="resenasList">
+                <?php foreach ($resenas as $r): ?>
+                    <div class="resena-card" data-calificacion="<?= $r['calificacion'] ?>">
+                        <div class="resena-usuario">
+                            <?php
+                            $userImg = !empty($r['imagen'])
+                                ? str_replace(" ", "%20", $r['imagen'])   // reemplaza espacios
+                                : "/Proyecto/public/imagen/icono/default_user.png";
+                            ?>
+                            <img src="<?= htmlspecialchars($userImg) ?>" alt="Usuario" class="foto-usuario">
+
+
+                            <div class="info-usuario">
+                                <span class="nombre"><?= htmlspecialchars($r['Nombre'] . ' ' . $r['Apellido']) ?></span>
+                                <span class="email"><?= htmlspecialchars($r['Email']) ?></span>
+                            </div>
+                        </div>
+                        <div class="resena-contenido">
+                            <span class="estrellas"><?= str_repeat('⭐', $r['calificacion']) ?></span>
+                            <p><?= nl2br(htmlspecialchars($r['resena'])) ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <p>No hay reseñas todavía.</p>
+        <?php endif; ?>
+    </div>
+
+
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/modal_mensaje.php'; ?>
     <link rel="stylesheet" href="/Proyecto/public/css/layout/modal_mensaje.css">
     <script src="/Proyecto/public/js/mensaje/modal_mensaje.js"></script>
@@ -113,7 +183,6 @@ $mensajeError = $mensajeError ?? (!$hasServicio ? 'No se encontró el servicio s
         ✅ Mensaje enviado correctamente
     </div>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
-
 </body>
 
 </html>

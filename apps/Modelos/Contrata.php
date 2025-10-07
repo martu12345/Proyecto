@@ -103,52 +103,53 @@ class Contrata
         return $resultado;
     }
 
-public static function existeCita($conn, $idUsuario, $idServicio, $fecha, $hora) {
-    $stmt = $conn->prepare("
+    public static function existeCita($conn, $idUsuario, $idServicio, $fecha, $hora)
+    {
+        $stmt = $conn->prepare("
         SELECT COUNT(*) as total
         FROM Contrata
         WHERE IdUsuario = ? AND IdServicio = ? AND Fecha = ? AND Hora = ?
     ");
-    $stmt->bind_param("iiss", $idUsuario, $idServicio, $fecha, $hora);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $row = $resultado->fetch_assoc();
-    $stmt->close();
-    return $row['total'] > 0;
-}
+        $stmt->bind_param("iiss", $idUsuario, $idServicio, $fecha, $hora);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $row = $resultado->fetch_assoc();
+        $stmt->close();
+        return $row['total'] > 0;
+    }
 
 
 
 
-public static function estaDisponible($conn, $fecha, $horaNueva, $duracionNueva)
-{
-    $stmt = $conn->prepare("
+    public static function estaDisponible($conn, $fecha, $horaNueva, $duracionNueva)
+    {
+        $stmt = $conn->prepare("
         SELECT c.Hora, s.Duracion
         FROM Contrata c
         INNER JOIN Servicio s ON c.IdServicio = s.IdServicio
         WHERE c.Fecha = ?
     ");
-    $stmt->bind_param("s", $fecha);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
+        $stmt->bind_param("s", $fecha);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
-    [$h, $m] = array_map('intval', explode(':', $horaNueva));
-    $inicioNuevo = $h * 60 + $m;
-    $finNuevo = $inicioNuevo + $duracionNueva * 60;
+        [$h, $m] = array_map('intval', explode(':', $horaNueva));
+        $inicioNuevo = $h * 60 + $m;
+        $finNuevo = $inicioNuevo + $duracionNueva * 60;
 
-    while ($row = $resultado->fetch_assoc()) {
-        [$ch, $cm] = array_map('intval', explode(':', $row['Hora']));
-        $inicioExistente = $ch * 60 + $cm;
-        $finExistente = $inicioExistente + floatval($row['Duracion']) * 60;
+        while ($row = $resultado->fetch_assoc()) {
+            [$ch, $cm] = array_map('intval', explode(':', $row['Hora']));
+            $inicioExistente = $ch * 60 + $cm;
+            $finExistente = $inicioExistente + floatval($row['Duracion']) * 60;
 
-        // Si cualquier parte se superpone, no está disponible
-        if ($inicioNuevo < $finExistente && $finNuevo > $inicioExistente) {
-            return false;
+            // Si cualquier parte se superpone, no está disponible
+            if ($inicioNuevo < $finExistente && $finNuevo > $inicioExistente) {
+                return false;
+            }
         }
-    }
 
-    return true;
-}
+        return true;
+    }
 
 
 
@@ -176,50 +177,50 @@ public static function estaDisponible($conn, $fecha, $horaNueva, $duracionNueva)
     }
 
     public static function obtenerPorId($conn, $idContrata)
-{
-    $stmt = $conn->prepare("SELECT * FROM Contrata WHERE IdCita = ?");
-    $stmt->bind_param("i", $idContrata);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $fila = $resultado->fetch_assoc();
-    $stmt->close();
+    {
+        $stmt = $conn->prepare("SELECT * FROM Contrata WHERE IdCita = ?");
+        $stmt->bind_param("i", $idContrata);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $fila = $resultado->fetch_assoc();
+        $stmt->close();
 
-    if ($fila) {
-        $contrata = new Contrata(
-            $fila['IdUsuario'],
-            $fila['IdServicio'],
-            $fila['IdCita'],
-            $fila['Fecha'],
-            $fila['Hora'],
-            $fila['Calificacion'] ?? null, 
-            $fila['Resena'] ?? null,
-            $fila['Estado']
-        );
-        return $contrata;
+        if ($fila) {
+            $contrata = new Contrata(
+                $fila['IdUsuario'],
+                $fila['IdServicio'],
+                $fila['IdCita'],
+                $fila['Fecha'],
+                $fila['Hora'],
+                $fila['Calificacion'] ?? null,
+                $fila['Resena'] ?? null,
+                $fila['Estado']
+            );
+            return $contrata;
+        }
+        return null;
     }
-    return null;
-}
 
-public function actualizarEstado($conn, $nuevoEstado)
-{
-    $stmt = $conn->prepare("
+    public function actualizarEstado($conn, $nuevoEstado)
+    {
+        $stmt = $conn->prepare("
         UPDATE Contrata
         SET Estado = ?
         WHERE IdCita = ?
     ");
-    $stmt->bind_param("si", $nuevoEstado, $this->idCita);
-    $resultado = $stmt->execute();
-    if ($resultado) $this->estado = $nuevoEstado;
-    $stmt->close();
-    return $resultado;
-}
+        $stmt->bind_param("si", $nuevoEstado, $this->idCita);
+        $resultado = $stmt->execute();
+        if ($resultado) $this->estado = $nuevoEstado;
+        $stmt->close();
+        return $resultado;
+    }
 
 
-    
 
-public static function obtenerAgendadosPorEmpresa($conn, $idUsuario)
-{
-    $stmt = $conn->prepare("
+
+    public static function obtenerAgendadosPorEmpresa($conn, $idUsuario)
+    {
+        $stmt = $conn->prepare("
         SELECT 
             c.IdCita, c.Fecha, c.Hora, c.Estado,
             c.Calificacion, c.Resena,          -- <- Asegurate que estén acá
@@ -233,68 +234,72 @@ public static function obtenerAgendadosPorEmpresa($conn, $idUsuario)
         ORDER BY c.Fecha, c.Hora
     ");
 
-    $stmt->bind_param("i", $idUsuario);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
+        $stmt->bind_param("i", $idUsuario);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
-    $agendados = [];
-    while ($row = $resultado->fetch_assoc()) {
-        $agendados[] = $row;
+        $agendados = [];
+        while ($row = $resultado->fetch_assoc()) {
+            $agendados[] = $row;
+        }
+
+        $stmt->close();
+        return $agendados;
     }
 
-    $stmt->close();
-    return $agendados;
-}
 
 
+    public static function finalizarServiciosVencidos($conn)
+    {
+        date_default_timezone_set('America/Montevideo');
+        $now = date('Y-m-d H:i:s');
 
-public static function finalizarServiciosVencidos($conn) {
-    date_default_timezone_set('America/Montevideo');
-    $now = date('Y-m-d H:i:s');
-
-    $sql = "UPDATE Contrata c
+        $sql = "UPDATE Contrata c
             JOIN Servicio s ON c.IdServicio = s.IdServicio
             SET c.Estado = 'Finalizado'
             WHERE c.Estado = 'En proceso'
             AND DATE_ADD(STR_TO_DATE(CONCAT(c.Fecha, ' ', c.Hora), '%Y-%m-%d %H:%i:%s'), INTERVAL s.Duracion HOUR) <= ?";
 
-    $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-        error_log("Error preparando la consulta: " . $conn->error);
-        return 0;
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            error_log("Error preparando la consulta: " . $conn->error);
+            return 0;
+        }
+
+        $stmt->bind_param("s", $now);
+        $stmt->execute();
+
+        $afectados = $stmt->affected_rows;
+        $stmt->close();
+
+        return $afectados;
     }
 
-    $stmt->bind_param("s", $now);
-    $stmt->execute();
+    public static function obtenerPorUsuarioYEstado($conn, $idUsuario, $estado)
+    {
+        $stmt = $conn->prepare("SELECT * FROM Contrata WHERE IdUsuario = ? AND Estado = ? ORDER BY Fecha, Hora");
+        $stmt->bind_param("is", $idUsuario, $estado);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
-    $afectados = $stmt->affected_rows;
-    $stmt->close();
-
-    return $afectados;
-}
-
-public static function obtenerPorUsuarioYEstado($conn, $idUsuario, $estado) {
-    $stmt = $conn->prepare("SELECT * FROM Contrata WHERE IdUsuario = ? AND Estado = ? ORDER BY Fecha, Hora");
-    $stmt->bind_param("is", $idUsuario, $estado);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-
-    $contratas = [];
-    while ($row = $resultado->fetch_assoc()) {
-        $contratas[] = $row;  
+        $contratas = [];
+        while ($row = $resultado->fetch_assoc()) {
+            $contratas[] = $row;
+        }
+        $stmt->close();
+        return $contratas;
     }
-    $stmt->close();
-    return $contratas;
-}
 
-public function guardarCalificacionResena($conn) {
-    $sql = "UPDATE contrata SET calificacion = ?, resena = ? WHERE idCita = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isi", $this->calificacion, $this->resena, $this->idCita);
-    return $stmt->execute();
-}
-public static function obtenerFinalizadosConCalificacion($conn, $IdUsuario) {
-    $sql = "SELECT c.idCita, c.idServicio, c.fecha, c.hora, c.calificacion, c.resena, 
+    public function guardarCalificacionResena($conn)
+    {
+        $sql = "UPDATE contrata SET calificacion = ?, resena = ? WHERE idCita = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("isi", $this->calificacion, $this->resena, $this->idCita);
+        return $stmt->execute();
+    }
+    public static function obtenerFinalizadosConCalificacion($conn, $IdUsuario)
+    {
+        $sql = "SELECT c.idCita, c.idServicio, c.fecha, c.hora, c.calificacion, c.resena, 
                    s.titulo,
                    e.nombreEmpresa
             FROM contrata c
@@ -303,16 +308,45 @@ public static function obtenerFinalizadosConCalificacion($conn, $IdUsuario) {
             JOIN empresa e ON b.idUsuario = e.idUsuario
             WHERE c.idUsuario = ? AND c.estado = 'Finalizado'";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $IdUsuario);
-    $stmt->execute();
-    $result = $stmt->get_result();
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $IdUsuario);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    $finalizados = [];
-    while ($row = $result->fetch_assoc()) {
-        $finalizados[] = $row;
+        $finalizados = [];
+        while ($row = $result->fetch_assoc()) {
+            $finalizados[] = $row;
+        }
+        return $finalizados;
     }
-    return $finalizados;
+public static function obtenerResenasPorServicio($conn, $idServicio)
+{
+    $stmt = $conn->prepare("
+       SELECT 
+    c.calificacion,
+    c.resena,
+    u.Email,
+    cl.Imagen AS imagen,   -- alias en minúscula
+    cl.Nombre,
+    cl.Apellido
+FROM Contrata c
+INNER JOIN Usuario u ON c.IdUsuario = u.IdUsuario
+INNER JOIN Cliente cl ON u.IdUsuario = cl.IdUsuario
+WHERE c.IdServicio = ? AND c.calificacion IS NOT NULL
+ORDER BY c.Fecha DESC
+
+    ");
+    $stmt->bind_param("i", $idServicio);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    $resenas = [];
+    while ($row = $resultado->fetch_assoc()) {
+        $resenas[] = $row;
+    }
+
+    $stmt->close();
+    return $resenas;
 }
 
 }

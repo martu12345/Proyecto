@@ -1,3 +1,6 @@
+/* =========================
+   ESTILO GENERAL
+========================= */
 body {
     background-color: #ff914d;
     font-family: 'Lexend', sans-serif;
@@ -47,19 +50,12 @@ body {
 }
 
 .info-contenedor h2 {
-    color: #222;       /* nuestro naranja */
-    font-weight: 700;     /* bold */
+    color: #222;
+    font-weight: 700;
     margin-top: 0;
     margin-bottom: 8px;
     font-size: 26px;
 }
-
-.info-contenedor p.titulo-info {
-    color: #ff914d;       /* mismo naranja */
-    font-weight: 700;     /* bold */
-    margin: 6px 0 2px 0;
-}
-
 
 .info-contenedor .precio {
     font-size: 22px;
@@ -68,16 +64,23 @@ body {
     margin: 6px 0 12px 0;
 }
 
-.info-contenedor p {
+.info-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     margin: 4px 0;
-    color: #444;
+}
+
+.info-line span.titulo-info {
+    color: #ff914d;
+    font-weight: 700;
 }
 
 .botones-servicio {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-    margin-top: auto; 
+    margin-top: auto;
 }
 
 .boton-servicio {
@@ -106,10 +109,11 @@ body {
     font-weight: 600;
     margin-bottom: 8px;
 }
+
 .empresa-line {
     display: flex;
     align-items: center;
-    gap: 10px; /* espacio entre "Empresa:" y el botón */
+    gap: 10px;
     margin: 4px 0;
 }
 
@@ -117,9 +121,9 @@ body {
     all: unset;
     display: inline-block;
     font-family: 'Lexend', sans-serif;
-    font-size: 14px;        /* más pequeño */
+    font-size: 14px;
     font-weight: 600;
-    padding: 4px 12px;      /* más compacto */
+    padding: 4px 12px;
     border-radius: 8px;
     cursor: pointer;
     text-align: center;
@@ -135,21 +139,10 @@ body {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
-.info-line {
-    display: flex;
-    align-items: center;
-    gap: 8px;       /* espacio entre título y contenido */
-    margin: 4px 0;
-}
-
-.info-line span.titulo-info {
-    color: #ff914d;   /* nuestro naranja */
-    font-weight: 700; /* bold */
-}
 
 .no-imagen {
     width: 100%;
-    height: 250px; /* mismo tamaño que tendría la imagen */
+    height: 250px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -162,23 +155,158 @@ body {
     text-align: center;
 }
 
+/* =========================
+   RESEÑAS COQUETAS - V2
+========================= */
+.resenas-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 0 15px;
+    font-family: 'Lexend', sans-serif;
+}
 
+.resenas-container h3 {
+    color: #fff;
+    font-weight: 800;
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
 
+/* Línea decorativa debajo del título */
+.resenas-container h3::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: #ff914d;
+    margin: 10px auto 0 auto;
+    border-radius: 2px;
+}
+
+/* Filtro */
+.filtro-estrellas-container {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+#filtrarEstrellas {
+    padding: 10px 22px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #fff;
+    background-color: #ff914d;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#filtrarEstrellas:hover {
+    background-color: #ff6200;
+    transform: translateY(-2px);
+}
+
+#filtroSelector {
+    font-size: 14px;
+    padding: 7px 14px;
+    border-radius: 10px;
+    border: 1px solid #ff914d;
+    cursor: pointer;
+    outline: none;
+    margin-left: 10px;
+}
+
+/* Tarjetas reseña */
+.resena-card {
+    display: flex;
+    gap: 20px;
+    padding: 20px 25px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    align-items: flex-start;
+}
+
+.resena-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* Imagen + info usuario horizontal */
+.resena-usuario {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-shrink: 0;
+}
+
+/* Foto usuario cuadrada con bordes suaves */
+.foto-usuario {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+/* Nombre y email al lado de la foto */
+.info-usuario {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+}
+
+.info-usuario .nombre {
+    font-weight: 700;
+    color: #222;
+    font-size: 1em;
+}
+
+.info-usuario .email {
+    font-size: 0.85em;
+    color: #666;
+}
+
+/* Contenido de la reseña */
+.resena-contenido {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.estrellas {
+    color: gold;
+    font-size: 1.2em;
+}
+
+.resena-contenido p {
+    margin: 0;
+    color: #444;
+    line-height: 1.5;
+    font-size: 0.95em;
+    word-break: break-word;
+}
+
+/* RESPONSIVE */
 @media(max-width: 768px) {
-    .detalle-servicio {
+    .resena-card {
         flex-direction: column;
-        align-items: center;
-        min-height: auto;
+        align-items: flex-start;
+        text-align: left;
     }
-    .imagen-contenedor {
-        width: 80%;
-        height: auto;
+    .resena-usuario {
+        flex-direction: row;
+        gap: 12px;
     }
-    .info-contenedor {
+    .info-usuario {
+        text-align: left;
+    }
+    .resena-contenido {
         width: 100%;
-        margin-top: 20px;
-    }
-    .botones-servicio {
-        justify-content: center;
     }
 }
