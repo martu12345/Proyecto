@@ -3,11 +3,13 @@ class Administra
 {
     private $idServicio;
     private $idUsuario;
+    private $fecha; // nuevo atributo
 
-    public function __construct($idServicio, $idUsuario)
+    public function __construct($idServicio, $idUsuario, $fecha = null)
     {
         $this->idServicio = $idServicio;
         $this->idUsuario = $idUsuario;
+        $this->fecha = $fecha; // asignación opcional
     }
 
     // getters
@@ -21,6 +23,11 @@ class Administra
         return $this->idUsuario;
     }
 
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
     // setters
     public function setIdServicio($idServicio)
     {
@@ -31,4 +38,10 @@ class Administra
     {
         $this->idUsuario = $idUsuario;
     }
+
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+    }
 }
+?>

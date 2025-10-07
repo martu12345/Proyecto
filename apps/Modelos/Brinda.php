@@ -3,11 +3,13 @@ class Brinda
 {
     private $idServicio;
     private $idUsuario;
+    private $notificacion; // Nuevo atributo
 
-    public function __construct($idServicio, $idUsuario)
+    public function __construct($idServicio, $idUsuario, $notificacion = null)
     {
         $this->idServicio = $idServicio;
         $this->idUsuario = $idUsuario;
+        $this->notificacion = $notificacion; // inicializamos
     }
 
     // Getters
@@ -15,9 +17,15 @@ class Brinda
     {
         return $this->idServicio;
     }
+
     public function getIdUsuario()
     {
         return $this->idUsuario;
+    }
+
+    public function getNotificacion()
+    {
+        return $this->notificacion;
     }
 
     // Setters
@@ -25,39 +33,43 @@ class Brinda
     {
         $this->idServicio = $idServicio;
     }
+
     public function setIdUsuario($idUsuario)
     {
         $this->idUsuario = $idUsuario;
     }
 
+    public function setNotificacion($notificacion)
+    {
+        $this->notificacion = $notificacion;
+    }
+
     // Método para guardar en la BD
     public function guardar($conn)
     {
-        $stmt = $conn->prepare("INSERT INTO Brinda (IdServicio, IdUsuario) VALUES (?, ?)");
+        $stmt = $conn->prepare("INSERT INTO Brinda (IdServicio, IdUsuario, notificacion) VALUES (?, ?, ?)");
         if (!$stmt) {
             die("Error prepare Brinda: " . $conn->error);
         }
-        $stmt->bind_param("ii", $this->idServicio, $this->idUsuario);
+        $stmt->bind_param("iis", $this->idServicio, $this->idUsuario, $this->notificacion);
         $resultado = $stmt->execute();
         $stmt->close();
         return $resultado;
     }
 
- public static function obtenerIdEmpresaPorServicio($conn, $idServicio) {
-    $stmt = $conn->prepare("SELECT IdUsuario FROM brinda WHERE IdServicio = ?");
-    if (!$stmt) die("Error prepare Brinda: " . $conn->error);
-    $stmt->bind_param("i", $idServicio);
-    $stmt->execute();
-    $res = $stmt->get_result();
-    $fila = $res->fetch_assoc();
-    $stmt->close();
-    return $fila['IdUsuario'] ?? null;
-}
-
-
+    public static function obtenerIdEmpresaPorServicio($conn, $idServicio)
+    {
+        $stmt = $conn->prepare("SELECT IdUsuario FROM brinda WHERE IdServicio = ?");
+        if (!$stmt) die("Error prepare Brinda: " . $conn->error);
+        $stmt->bind_param("i", $idServicio);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        $fila = $res->fetch_assoc();
+        $stmt->close();
+        return $fila['IdUsuario'] ?? null;
+    }
 
     // Obtener servicios de una empresa
-
     public static function obtenerServiciosPorEmpresa($conn, $idUsuario)
     {
         $sql = "SELECT s.*
