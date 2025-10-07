@@ -319,34 +319,35 @@ class Contrata
         }
         return $finalizados;
     }
-public static function obtenerResenasPorServicio($conn, $idServicio)
-{
-    $stmt = $conn->prepare("
-       SELECT 
-    c.calificacion,
-    c.resena,
-    u.Email,
-    cl.Imagen AS imagen,   -- alias en minúscula
-    cl.Nombre,
-    cl.Apellido
-FROM Contrata c
-INNER JOIN Usuario u ON c.IdUsuario = u.IdUsuario
-INNER JOIN Cliente cl ON u.IdUsuario = cl.IdUsuario
-WHERE c.IdServicio = ? AND c.calificacion IS NOT NULL
-ORDER BY c.Fecha DESC
+    public static function obtenerResenasPorServicio($conn, $idServicio)
+    {
+        $stmt = $conn->prepare("
+            SELECT 
+                c.calificacion,
+                c.resena,
+                u.Email,
+                cl.Imagen AS imagen,
+                cl.Nombre,
+                cl.Apellido
+            FROM Contrata c
+            INNER JOIN Usuario u ON c.IdUsuario = u.IdUsuario
+            INNER JOIN Cliente cl ON u.IdUsuario = cl.IdUsuario
+            WHERE c.IdServicio = ? AND c.calificacion IS NOT NULL
+            ORDER BY c.Fecha DESC
+        ");
+        $stmt->bind_param("i", $idServicio);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
-    ");
-    $stmt->bind_param("i", $idServicio);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
+        $resenas = [];
+        while ($row = $resultado->fetch_assoc()) {
+            $resenas[] = $row;
+        }
 
-    $resenas = [];
-    while ($row = $resultado->fetch_assoc()) {
-        $resenas[] = $row;
+        $stmt->close();
+        return $resenas;
     }
 
-    $stmt->close();
-    return $resenas;
-}
+
 
 }

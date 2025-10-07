@@ -1,35 +1,36 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Conexion.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Servicio.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Brinda.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Empresa.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Contrata.php');
 
-// Aceptar POST (Ver más) o GET (Volver desde empresa)
-$idRaw = $_POST['IdServicio'] ?? $_GET['id'] ?? null;
+// Obtener idServicio desde GET
+$idRaw = $_GET['idServicio'] ?? null;
 
 $servicio = null;
 $empresa = null;
+$resenas = [];
 $mensajeError = null;
 
-if ($idRaw === null) {
+if (!$idRaw) {
     $mensajeError = "No se recibió el Id del servicio.";
 } else {
-    $id = intval($idRaw);
-    if ($id <= 0) {
+    $idServicio = intval($idRaw);
+    if ($idServicio <= 0) {
         $mensajeError = "Id de servicio inválido.";
     } else {
-        $servicio = Servicio::obtenerPorId($conn, $id);
+        $servicio = Servicio::obtenerPorId($conn, $idServicio);
         if (!$servicio) {
-            $mensajeError = "No se encontró el servicio con Id {$id}.";
+            $mensajeError = "No se encontró el servicio con Id {$idServicio}.";
         } else {
-            $idEmpresa = Brinda::obtenerIdEmpresaPorServicio($conn, $id);
-            if ($idEmpresa) {
-                $empresa = Empresa::obtenerPorId($conn, $idEmpresa);
-            }
+            $idEmpresa = Brinda::obtenerIdEmpresaPorServicio($conn, $idServicio);
+            $empresa = $idEmpresa ? Empresa::obtenerPorId($conn, $idEmpresa) : null;
+            $resenas = Contrata::obtenerResenasPorServicio($conn, $idServicio);
         }
     }
 }
 
-// Cargar vista
+// Cargar la vista
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/servicio/DetallesServicio.php');
 exit;

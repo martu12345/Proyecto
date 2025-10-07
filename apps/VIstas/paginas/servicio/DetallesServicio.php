@@ -1,29 +1,5 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Conexion.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Servicio.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Brinda.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Empresa.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Contrata.php'); // para las reseñas
 
-$mensajeError = null;
-
-$idServicio = $_GET['idServicio'] ?? null;
-if (!$idServicio) {
-    $mensajeError = "No se recibió el Id del servicio.";
-} else {
-    $idServicio = intval($idServicio);
-    $servicio = Servicio::obtenerPorId($conn, $idServicio);
-    if (!$servicio) {
-        $mensajeError = "Servicio no encontrado.";
-    } else {
-        // Obtener empresa a través de Brinda
-        $idEmpresa = Brinda::obtenerIdEmpresaPorServicio($conn, $idServicio);
-        $empresa = $idEmpresa ? Empresa::obtenerPorId($conn, $idEmpresa) : null;
-
-        // Obtener reseñas
-        $resenas = Contrata::obtenerResenasPorServicio($conn, $idServicio);
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -129,26 +105,29 @@ if (!$idServicio) {
 
 
 
-    <div class="resenas-container">
-        <h3>Reseñas de este servicio</h3>
+   <div class="resenas-container">
+    <h3>Reseñas de este servicio</h3>
+    <?php if (!empty($resenas)): ?>
+    <div class="filtro-estrellas-wrapper">
+    <div class="filtro-estrellas-container">
+        <label>Filtrar por estrellas:</label>
+        <div class="estrellas-filtro" id="filtroEstrellas">
+            <span data-valor="1">⭐</span>
+            <span data-valor="2">⭐</span>
+            <span data-valor="3">⭐</span>
+            <span data-valor="4">⭐</span>
+            <span data-valor="5">⭐</span>
+        </div>
+    </div>
+</div>
 
-        <?php if (!empty($resenas)): ?>
-            <!-- Botón filtrar -->
-            <div class="filtro-estrellas-container">
-                <button id="filtrarEstrellas">Filtrar por estrellas</button>
-                <select id="filtroSelector" style="display:none;">
-                    <option value="1">1 estrella</option>
-                    <option value="2">2 estrellas</option>
-                    <option value="3">3 estrellas</option>
-                    <option value="4">4 estrellas</option>
-                    <option value="5">5 estrellas</option>
-                </select>
-            </div>
+
+
 
             <!-- Reseñas -->
             <div id="resenasList">
                 <?php foreach ($resenas as $r): ?>
-                    <div class="resena-card" data-calificacion="<?= $r['calificacion'] ?>">
+<div class="resena-card" data-calificacion="<?= $r['calificacion'] ?>">
                         <div class="resena-usuario">
                             <?php
                             $userImg = !empty($r['imagen'])
@@ -171,9 +150,14 @@ if (!$idServicio) {
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p>No hay reseñas todavía.</p>
-        <?php endif; ?>
+    <div class="no-resenas">
+        <p>No hay reseñas todavía.</p>
     </div>
+<?php endif; ?>
+
+    </div>
+    <script src="/Proyecto/public/js/servicio/DetallesServicio.js"></script>
+
 
 
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/modal_mensaje.php'; ?>
