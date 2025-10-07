@@ -24,7 +24,7 @@
 <h2>¿Qué deseas hacer?</h2>
 <div class="tipo-cuenta-buttons">
 <button type="button" onclick="window.location.href='/Proyecto/apps/vistas/paginas/propietario/crear_admin.php'">Crear Administrador</button>
-<button type="button" onclick="window.location.href='/Proyecto/apps/vistas/propietario/baja_admin.php'">Dar de Baja Administrador</button>
+<button type="button" onclick="window.location.href='/Proyecto/apps/vistas/paginas/propietario/eliminar_admin.php'">Dar de Baja Administrador</button>
 </div>
 </div>
 </div>
