@@ -94,7 +94,7 @@ class ServiciosClienteControlador
 
     private function obtenerMensajeCancelacion($idUsuarioCliente, $idUsuarioEmpresa, $fechaServicio)
     {
-        $mensajes = Comunica::obtenerMensajesParaEmpresa($this->conn, $idUsuarioEmpresa);
+        $mensajes = Comunica::obtenerMensajesRecibidosPorEmpresa($this->conn, $idUsuarioEmpresa);
 
         $fechaServicioTs = strtotime($fechaServicio);
         $mensajeValido = null;
