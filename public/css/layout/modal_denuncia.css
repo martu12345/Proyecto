@@ -1,0 +1,82 @@
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+  font-family: 'Lexend', sans-serif;
+}
+
+.modal-content {
+  background-color: #ffffff; /* fondo blanco limpio */
+  margin: 10% auto;
+  padding: 25px 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+
+.cerrar {
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #FF914D;
+}
+
+.cerrar:hover {
+  color: #e6733c;
+}
+
+.modal-content label {
+  display: block;
+  font-weight: 500;
+  color: #555;
+  margin-top: 12px;
+  margin-bottom: 5px;
+}
+
+.modal-content select,
+.modal-content textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  transition: 0.2s;
+}
+
+.modal-content select:focus,
+.modal-content textarea:focus {
+  border-color: #FF914D;
+  box-shadow: 0 0 5px rgba(255,145,77,0.3);
+}
+
+.modal-content textarea::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* Botón centrado, sin bordes feos */
+.modal-content button {
+  background-color: #FF914D;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 12px 20px;
+  margin-top: 15px;
+  transition: 0.2s;
+}
+
+.modal-content button:hover {
+  background-color: #e6733c;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(255,145,77,0.3);
+}

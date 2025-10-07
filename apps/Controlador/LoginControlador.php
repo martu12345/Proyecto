@@ -64,7 +64,7 @@ $stmtAdmin->execute();
 $resAdmin = $stmtAdmin->get_result();
 if ($resAdmin && $resAdmin->num_rows > 0) {
     $rol = 'admin';
-    $redirect = '/Proyecto/apps/vistas/paginas/admin/home_admin.php';
+    $redirect = '/Proyecto/apps/vistas/paginas/administrador/home_admin.php';
 }
 $stmtAdmin->close();
 
