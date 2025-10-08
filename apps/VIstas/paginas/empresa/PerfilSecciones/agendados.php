@@ -70,6 +70,19 @@ $empresa = Empresa::obtenerPorId($conn, $_SESSION['idUsuario'] ?? 0);
     </div>
 </div>
 
+<!-- MODAL cancelar (servicio en proceso) -->
+<div id="modalCancelarEmpresa" class="modal">
+    <div class="modal-content">
+        <p>¿Seguro querés cancelar este servicio?</p>
+        <div class="modal-buttons">
+            <button id="confirmCancelEmpresa" class="btn-confirm">✔</button>
+            <button id="cancelCancelEmpresa" class="btn-cancel">✖</button>
+        </div>
+        <div id="mensajeModalEmpresa" class="mensaje-modal" style="display:none;"></div>
+    </div>
+</div>
+
+
 <script>
 let filaSeleccionada = null;
 
@@ -106,16 +119,64 @@ function cargarAgendados() {
             </td>
         `;
         tbodyPend.appendChild(tr);
-    } else if(item.Estado === "En proceso"){
-        tr.innerHTML = `
-            <td>${item.NombreServicio}</td>
-            <td>${item.NombreCliente}</td>
-            <td>${item.Fecha}</td>
-            <td>${item.Hora}</td>
-            <td>${item.Estado}</td>
-        `;
-        tbodyProc.appendChild(tr);
+    }  else if(item.Estado === "En proceso"){
+    tr.innerHTML = `
+        <td>${item.NombreServicio}</td>
+        <td>${item.NombreCliente}</td>
+        <td>${item.Fecha}</td>
+        <td>${item.Hora}</td>
+        <td>
+            
+            <button class="btn-cancelar-empresa" data-id="${item.IdCita}" title="Cancelar servicio">✖</button>
+        </td>
+    `;
+    tbodyProc.appendChild(tr);
+}
+// ------------------ MODAL CANCELAR (EMPRESA) ------------------
+let citaCancelarEmpresa = null;
+const modalCancelarEmpresa = document.getElementById('modalCancelarEmpresa');
+const btnConfirmCancelEmpresa = document.getElementById('confirmCancelEmpresa');
+const btnCancelCancelEmpresa = document.getElementById('cancelCancelEmpresa');
+const mensajeModalEmpresa = document.getElementById('mensajeModalEmpresa');
+
+// Detectar clic en botón cancelar dentro de la tabla
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-cancelar-empresa')) {
+        citaCancelarEmpresa = e.target.dataset.id;
+        mensajeModalEmpresa.style.display = 'none';
+        modalCancelarEmpresa.style.display = 'flex';
     }
+});
+
+btnCancelCancelEmpresa.onclick = () => modalCancelarEmpresa.style.display = 'none';
+
+btnConfirmCancelEmpresa.onclick = () => {
+    if (!citaCancelarEmpresa) return;
+
+    fetch('/Proyecto/apps/Controlador/empresa/cancelarServicioEmpresa.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `idCita=${citaCancelarEmpresa}`
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            const fila = document.querySelector(`.btn-cancelar-empresa[data-id="${citaCancelarEmpresa}"]`)?.closest('tr');
+            if (fila) fila.remove();
+            mensajeModalEmpresa.style.display = 'block';
+            mensajeModalEmpresa.textContent = 'Servicio cancelado';
+            setTimeout(() => modalCancelarEmpresa.style.display = 'none', 1500);
+        } else {
+            mensajeModalEmpresa.style.display = 'block';
+            mensajeModalEmpresa.textContent = 'Error: ' + data.error;
+        }
+    })
+    .catch(() => {
+        mensajeModalEmpresa.style.display = 'block';
+        mensajeModalEmpresa.textContent = 'Error en la solicitud';
+    });
+};
+
 });
 
 
