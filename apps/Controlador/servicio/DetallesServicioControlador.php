@@ -26,7 +26,6 @@ if (!$idRaw) {
         } else {
             $idEmpresa = Brinda::obtenerIdEmpresaPorServicio($conn, $idServicio);
             $empresa = $idEmpresa ? Empresa::obtenerPorId($conn, $idEmpresa) : null;
-            $resenas = Contrata::obtenerResenasPorServicio($conn, $idServicio);
         }
     }
 }

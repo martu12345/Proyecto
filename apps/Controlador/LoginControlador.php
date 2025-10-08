@@ -58,7 +58,7 @@ if ($resEmpresa && $resEmpresa->num_rows > 0) {
 $stmtEmpresa->close();
 
 // Admin
-$stmtAdmin = $conn->prepare("SELECT 1 FROM administrador WHERE idUsuario = ?");
+$stmtAdmin = $conn->prepare("SELECT 1 FROM administrador WHERE idUsuarioAdministrador = ?");
 $stmtAdmin->bind_param("i", $idUsuario);
 $stmtAdmin->execute();
 $resAdmin = $stmtAdmin->get_result();

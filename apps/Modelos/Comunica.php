@@ -10,18 +10,20 @@ class Comunica
     private $contenido;
     private $fecha;
     private $idUsuarioEmisor;
-    private $notificacion; // Nuevo atributo
+    private $notificacion;
+    private $idMensajePadre; // 🔹 Nuevo atributo
 
-    public function __construct($idUsuarioCliente, $idUsuarioEmpresa, $idMensaje, $asunto, $contenido, $fecha, $idUsuarioEmisor, $notificacion = null)
+    public function __construct($idUsuarioCliente, $idUsuarioEmpresa, $idMensaje, $asunto, $contenido, $fecha, $idUsuarioEmisor, $notificacion = null, $idMensajePadre = null)
     {
-        $this->idUsuarioCliente = $idUsuarioCliente; // pk
-        $this->idUsuarioEmpresa = $idUsuarioEmpresa; // pk
-        $this->idMensaje = $idMensaje; // pk
+        $this->idUsuarioCliente = $idUsuarioCliente;
+        $this->idUsuarioEmpresa = $idUsuarioEmpresa;
+        $this->idMensaje = $idMensaje;
         $this->asunto = $asunto;
         $this->contenido = $contenido;
         $this->fecha = $fecha;
         $this->idUsuarioEmisor = $idUsuarioEmisor;
-        $this->notificacion = $notificacion; // inicializamos
+        $this->notificacion = $notificacion;
+        $this->idMensajePadre = $idMensajePadre; // 🔹 inicializamos
     }
 
     // Getters
@@ -33,6 +35,7 @@ class Comunica
     public function getFecha() { return $this->fecha; }
     public function getIdUsuarioEmisor() { return $this->idUsuarioEmisor; }
     public function getNotificacion() { return $this->notificacion; }
+    public function getIdMensajePadre() { return $this->idMensajePadre; } // 🔹 nuevo getter
 
     // Setters
     public function setIdUsuarioCliente($idUsuarioCliente) { $this->idUsuarioCliente = $idUsuarioCliente; }
@@ -43,26 +46,28 @@ class Comunica
     public function setFecha($fecha) { $this->fecha = $fecha; }
     public function setIdUsuarioEmisor($idUsuarioEmisor) { $this->idUsuarioEmisor = $idUsuarioEmisor; }
     public function setNotificacion($notificacion) { $this->notificacion = $notificacion; }
+    public function setIdMensajePadre($idMensajePadre) { $this->idMensajePadre = $idMensajePadre; } // 🔹 nuevo setter
 
-    // Función para enviar mensaje
+    // 🔹 Función para enviar mensaje (con IdMensajePadre opcional)
     public function enviar($conn) {
-        $sql = "INSERT INTO comunica (idUsuarioCliente, idUsuarioEmpresa, asunto, contenido, FechaHora, idUsuarioEmisor, notificacion) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO comunica (idUsuarioCliente, idUsuarioEmpresa, asunto, contenido, FechaHora, idUsuarioEmisor, notificacion, IdMensajePadre) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param(
-            "iisssis",
+            "iisssisi",
             $this->idUsuarioCliente,
             $this->idUsuarioEmpresa,
             $this->asunto,
             $this->contenido,
             $this->fecha,
             $this->idUsuarioEmisor,
-            $this->notificacion
+            $this->notificacion,
+            $this->idMensajePadre // puede ser NULL
         );
         return $stmt->execute();
     }
 
-    // Función para obtener mensajes por empresa
+    // 🔹 Obtener mensajes por empresa
     public static function obtenerMensajesRecibidosPorEmpresa($conn, $idEmpresa) {
         $sql = "SELECT 
                     c.idMensaje,
@@ -70,6 +75,7 @@ class Comunica
                     c.FechaHora AS fecha,
                     c.asunto,
                     c.notificacion,
+                    c.IdMensajePadre,
                     CASE 
                         WHEN c.idUsuarioEmisor = c.idUsuarioCliente THEN CONCAT(cl.nombre, ' ', cl.apellido)
                         ELSE e.nombreEmpresa
@@ -94,7 +100,7 @@ class Comunica
         return $mensajes;
     }
 
-    // Función para obtener mensaje por id
+    // 🔹 Obtener mensaje por ID
     public static function obtenerMensajePorId($conn, $idMensaje)
     {
         $sql = "
@@ -106,7 +112,8 @@ class Comunica
                 Contenido,
                 FechaHora,
                 IdUsuarioEmisor,
-                notificacion
+                notificacion,
+                IdMensajePadre
             FROM comunica
             WHERE IdMensaje = ?
         ";
@@ -146,93 +153,93 @@ class Comunica
         return $mensaje;
     }
 
+    // 🔹 Obtener mensajes recibidos por cliente
+    public static function obtenerMensajesRecibidosPorCliente($conn, $idCliente) {
+        $sql = "SELECT 
+                    c.idMensaje,
+                    c.contenido AS mensaje,
+                    c.FechaHora AS fecha,
+                    c.asunto,
+                    c.IdMensajePadre,
+                    CASE 
+                        WHEN c.idUsuarioEmisor != c.idUsuarioCliente THEN
+                            COALESCE(CONCAT(cl.nombre, ' ', cl.apellido), e.nombreEmpresa)
+                    END AS emisor
+                FROM comunica c
+                LEFT JOIN cliente cl ON c.idUsuarioEmisor = cl.idUsuario
+                LEFT JOIN empresa e ON c.idUsuarioEmisor = e.idUsuario
+                WHERE c.idUsuarioCliente = ? AND c.idUsuarioEmisor != ?
+                ORDER BY c.FechaHora ASC";
 
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $idCliente, $idCliente);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
-public static function obtenerMensajesRecibidosPorCliente($conn, $idCliente) {
-    $sql = "SELECT 
-                c.idMensaje,
-                c.contenido AS mensaje,
-                c.FechaHora AS fecha,
-                c.asunto,
-                -- Mostramos el nombre del emisor (empresa o cliente que no sos vos)
-                CASE 
-                    WHEN c.idUsuarioEmisor != c.idUsuarioCliente THEN
-                        COALESCE(CONCAT(cl.nombre, ' ', cl.apellido), e.nombreEmpresa)
-                END AS emisor
-            FROM comunica c
-            LEFT JOIN cliente cl ON c.idUsuarioEmisor = cl.idUsuario
-            LEFT JOIN empresa e ON c.idUsuarioEmisor = e.idUsuario
-            WHERE c.idUsuarioCliente = ? AND c.idUsuarioEmisor != ?
-            ORDER BY c.FechaHora ASC";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $idCliente, $idCliente);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-
-    $mensajes = [];
-    while ($fila = $resultado->fetch_assoc()) {
-        $mensajes[] = $fila;
+        $mensajes = [];
+        while ($fila = $resultado->fetch_assoc()) {
+            $mensajes[] = $fila;
+        }
+        return $mensajes;
     }
-    return $mensajes;
-}
-public static function obtenerMensajesEnviadosPorCliente($conn, $idCliente) {
-    $sql = "SELECT 
-                c.idMensaje,
-                c.contenido AS mensaje,
-                c.FechaHora AS fecha,
-                c.asunto,
-                CASE 
-                    WHEN c.idUsuarioEmisor = c.idUsuarioCliente THEN CONCAT(cl.nombre, ' ', cl.apellido)
-                    ELSE e.nombreEmpresa
-                END AS destinatario
-            FROM comunica c
-            LEFT JOIN cliente cl ON c.idUsuarioCliente = cl.idUsuario
-            LEFT JOIN empresa e ON c.idUsuarioCliente = e.idUsuario
-            WHERE c.idUsuarioEmisor = ?
-            ORDER BY c.FechaHora ASC";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $idCliente);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
+    // 🔹 Enviados por cliente
+    public static function obtenerMensajesEnviadosPorCliente($conn, $idCliente) {
+        $sql = "SELECT 
+                    c.idMensaje,
+                    c.contenido AS mensaje,
+                    c.FechaHora AS fecha,
+                    c.asunto,
+                    c.IdMensajePadre,
+                    CASE 
+                        WHEN c.idUsuarioEmisor = c.idUsuarioCliente THEN CONCAT(cl.nombre, ' ', cl.apellido)
+                        ELSE e.nombreEmpresa
+                    END AS destinatario
+                FROM comunica c
+                LEFT JOIN cliente cl ON c.idUsuarioCliente = cl.idUsuario
+                LEFT JOIN empresa e ON c.idUsuarioCliente = e.idUsuario
+                WHERE c.idUsuarioEmisor = ?
+                ORDER BY c.FechaHora ASC";
 
-    $mensajes = [];
-    while ($fila = $resultado->fetch_assoc()) {
-        $mensajes[] = $fila;
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $idCliente);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $mensajes = [];
+        while ($fila = $resultado->fetch_assoc()) {
+            $mensajes[] = $fila;
+        }
+        return $mensajes;
     }
-    return $mensajes;
-}
-// Mensajes enviados por la empresa
-public static function obtenerMensajesEnviadosPorEmpresa($conn, $idEmpresa) {
-    $sql = "SELECT 
-                c.idMensaje,
-                c.contenido AS mensaje,
-                c.FechaHora AS fecha,
-                c.asunto,
-                -- Mostramos a quién fue enviado
-                CASE 
-                    WHEN c.idUsuarioCliente IS NOT NULL THEN CONCAT(cl.nombre, ' ', cl.apellido)
-                    ELSE e.nombreEmpresa
-                END AS destinatario
-            FROM comunica c
-            LEFT JOIN cliente cl ON c.idUsuarioCliente = cl.idUsuario
-            LEFT JOIN empresa e ON c.idUsuarioCliente = e.idUsuario
-            WHERE c.idUsuarioEmisor = ?
-            ORDER BY c.FechaHora ASC";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $idEmpresa);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
+    // 🔹 Enviados por empresa
+    public static function obtenerMensajesEnviadosPorEmpresa($conn, $idEmpresa) {
+        $sql = "SELECT 
+                    c.idMensaje,
+                    c.contenido AS mensaje,
+                    c.FechaHora AS fecha,
+                    c.asunto,
+                    c.IdMensajePadre,
+                    CASE 
+                        WHEN c.idUsuarioCliente IS NOT NULL THEN CONCAT(cl.nombre, ' ', cl.apellido)
+                        ELSE e.nombreEmpresa
+                    END AS destinatario
+                FROM comunica c
+                LEFT JOIN cliente cl ON c.idUsuarioCliente = cl.idUsuario
+                LEFT JOIN empresa e ON c.idUsuarioCliente = e.idUsuario
+                WHERE c.idUsuarioEmisor = ?
+                ORDER BY c.FechaHora ASC";
 
-    $mensajes = [];
-    while ($fila = $resultado->fetch_assoc()) {
-        $mensajes[] = $fila;
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $idEmpresa);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $mensajes = [];
+        while ($fila = $resultado->fetch_assoc()) {
+            $mensajes[] = $fila;
+        }
+        return $mensajes;
     }
-    return $mensajes;
 }
-
-
-}
-

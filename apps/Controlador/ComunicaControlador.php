@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require_once '../Modelos/Comunica.php';
 require_once '../Modelos/conexion.php';
@@ -14,15 +13,26 @@ $idUsuarioCliente = $_SESSION['idUsuario'];
 $idUsuarioEmpresa = $_POST['empresa_id'] ?? null;
 $asunto = $_POST['asunto'] ?? '';
 $contenido = $_POST['contenido'] ?? '';
-$idUsuarioEmisor = $_SESSION['idUsuario']; 
+$idUsuarioEmisor = $_SESSION['idUsuario'];
+$idMensajeRespondido = $_POST['idMensajeRespondido'] ?? null; // NUEVO
 
 if ($idUsuarioEmpresa && $asunto && $contenido) {
     $fecha = date("Y-m-d H:i:s");
 
-    // Crear objeto Comunica con asunto
-    $mensaje = new Comunica($idUsuarioCliente, $idUsuarioEmpresa, 0, $asunto, $contenido, $fecha, $idUsuarioEmisor);
+    // Crear objeto Comunica
+    $mensaje = new Comunica(
+        $idUsuarioCliente,
+        $idUsuarioEmpresa,
+        0,
+        $asunto,
+        $contenido,
+        $fecha,
+        $idUsuarioEmisor,
+        null,              // notificación (por ahora nula)
+        $idMensajeRespondido // NUEVO: respuesta a otro mensaje
+    );
 
-    // Enviar mensaje usando la función enviar de la misma clase
+    // Enviar mensaje
     if ($mensaje->enviar($conn)) {
         echo "ok";
     } else {
@@ -31,3 +41,4 @@ if ($idUsuarioEmpresa && $asunto && $contenido) {
 } else {
     echo "incompleto";
 }
+?>

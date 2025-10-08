@@ -17,4 +17,3 @@ if (!$mensaje) {
 }
 
 include($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Vistas/paginas/empresa/detalleMensaje.php');
-?>
