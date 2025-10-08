@@ -61,23 +61,28 @@ $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
             </form>
         </div>
 
-        <!-- Perfil -->
-        <div class="perfil">
-            <div class="perfil-btn">
-                <img src="/Proyecto/public/imagen/icono/icono_avatar.png" alt="Mi perfil">
-            </div>
-            <div class="perfil-menu">
-                <?php if ($logueado): ?>
-                    <a href="<?= $perfil_url ?>">Mi perfil</a>
-                    <a href="/Proyecto/apps/controlador/LogoutControlador.php">Cerrar sesión</a>
-                <?php else: ?>
-                    <a href="/Proyecto/apps/vistas/autenticacion/login.php">Iniciar sesión</a>
-                    <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>
-                <?php endif; ?>
-            </div>
-        </div>
-
+       <!-- Perfil -->
+<div class="perfil">
+    <div class="perfil-btn">
+        <a href="<?= $perfil_url ?>" class="icono-notificacion-navbar">
+            <img src="/Proyecto/public/imagen/icono/icono_avatar.png" alt="Mi perfil">
+            <?php if ($notificacionesNoLeidas > 0): ?>
+                <span class="punto-rojo"></span>
+            <?php endif; ?>
+        </a>
     </div>
+
+    <div class="perfil-menu">
+        <?php if ($logueado): ?>
+            <a href="<?= $perfil_url ?>">Mi perfil</a>
+            <a href="/Proyecto/apps/controlador/LogoutControlador.php">Cerrar sesión</a>
+        <?php else: ?>
+            <a href="/Proyecto/apps/vistas/autenticacion/login.php">Iniciar sesión</a>
+            <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>
+        <?php endif; ?>
+    </div>
+</div>
+
 
     <!-- JS del buscador -->
     <script src="/Proyecto/public/js/servicio/buscador.js" defer></script>

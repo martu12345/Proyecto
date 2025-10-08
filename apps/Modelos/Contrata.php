@@ -11,18 +11,28 @@ class Contrata
     private $estado;
     private $notificacion; // <- Nueva propiedad
 
-    public function __construct($idUsuario, $idServicio, $idCita, $fecha, $hora, $calificacion, $resena, $estado = 'Pendiente', $notificacion = null)
-    {
-        $this->idUsuario = $idUsuario;
-        $this->idServicio = $idServicio;
-        $this->idCita = $idCita;
-        $this->fecha = $fecha;
-        $this->hora = $hora;
-        $this->calificacion = $calificacion;
-        $this->resena = $resena;
-        $this->estado = $estado;
-        $this->notificacion = $notificacion; // <- asignación
-    }
+   public function __construct(
+    $idUsuario, 
+    $idServicio, 
+    $idCita = null, 
+    $fecha = null, 
+    $hora = null, 
+    $calificacion = null, 
+    $resena = null, 
+    $estado = 'Pendiente',     // sigue igual
+    $notificacion = 'no_leido' // sigue igual
+) {
+    $this->idUsuario = $idUsuario;
+    $this->idServicio = $idServicio;
+    $this->idCita = $idCita;
+    $this->fecha = $fecha;
+    $this->hora = $hora;
+    $this->calificacion = $calificacion;
+    $this->resena = $resena;
+    $this->estado = $estado;
+    $this->notificacion = $notificacion;
+}
+
 
     // GETTERS
     public function getIdUsuario() { return $this->idUsuario; }
@@ -46,26 +56,41 @@ class Contrata
     public function setEstado($estado) { $this->estado = $estado; }
     public function setNotificacion($notificacion) { $this->notificacion = $notificacion; } // <- Nuevo setter
 
-    // GUARDAR
-    public function guardar($conn)
-    {
-        $stmt = $conn->prepare("
-            INSERT INTO Contrata (IdUsuario, IdServicio, Fecha, Hora, Estado, Notificacion) 
-            VALUES (?, ?, ?, ?, ?, ?)
-        ");
-        $stmt->bind_param(
-            "iissss", 
-            $this->idUsuario, 
-            $this->idServicio, 
-            $this->fecha, 
-            $this->hora, 
-            $this->estado,
-            $this->notificacion
-        );
-        $resultado = $stmt->execute();
-        $stmt->close();
-        return $resultado;
+ // GUARDAR
+public function guardar($conn)
+{
+    $estado = $this->estado ?? 'Pendiente';
+$notificacion = $this->notificacion ?? 'no_leido';
+
+    $stmt = $conn->prepare("
+        INSERT INTO Contrata (IdUsuario, IdServicio, Fecha, Hora, Estado, Notificacion) 
+        VALUES (?, ?, ?, ?, ?, ?)
+    ");
+
+    if (!$stmt) {
+        error_log("Error preparando la consulta: " . $conn->error);
+        return false;
     }
+
+    $stmt->bind_param(
+        "iissss", 
+        $this->idUsuario, 
+        $this->idServicio, 
+        $this->fecha, 
+        $this->hora, 
+        $estado,
+        $notificacion
+    );
+
+    $resultado = $stmt->execute();
+
+    if (!$resultado) {
+        error_log("Error ejecutando la consulta: " . $stmt->error);
+    }
+
+    $stmt->close();
+    return $resultado;
+}
 
 
     public static function estaDisponible($conn, $idServicio, $fecha, $hora, $duracion)
@@ -261,4 +286,62 @@ public static function obtenerFinalizadosConCalificacion($conn, $IdUsuario) {
     return $finalizados;
 }
 
+ public static function obtenerResenasPorServicio($conn, $idServicio)
+    {
+        $stmt = $conn->prepare("
+            SELECT 
+                c.calificacion,
+                c.resena,
+                u.Email,
+                cl.Imagen AS imagen,
+                cl.Nombre,
+                cl.Apellido
+            FROM Contrata c
+            INNER JOIN Usuario u ON c.IdUsuario = u.IdUsuario
+            INNER JOIN Cliente cl ON u.IdUsuario = cl.IdUsuario
+            WHERE c.IdServicio = ? AND c.calificacion IS NOT NULL
+            ORDER BY c.Fecha DESC
+        ");
+        $stmt->bind_param("i", $idServicio);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $resenas = [];
+        while ($row = $resultado->fetch_assoc()) {
+            $resenas[] = $row;
+        }
+
+        $stmt->close();
+        return $resenas;
+    }
+
+ public static function obtenerNoLeidos($conn)
+    {
+        $sql = "SELECT IdServicio, IdUsuario FROM contrata WHERE notificacion = 'no_leido'";
+        $resultado = $conn->query($sql);
+        if (!$resultado) return [];
+        $contratos = [];
+        while ($fila = $resultado->fetch_assoc()) {
+            $contratos[] = [
+                'idServicio' => $fila['IdServicio'],
+                'idUsuario' => $fila['IdUsuario']
+            ];
+        }
+        return $contratos;
+    }
+
+    public static function marcarComoLeido($conn, $idEmpresa)
+{
+    $sql = "UPDATE Contrata c
+            JOIN Brinda b ON c.idServicio = b.idServicio
+            SET c.notificacion = 'leido'
+            WHERE b.idUsuario = ? AND c.notificacion = 'no_leido'";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idEmpresa);
+    $stmt->execute();
+    $stmt->close();
 }
+
+}
+
+

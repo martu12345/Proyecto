@@ -146,6 +146,32 @@ body {
     visibility: visible;
 }
 
+/* Contenedor del icono de perfil */
+.perfil-btn {
+    position: relative;
+}
+
+/* Puntito rojo sobre el avatar */
+.punto-rojo {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Para que el avatar mantenga tamaño */
+.perfil-btn img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .navbar {

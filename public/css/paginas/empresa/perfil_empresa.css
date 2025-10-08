@@ -207,6 +207,26 @@ body {
     background-color: #e57373;
 }
 
+
+.opcion {
+    position: relative;
+    display: inline-block;
+}
+.contador-notificaciones-agendados {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
+    color: white;
+    font-size: 14px;       /* un poquito más grande */
+    width: 22px;            /* aumentar tamaño */
+    height: 22px;
+    border-radius: 50%;
+    margin-left: 8px;       /* separación del texto */
+    vertical-align: middle; /* alinea con el texto */
+    font-weight: bold;      /* que se vea el número */
+}
+
 /* --- responsive --- */
 @media (max-width: 900px) and (min-width: 600px) {
     .perfil-box {
