@@ -190,6 +190,16 @@ h1 {
     transform: scale(1.05);
 }
 
+ .btn-cancel {
+    background-color: #db3518;
+    color: #fff;
+}
+
+ .btn-cancel:hover {
+    background-color: #e63e00;
+    transform: scale(1.05);
+}
+
 .btn-cancelar {
     background: #db3518;
     color: #fff;

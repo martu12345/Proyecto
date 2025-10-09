@@ -126,7 +126,7 @@ class ServiciosClienteControlador
             return $mensajeValido;
         }
 
-        return 'Sin mensaje de cancelación';
+        return 'El cliente cancelo';
     }
 
     //  CANCELAR SERVICIO 
