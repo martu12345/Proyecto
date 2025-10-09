@@ -35,6 +35,7 @@ class Empresa extends Usuario
     {
         return $this->imagen;
     }
+    
 
     public function setNombreEmpresa($nombreEmpresa)
     {

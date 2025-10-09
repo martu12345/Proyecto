@@ -70,6 +70,7 @@ body {
 
 .botones-empresa {
     display: flex;
+    border: none;
     gap: 16px;
     position: absolute;
     bottom: 20px;
@@ -80,6 +81,7 @@ body {
 .boton-empresa {
     width: 60px;
     height: 60px;
+    style: none; 
     border-radius: 50%;
     display: flex;
     justify-content: center;

@@ -6,6 +6,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Empresa.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Contrata.php');
 
 // Obtener idServicio desde GET
+
+
+$idServicio = null;  // <--- así siempre existe la variable
 $idRaw = $_GET['idServicio'] ?? null;
 
 
