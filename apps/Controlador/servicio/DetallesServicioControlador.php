@@ -8,6 +8,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Contrata.php');
 // Obtener idServicio desde GET
 $idRaw = $_GET['idServicio'] ?? null;
 
+
+
 $servicio = null;
 $empresa = null;
 $resenas = [];
@@ -28,6 +30,12 @@ if (!$idRaw) {
             $empresa = $idEmpresa ? Empresa::obtenerPorId($conn, $idEmpresa) : null;
         }
     }
+}
+
+if ($idServicio) {
+    $resenas = Contrata::obtenerResenasPorServicio($conn, $idServicio);
+} else {
+    $resenas = [];
 }
 
 // Cargar la vista

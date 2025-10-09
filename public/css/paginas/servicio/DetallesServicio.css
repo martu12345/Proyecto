@@ -313,54 +313,87 @@ body {
 }
 
 .no-resenas p:last-child {
-    font-style: italic;
-    font-size: 1rem;
+    font-size: 1.3rem;
+    color: #fff;
 }
 
-.filtro-estrellas-container {
-    display: inline-block;
-    padding: 12px 20px;
-    border-radius: 12px;
-    background-color: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    text-align: center;
-    margin: 30px auto;           /* centrado horizontal */
-
-}
-
-/* Para centrarlo horizontalmente dentro de su contenedor */
-.filtro-estrellas-wrapper {
+/* Contenedor del título + filtro */
+.resenas-header {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    background-color: #fff;
+    padding: 20px 25px;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    max-width: 800px;
+    margin: 0 auto 30px auto;
+}
+
+/* Título */
+.resenas-header h3 {
+    color: #222;
+    font-weight: 800;
+    font-size: 28px;
+    margin: 0;
+    text-align: center;
+}
+
+/* Contenedor de estrellas */
+.rating-container {
+    display: flex;
+    background-color: transparent;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Estrellas */
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
     justify-content: center;
-    align-items: center;         /* opcional: vertical si querés */
-    width: 100%;
+    gap: 5px;
 }
 
-
-.filtro-estrellas-container label {
-    display: block;
-    color: #ff914d;
-    font-weight: 600;
-    margin-bottom: 8px;
+.rating input {
+    display: none;
 }
 
-.estrellas-filtro {
-    display: inline-flex;
-    gap: 8px;
-    cursor: pointer;
-}
-
-.estrellas-filtro span {
-    font-size: 1.4em;
+.rating label {
+    font-size: 28px;
     color: #ccc;
-    transition: transform 0.2s, color 0.2s;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
 }
 
-.estrellas-filtro span:hover {
-    color: #ffdd00;
+.rating label:hover,
+.rating label:hover ~ label {
+    color: gold;
     transform: scale(1.3);
 }
 
+.rating input:checked ~ label {
+    color: gold;
+}
+
+
+.btn-filtrar {
+    background-color: #ff914d;
+    color: #fff;
+    font-family: 'Lexend', sans-serif;
+    font-size: 16px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-filtrar:hover {
+    background-color: #ff7a1a;
+}
 
 
 

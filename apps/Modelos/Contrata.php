@@ -192,8 +192,13 @@ public static function obtenerAgendadosPorEmpresa($conn, $idUsuario)
 {
     $stmt = $conn->prepare("
         SELECT 
-            c.IdCita, c.Fecha, c.Hora, c.Estado,
-            c.Calificacion, c.Resena,          -- <- Asegurate que estén acá
+            c.IdCita, 
+            c.Fecha, 
+            c.Hora, 
+            c.Estado,
+            c.Calificacion, 
+            c.Resena,
+            c.IdUsuario AS IdUsuarioCliente,  -- 🔹 Agregado aquí
             s.Titulo AS NombreServicio,
             u.Email AS NombreCliente
         FROM Contrata c
@@ -216,6 +221,7 @@ public static function obtenerAgendadosPorEmpresa($conn, $idUsuario)
     $stmt->close();
     return $agendados;
 }
+
 
 
 
@@ -287,33 +293,45 @@ public static function obtenerFinalizadosConCalificacion($conn, $IdUsuario) {
 }
 
  public static function obtenerResenasPorServicio($conn, $idServicio)
-    {
-        $stmt = $conn->prepare("
-            SELECT 
-                c.calificacion,
-                c.resena,
-                u.Email,
-                cl.Imagen AS imagen,
-                cl.Nombre,
-                cl.Apellido
-            FROM Contrata c
-            INNER JOIN Usuario u ON c.IdUsuario = u.IdUsuario
-            INNER JOIN Cliente cl ON u.IdUsuario = cl.IdUsuario
-            WHERE c.IdServicio = ? AND c.calificacion IS NOT NULL
-            ORDER BY c.Fecha DESC
-        ");
-        $stmt->bind_param("i", $idServicio);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
+{
+    $resenas = [];
 
-        $resenas = [];
+    $stmt = $conn->prepare("
+        SELECT 
+            c.calificacion,
+            c.resena,
+            u.Email,
+            cl.Imagen AS imagen,
+            cl.Nombre,
+            cl.Apellido
+        FROM Contrata c
+        INNER JOIN Usuario u ON c.IdUsuario = u.IdUsuario
+        INNER JOIN Cliente cl ON u.IdUsuario = cl.IdUsuario
+        WHERE c.IdServicio = ? AND c.calificacion IS NOT NULL
+        ORDER BY c.Fecha DESC
+    ");
+
+    if (!$stmt) {
+        die("Error en prepare: " . $conn->error);
+    }
+
+    $stmt->bind_param("i", $idServicio);
+
+    if (!$stmt->execute()) {
+        die("Error en execute: " . $stmt->error);
+    }
+
+    $resultado = $stmt->get_result(); // Esto requiere mysqlnd
+    if ($resultado) {
         while ($row = $resultado->fetch_assoc()) {
             $resenas[] = $row;
         }
-
-        $stmt->close();
-        return $resenas;
     }
+
+    $stmt->close();
+    return $resenas;
+}
+
 
  public static function obtenerNoLeidos($conn)
     {

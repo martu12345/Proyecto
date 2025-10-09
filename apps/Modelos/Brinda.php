@@ -84,15 +84,17 @@ class Brinda
 
         $servicios = [];
         while ($fila = $resultado->fetch_assoc()) {
-            $servicios[] = new Servicio(
-                $fila['IdServicio'],
-                $fila['Titulo'],
-                $fila['Categoria'],
-                $fila['Descripcion'],
-                $fila['Precio'],
-                $fila['departamento'],
-                $fila['imagen']
-            );
+     $servicios[] = new Servicio(
+    $fila['IdServicio'],
+    $fila['Titulo'],
+    $fila['Categoria'],
+    $fila['Descripcion'],
+    $fila['Precio'],
+    $fila['departamento'],
+    $fila['imagen'],
+    $fila['Duracion'] // ✅ Agregado
+);
+
         }
         $stmt->close();
         return $servicios;

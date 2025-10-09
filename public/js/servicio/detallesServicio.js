@@ -1,42 +1,33 @@
 document.addEventListener('DOMContentLoaded', () => {
     const filtro = document.getElementById('filtroEstrellas');
     const resenasList = document.getElementById('resenasList');
-
     if (!filtro || !resenasList) return;
 
-    let valorSeleccionado = 0;
+    const inputs = filtro.querySelectorAll('input[name="estrellas"]');
 
-    filtro.addEventListener('mouseover', (e) => {
-        const span = e.target.closest('span');
-        if (!span || !span.dataset.valor) return;
-        const valor = parseInt(span.dataset.valor);
+    inputs.forEach(input => {
+        input.addEventListener('change', () => {
+            const valorSeleccionado = parseInt(input.value);
+            const cards = resenasList.querySelectorAll('.resena-card');
 
-        filtro.querySelectorAll('span').forEach((s, i) => {
-            s.style.color = (i < valor) ? '#ffdd00' : '#ccc';
+            cards.forEach(card => {
+                const calificacion = parseInt(card.getAttribute('data-calificacion'));
+                card.style.display = (calificacion === valorSeleccionado) ? 'flex' : 'none';
+            });
         });
     });
 
-    filtro.addEventListener('mouseout', () => {
-        filtro.querySelectorAll('span').forEach((s, i) => {
-            s.style.color = (i < valorSeleccionado) ? '#ffd700' : '#ccc';
-        });
-    });
-
-    filtro.addEventListener('click', (e) => {
-        const span = e.target.closest('span');
-        if (!span || !span.dataset.valor) return;
-
-        const valor = parseInt(span.dataset.valor);
-        valorSeleccionado = (valorSeleccionado === valor) ? 0 : valor;
-
-        const cards = resenasList.querySelectorAll('.resena-card');
-        cards.forEach(card => {
-            const calificacion = parseInt(card.getAttribute('data-calificacion'));
-            card.style.display = (valorSeleccionado === 0 || calificacion === valorSeleccionado) ? 'block' : 'none';
-        });
-
-        filtro.querySelectorAll('span').forEach((s, i) => {
-            s.style.color = (i < valorSeleccionado) ? '#ffd700' : '#ccc';
+    // Permitir deseleccionar todas al hacer click en la estrella ya seleccionada
+    filtro.querySelectorAll('label').forEach(label => {
+        label.addEventListener('click', () => {
+            const input = document.getElementById(label.getAttribute('for'));
+            if (input.checked) {
+                setTimeout(() => {
+                    input.checked = false;
+                    const cards = resenasList.querySelectorAll('.resena-card');
+                    cards.forEach(card => card.style.display = 'flex');
+                }, 10);
+            }
         });
     });
 });

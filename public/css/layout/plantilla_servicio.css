@@ -16,21 +16,13 @@
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
-
 .imagen-servicio {
-    width: 250px;
-    height: 150px;
-    object-fit: cover;
+    width: 180px;    /* ancho fijo */
+    height: 120px;   /* altura fija */
     border-radius: 12px;
+    object-fit: cover;
 }
 
-.no-imagen {
-    background-color: #f2f2f2; /* color gris claro */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 12px;
-}
 
 
 .info-servicio {
@@ -58,6 +50,7 @@
     border-radius: 8px;
     transition: background-color 0.2s ease, transform 0.2s ease;
     font-size: 0.95rem;
+    border: none;
 }
 
 .btn-ver-mas .plus {
@@ -66,7 +59,7 @@
 }
 
 .btn-ver-mas:hover {
-    background-color: #ff7a2b;
+    background-color: #4CAF50;
     transform: translateY(-2px);
 }
 

@@ -5,6 +5,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/modelos/brinda.php');
 
 $servicios = Brinda::obtenerServiciosPorEmpresa($conn, $idUsuario);
 ?>
+
 <h2>Mis servicios</h2>
 <div class="lista-servicios">
 <?php if (empty($servicios)): ?>
@@ -26,9 +27,10 @@ $servicios = Brinda::obtenerServiciosPorEmpresa($conn, $idUsuario);
                     <p class="descripcion-servicio"><?= htmlspecialchars(substr($servicio->getDescripcion(), 0, 100)) ?>...</p>
                     <p class="categoria-servicio"><?= htmlspecialchars($servicio->getCategoria()) ?></p>
                     <p class="precio-servicio">$<?= htmlspecialchars($servicio->getPrecio()) ?></p>
+                    <!-- Ya no mostramos duración aquí -->
                 </div>
 
-                <!-- Botón de editar con data-atributos -->
+                <!-- Botón de editar con todos los data-atributos seguros -->
                 <button 
                     class="btn-editar"
                     data-id="<?= $servicio->getIdServicio() ?>"
@@ -38,6 +40,7 @@ $servicios = Brinda::obtenerServiciosPorEmpresa($conn, $idUsuario);
                     data-precio="<?= htmlspecialchars($servicio->getPrecio(), ENT_QUOTES) ?>"
                     data-descripcion="<?= htmlspecialchars($servicio->getDescripcion(), ENT_QUOTES) ?>"
                     data-imagen="<?= htmlspecialchars($servicio->getImagen(), ENT_QUOTES) ?>"
+                    data-duracion="<?= htmlspecialchars((string)$servicio->getDuracion(), ENT_QUOTES) ?>"
                 >
                     Editar
                 </button>
@@ -47,7 +50,8 @@ $servicios = Brinda::obtenerServiciosPorEmpresa($conn, $idUsuario);
 <?php endif; ?>
 </div>
 
-<!-- inlcuimos el modal  -->
+<!-- Modal de servicio -->
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/modal_servicio.php'; ?>
+
 <link rel="stylesheet" href="/Proyecto/public/css/layout/modal_servicio.css">
 <script src="/Proyecto/public/js/empresa/editar_servicios.js"></script>

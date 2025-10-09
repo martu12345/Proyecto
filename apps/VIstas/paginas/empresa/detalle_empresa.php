@@ -55,7 +55,7 @@ $idServicio = $_GET['idServicio'] ?? null; // <-- Necesario para el botón volve
 
 
                     <?php if ($idServicio): ?>
-                        <a href="/Proyecto/apps/controlador/servicio/DetallesServicioControlador.php?id=<?= $idServicio ?>" class="boton-empresa">
+                        <a href="/Proyecto/apps/controlador/servicio/DetallesServicioControlador.php?idServcio=<?= $idServicio ?>" class="boton-empresa">
                             <img src="/Proyecto/public/imagen/icono/icono_volver.png" alt="Volver">
                         </a>
                     <?php else: ?>
