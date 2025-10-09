@@ -28,7 +28,6 @@ $estrellasSeleccionadas = $_SESSION['estrellas'] ?? 0;
     <main>
         <div class="contenedor-principal">
             <aside class="columna-izquierda">
-                <!-- 🔸 Un solo formulario para palabra + departamento + estrellas -->
                 <form action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST" class="filtro">
                     <input type="hidden" name="q" value="<?= htmlspecialchars($q) ?>">
                     <input type="hidden" name="departamento" value="<?= htmlspecialchars($departamento) ?>">
@@ -41,7 +40,7 @@ $estrellasSeleccionadas = $_SESSION['estrellas'] ?? 0;
                                 onchange="this.form.submit()">
                             <label for="estrella<?= $i ?>">★</label>
                         <?php endfor; ?>
-                    </div> <!-- cerramos el div.rating -->
+                    </div> 
 
                     <div class="rating-todas">
                         <input type="radio" name="estrellas" id="todas" value="0"
