@@ -13,10 +13,20 @@
             <p class="descripcion-servicio"><?= htmlspecialchars(substr($servicio['Descripcion'], 0, 100)) ?>...</p>
             <p class="categoria-servicio"><?= htmlspecialchars($servicio['Categoria']) ?></p>
             <p class="precio-servicio">$<?= htmlspecialchars($servicio['Precio']) ?></p>
+
+            <?php 
+                $prom = round($servicio['promedio_calificacion']);
+                echo "<div class='estrellas'>";
+                for ($i = 1; $i <= 5; $i++) {
+                    echo $i <= $prom ? "★" : "☆";
+                }
+                echo " <span class='promedio'>(" . number_format($servicio['promedio_calificacion'], 1) . ")</span>";
+                echo "</div>";
+            ?>
         </div>
 
         <form action="/Proyecto/apps/controlador/servicio/DetallesServicioControlador.php" method="get">
-            <input type="hidden" name="idServicio" value="<?= $servicio['IdServicio'] ?? $servicio['idServicio'] ?? '' ?>">
+            <input type="hidden" name="idServicio" value="<?= $servicio['IdServicio'] ?? '' ?>">
             <button type="submit" class="btn-ver-mas">Ver más +</button>
         </form>
     </div>

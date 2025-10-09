@@ -1,7 +1,9 @@
 <?php
 session_start();
-
-$servicios = isset($_SESSION['servicios']) ? $_SESSION['servicios'] : [];
+$servicios = $_SESSION['servicios'] ?? [];
+$q = $_SESSION['ultima_busqueda'] ?? '';
+$departamento = $_SESSION['departamento_seleccionado'] ?? '';
+$estrellasSeleccionadas = $_SESSION['estrellas'] ?? 0;
 ?>
 
 <!DOCTYPE html>
@@ -25,50 +27,49 @@ $servicios = isset($_SESSION['servicios']) ? $_SESSION['servicios'] : [];
 
     <main>
         <div class="contenedor-principal">
-
             <aside class="columna-izquierda">
+                <!-- 🔸 Un solo formulario para palabra + departamento + estrellas -->
                 <form action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST" class="filtro">
-                    <div class="rating-container">
-                        <label>Filtrar por estrellas:</label>
-                        <div class="rating">
-                            <input type="radio" name="estrellas" id="estrella5" value="5">
-                            <label for="estrella5" title="5 estrellas">★</label>
+                    <input type="hidden" name="q" value="<?= htmlspecialchars($q) ?>">
+                    <input type="hidden" name="departamento" value="<?= htmlspecialchars($departamento) ?>">
 
-                            <input type="radio" name="estrellas" id="estrella4" value="4">
-                            <label for="estrella4" title="4 estrellas">★</label>
+                    <label>Filtrar por estrellas:</label>
+                    <div class="rating">
+                        <?php for ($i = 5; $i >= 1; $i--): ?>
+                            <input type="radio" name="estrellas" id="estrella<?= $i ?>" value="<?= $i ?>"
+                                <?= ($estrellasSeleccionadas == $i) ? 'checked' : '' ?>
+                                onchange="this.form.submit()">
+                            <label for="estrella<?= $i ?>">★</label>
+                        <?php endfor; ?>
+                    </div> <!-- cerramos el div.rating -->
 
-                            <input type="radio" name="estrellas" id="estrella3" value="3">
-                            <label for="estrella3" title="3 estrellas">★</label>
-
-                            <input type="radio" name="estrellas" id="estrella2" value="2">
-                            <label for="estrella2" title="2 estrellas">★</label>
-
-                            <input type="radio" name="estrellas" id="estrella1" value="1">
-                            <label for="estrella1" title="1 estrella">★</label>
-                        </div>
+                    <div class="rating-todas">
+                        <input type="radio" name="estrellas" id="todas" value="0"
+                            <?= ($estrellasSeleccionadas == 0) ? 'checked' : '' ?>
+                            onchange="this.form.submit()">
+                        <label for="todas">Todas</label>
                     </div>
 
-                    <button type="submit" class="btn-filtrar">Filtrar</button>
-                </form>
-            </aside>
+        </form>
+        </aside>
 
-            <section class="columna-derecha">
-                <h2 class="titulo-resultados"><?= count($servicios) ?> servicios</h2>
-                <div id="resultados">
-                    <?php if (!empty($servicios)): ?>
-                        <?php foreach ($servicios as $servicio): ?>
-                            <?php include($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/plantilla_servicio.php'); ?>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p>No se encontraron servicios.</p>
-                    <?php endif; ?>
-                </div>
-            </section>
-
+        <section class="columna-derecha">
+            <h2 class="titulo-resultados"><?= count($servicios) ?> servicios encontrados</h2>
+            <div id="resultados">
+                <?php if (!empty($servicios)): ?>
+                    <?php foreach ($servicios as $servicio): ?>
+                        <?php include($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/plantilla_servicio.php'); ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No se encontraron servicios.</p>
+                <?php endif; ?>
+            </div>
+        </section>
         </div>
     </main>
 
     <?php include_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'); ?>
+
 
 </body>
 
