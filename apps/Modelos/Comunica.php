@@ -241,5 +241,21 @@ class Comunica
             $mensajes[] = $fila;
         }
         return $mensajes;
-    }
+        
+    }public static function contarNoLeidosPorEmpresa($conn, $idEmpresa) {
+    $stmt = $conn->prepare("SELECT COUNT(*) as total FROM comunica WHERE idUsuarioEmpresa = ? AND notificacion = 'no leido'");
+    $stmt->bind_param("i", $idEmpresa);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    return $row['total'] ?? 0;
+}
+
+public static function marcarComoLeidoPorEmpresa($conn, $idEmpresa) {
+    $sql = "UPDATE comunica SET notificacion = 'leido' WHERE idUsuarioEmpresa = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idEmpresa);
+    $stmt->execute();
+}
+
 }

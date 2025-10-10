@@ -1,7 +1,6 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/empresa/PerfilEmpresaControlador.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Controlador/NavbarControlador.php'); // <--- Esto trae $notificacionesNoLeidas
-
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Controlador/NavbarControlador.php');
 
 $seccion = $_GET['seccion'] ?? 'perfil';
 if ($seccion === "null") {
@@ -53,14 +52,21 @@ if ($seccion === "null") {
 
                 <div class="opciones-lista">
                     <a href="?seccion=perfil" data-seccion="perfil" class="opcion <?php echo $seccion == 'perfil' ? 'activa' : ''; ?>">Mi perfil</a>
-                    <a href="?seccion=mensajes" data-seccion="mensajes" class="opcion <?php echo $seccion == 'mensajes' ? 'activa' : ''; ?>">Mensajes</a>
+                <a href="?seccion=mensajes" data-seccion="mensajes" class="opcion <?php echo $seccion == 'mensajes' ? 'activa' : ''; ?>">
+                Mensajes
+                <?php if($notificacionesMensajes>0 && $seccion!='mensajes'): ?>
+                    <span class="contador-notificaciones-mensajes"><?= $notificacionesMensajes ?></span>
+                <?php endif; ?>
+            </a>
+
                     <a href="?seccion=servicios" data-seccion="servicios" class="opcion <?php echo $seccion == 'servicios' ? 'activa' : ''; ?>">Servicios</a>
-                    <a href="?seccion=agendados" data-seccion="agendados" class="opcion <?php echo $seccion == 'agendados' ? 'activa' : ''; ?>">
-    Agendados
-    <?php if ($notificacionesNoLeidas > 0): ?>
-        <span class="contador-notificaciones-agendados"><?= $notificacionesNoLeidas ?></span>
-    <?php endif; ?>
-</a>
+                <a href="?seccion=agendados" data-seccion="agendados" class="opcion  <?php echo $seccion == 'agendados' ? 'activa' : ''; ?>">
+                Agendados
+                <?php if($notificacionesAgendados>0 && $seccion!='agendados'): ?>
+                    <span class="contador-notificaciones-agendados"><?= $notificacionesAgendados ?></span>
+                <?php endif; ?>
+            </a>
+
 
 
                     <a href="?seccion=historial" data-seccion="historial" class="opcion <?php echo $seccion == 'historial' ? 'activa' : ''; ?>">Historial</a>

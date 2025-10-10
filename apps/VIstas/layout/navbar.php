@@ -1,11 +1,11 @@
 <?php
-// Iniciamos sesión solo si no hay ninguna activa
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-include __DIR__ . '/../../controlador/NavbarControlador.php'; 
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Controlador/NavbarControlador.php');
 
+// Para departamentos y búsqueda
 $departamento_seleccionado = $_SESSION['departamento_seleccionado'] ?? '';
 $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
 ?>
@@ -61,30 +61,36 @@ $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
             </form>
         </div>
 
-       <!-- Perfil -->
-<div class="perfil">
-    <div class="perfil-btn">
-        <a href="<?= $perfil_url ?>" class="icono-notificacion-navbar">
-            <img src="/Proyecto/public/imagen/icono/icono_avatar.png" alt="Mi perfil">
-            <?php if ($notificacionesNoLeidas > 0): ?>
-                <span class="punto-rojo"></span>
-            <?php endif; ?>
-        </a>
+        <!-- Perfil -->
+        <div class="perfil">
+            <div class="perfil-btn">
+                <a href="<?= $perfil_url ?>" class="icono-notificacion-navbar">
+                    <img src="/Proyecto/public/imagen/icono/icono_avatar.png" alt="Mi perfil">
+
+                    <!-- Puntitos rojos de notificaciones -->
+                    <?php if($notificacionesMensajes > 0): ?>
+                        <span class="punto-rojo mensajes"></span>
+                    <?php endif; ?>
+                    <?php if($notificacionesAgendados > 0): ?>
+                        <span class="punto-rojo agendados"></span>
+                    <?php endif; ?>
+
+                </a>
+            </div>
+
+            <div class="perfil-menu">
+                <?php if ($logueado): ?>
+                    <a href="<?= $perfil_url ?>">Mi perfil</a>
+                    <a href="/Proyecto/apps/controlador/LogoutControlador.php">Cerrar sesión</a>
+                <?php else: ?>
+                    <a href="/Proyecto/apps/vistas/autenticacion/login.php">Iniciar sesión</a>
+                    <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>
+                <?php endif; ?>
+            </div>
+        </div>
+
     </div>
 
-    <div class="perfil-menu">
-        <?php if ($logueado): ?>
-            <a href="<?= $perfil_url ?>">Mi perfil</a>
-            <a href="/Proyecto/apps/controlador/LogoutControlador.php">Cerrar sesión</a>
-        <?php else: ?>
-            <a href="/Proyecto/apps/vistas/autenticacion/login.php">Iniciar sesión</a>
-            <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>
-        <?php endif; ?>
-    </div>
-</div>
-
-
-    <!-- JS del buscador -->
     <script src="/Proyecto/public/js/servicio/buscador.js" defer></script>
 
 </nav>
