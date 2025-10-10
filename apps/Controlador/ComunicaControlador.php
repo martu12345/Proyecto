@@ -19,6 +19,8 @@ $idMensajeRespondido = $_POST['idMensajeRespondido'] ?? null; // NUEVO
 if ($idUsuarioEmpresa && $asunto && $contenido) {
     $fecha = date("Y-m-d H:i:s");
 
+var_dump($_POST['empresa_id']);
+
     // Crear objeto Comunica
     $mensaje = new Comunica(
         $idUsuarioCliente,

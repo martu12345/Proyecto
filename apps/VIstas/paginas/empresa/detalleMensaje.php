@@ -42,8 +42,8 @@ if (!$mensaje) {
         <button 
             class="btn-responder" 
             id="abrirModalResponder"
-            data-emisor="<?= htmlspecialchars($mensaje['Emisor']) ?>"
-            data-id="<?= $mensaje['Emisor'] ?>"
+            data-emisor="<?= htmlspecialchars($mensaje['IdUsuarioEmisor']) ?>"
+            data-id="<?= $mensaje['IdUsuarioEmisor'] ?>"
             data-asunto="<?= htmlspecialchars($mensaje['Asunto']) ?>"
         >Responder</button>
     </div>
@@ -55,9 +55,10 @@ if (!$mensaje) {
         <span class="cerrar">&times;</span>
         <h2>Enviar Mensaje a <span id="empresaNombre"></span></h2>
         <form id="formMensaje" 
-        action="/Proyecto/apps/controlador/ComunicaControlador1.php" 
+        action="/Proyecto/apps/controlador/ComunicaControlador.php" 
         method="POST">
             <input type="hidden" id="empresaIdInput" name="empresa_id" value="">
+            <input type="hidden" name="idMensajeRespondido" id="idMensajeRespondido" value="">
             <label for="asunto">Asunto</label>
             <input type="text" id="asunto" name="asunto" placeholder="Escribe el asunto..." required>
             <label for="contenido">Mensaje</label>
@@ -76,6 +77,8 @@ if (!$mensaje) {
 document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("modalMensaje");
     const btnResponder = document.getElementById("abrirModalResponder");
+    document.getElementById("idMensajeRespondido").value = btnResponder.dataset.id;
+
     const cerrar = document.querySelector("#modalMensaje .cerrar");
     const empresaIdInput = document.getElementById("empresaIdInput");
     const empresaNombre = document.getElementById("empresaNombre");

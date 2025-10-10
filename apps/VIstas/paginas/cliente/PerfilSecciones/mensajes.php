@@ -5,8 +5,8 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/modelos/comunica.php');
 $idCliente = $_SESSION['idUsuario'] ?? 0; // id del cliente logueado
 
 // Mensajes recibidos y enviados
-$mensajesRecibidos = Comunica::obtenerMensajesRecibidosPorCliente($conn, $idCliente);
-$mensajesEnviados = Comunica::obtenerMensajesEnviadosPorCliente($conn, $idCliente);
+$mensajesRecibidos = array_reverse(Comunica::obtenerMensajesRecibidosPorCliente($conn, $idCliente));
+$mensajesEnviados = array_reverse(Comunica::obtenerMensajesEnviadosPorCliente($conn, $idCliente));
 ?>
 
 <link rel="stylesheet" href="/Proyecto/public/css/layout/mensajes_empresa.css">
@@ -24,8 +24,24 @@ $mensajesEnviados = Comunica::obtenerMensajesEnviadosPorCliente($conn, $idClient
     <p>No hay mensajes recibidos.</p>
 <?php else: ?>
     <?php foreach ($mensajesRecibidos as $msg): ?>
+
+        <?php 
+        $mensajePadre = null;
+        if (!empty($msg['IdMensajePadre'])) {
+            $mensajePadre = Comunica::obtenerMensajePorId($conn, $msg['IdMensajePadre']);
+        }
+        ?>
+
         <div class="mensaje-item">
             <strong>De: <?= htmlspecialchars($msg['emisor']) ?></strong><br>
+
+            <?php if ($mensajePadre): ?>
+                <span class="respuesta-indicador">
+                    💬 Responde a <?= htmlspecialchars($mensajePadre['Emisor']) ?>: 
+                    "<?= htmlspecialchars(substr($mensajePadre['Asunto'], 0, 50)) ?><?= strlen($mensajePadre['Contenido']) > 50 ? '…' : '' ?>" 
+                </span><br>
+            <?php endif; ?>
+
             <span class="preview"><?= htmlspecialchars(substr($msg['mensaje'], 0, 50)) ?>...</span><br>
             <span class="fecha"><?= htmlspecialchars($msg['fecha']) ?></span><br>
             <a href="/Proyecto/apps/Controlador/Mensaje/detalleMensajeControlador.php?id=<?= $msg['idMensaje'] ?>">Ver más</a>
@@ -41,8 +57,24 @@ $mensajesEnviados = Comunica::obtenerMensajesEnviadosPorCliente($conn, $idClient
     <p>No hay mensajes enviados.</p>
 <?php else: ?>
     <?php foreach ($mensajesEnviados as $msg): ?>
+
+        <?php 
+        $mensajePadre = null;
+        if (!empty($msg['IdMensajePadre'])) {
+            $mensajePadre = Comunica::obtenerMensajePorId($conn, $msg['IdMensajePadre']);
+        }
+        ?>
+
         <div class="mensaje-item">
             <strong>A: <?= htmlspecialchars($msg['destinatario']) ?></strong><br>
+
+            <?php if ($mensajePadre): ?>
+                <span class="respuesta-indicador">
+                    💬 Respondiste a <?= htmlspecialchars($mensajePadre['Emisor']) ?>: 
+                    "<?= htmlspecialchars(substr($mensajePadre['Asunto'], 0, 50)) ?><?= strlen($mensajePadre['Contenido']) > 50 ? '…' : '' ?>" 
+                </span><br>
+            <?php endif; ?>
+
             <span class="preview"><?= htmlspecialchars(substr($msg['mensaje'], 0, 50)) ?>...</span><br>
             <span class="fecha"><?= htmlspecialchars($msg['fecha']) ?></span><br>
             <a href="/Proyecto/apps/Controlador/Mensaje/detalleMensajeControlador.php?id=<?= $msg['idMensaje'] ?>">Ver más</a>
