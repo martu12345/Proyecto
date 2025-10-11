@@ -126,6 +126,15 @@ class Servicio {
         return $stmt->execute();
     }
 
+public function eliminar($conn) {
+    $sql = "DELETE FROM Servicio WHERE IdServicio = ?";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) return false;
+
+    $stmt->bind_param("i", $this->idServicio);
+    return $stmt->execute();
+}
+
 
 
     

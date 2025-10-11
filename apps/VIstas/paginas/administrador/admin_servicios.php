@@ -95,7 +95,7 @@ data-departamento="<?= htmlspecialchars($s->getDepartamento(), ENT_QUOTES) ?>"
         document.getElementById('confirmDelete').onclick = () => {
             if (!servicioAEliminar) return;
 
-            fetch('/Proyecto/apps/Controlador/administrador/eliminarServicioAdmin.php', {
+            fetch('/Proyecto/apps/Controlador/servicio/EliminarServiciosControlador.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `idServicio=${servicioAEliminar}`

@@ -1,4 +1,7 @@
-.servicio {
+/* ==========================
+   Contenedor de cada servicio
+   ========================== */
+.perfil-info .lista-servicios .servicio {
     display: flex;
     flex-direction: row;
     gap: 20px;
@@ -12,12 +15,12 @@
     font-family: 'Lexend', sans-serif;
 }
 
-.servicio:hover {
+.perfil-info .lista-servicios .servicio:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
-.imagen-servicio-contenedor {
+.perfil-info .lista-servicios .imagen-servicio-contenedor {
     width: 130px;
     height: 130px;
     border-radius: 12px;
@@ -28,7 +31,7 @@
     background-color: #FFF; 
 }
 
-.imagen-servicio {
+.perfil-info .lista-servicios .imagen-servicio {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -36,20 +39,31 @@
     display: block; 
 }
 
-.info-servicio {
+.perfil-info .lista-servicios .info-servicio {
     display: flex;
     justify-content: space-between;
     flex: 1;
-    align-items: center;
+    align-items: flex-start; /* importante para que texto largo no empuje los botones */
+    gap: 20px; /* separa la columna de texto de la de botones */
 }
 
-.texto-servicio {
+.perfil-info .lista-servicios .texto-servicio {
+    flex: 1; /* toma todo el espacio posible */
+}
+
+.perfil-info .lista-servicios .botones-accion {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    flex-direction: column; /* botones uno encima del otro */
+    align-items: flex-end; /* alineados a la derecha */
+    gap: 10px; 
+    flex-shrink: 0; /* evita que se achiquen si el texto es largo */
 }
 
-.btn-editar {
+
+/* ==========================
+   Botones fuera del modal
+   ========================== */
+.perfil-info .lista-servicios .btn-editar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -64,57 +78,165 @@
     cursor: pointer;
 }
 
-.btn-editar:hover {
+.perfil-info .lista-servicios .btn-editar:hover {
     background-color: #ff7a2b;
     transform: translateY(-2px);
 }
 
-.nombre-servicio {
+.perfil-info .lista-servicios .btn-eliminar-empresa {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e74c3c;
+    color: #fff;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.perfil-info .lista-servicios .btn-eliminar-empresa:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+/* ==========================
+   Tipografía de servicio
+   ========================== */
+.perfil-info .lista-servicios .nombre-servicio {
     font-size: 1.15rem; 
     font-weight: 600;
     margin: 0;
     color: #222;
 }
 
-.descripcion-servicio {
+.perfil-info .lista-servicios .descripcion-servicio {
     font-size: 1rem;
     margin: 0;
     color: #555;
     line-height: 1.4;
 }
 
-.categoria-servicio {
+.perfil-info .lista-servicios .categoria-servicio {
     font-size: 0.9rem;
     font-style: italic;
     margin: 0;
     color: #888;
 }
 
-.precio-servicio {
+.perfil-info .lista-servicios .precio-servicio {
     font-size: 1.05rem;
     font-weight: 500;
     color: #000;
 }
 
+/* ==========================
+   Modal eliminar empresa
+   ========================== */
+.perfil-info #modalEliminarEmpresa {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.perfil-info #modalEliminarEmpresa.active {
+    display: flex;
+}
+
+.perfil-info #modalEliminarEmpresa .modal-content {
+    background-color: #fff;
+    padding: 25px 30px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.perfil-info #modalEliminarEmpresa .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.perfil-info #modalEliminarEmpresa .close:hover {
+    color: #e74c3c;
+}
+
+.perfil-info #modalEliminarEmpresa .btn-confirm,
+.perfil-info #modalEliminarEmpresa .btn-cancel {
+    padding: 8px 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    margin: 0 6px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.perfil-info #modalEliminarEmpresa .btn-confirm {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.perfil-info #modalEliminarEmpresa .btn-confirm:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.perfil-info #modalEliminarEmpresa .btn-cancel {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.perfil-info #modalEliminarEmpresa .btn-cancel:hover {
+    background-color: #b52a36;
+    transform: translateY(-2px);
+}
+
+/* ==========================
+   Responsive
+   ========================== */
 @media (max-width: 768px) {
-    .servicio {
+    .perfil-info .lista-servicios .servicio {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    .info-servicio {
+    .perfil-info .lista-servicios .info-servicio {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
 
-    .imagen-servicio-contenedor {
+    .perfil-info .lista-servicios .imagen-servicio-contenedor {
         width: 100%;
         height: auto;
     }
 
-    .imagen-servicio {
+    .perfil-info .lista-servicios .imagen-servicio {
         width: 100%;
         height: auto;
+    }
+
+    .perfil-info .lista-servicios .botones-accion {
+        justify-content: flex-start;
     }
 }
