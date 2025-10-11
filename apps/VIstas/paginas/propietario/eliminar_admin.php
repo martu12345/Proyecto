@@ -7,9 +7,13 @@
     <title>Manitas - Dar de baja Administrador</title>
     <link rel="stylesheet" href="/Proyecto/public/css/fonts.css">
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/registro.css">
+        <link rel="stylesheet" href="/Proyecto/public/css/layout/navbar.css">
+
 </head>
 
 <body>
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
+
     <div class="login-background">
         <div class="login-box">
             <h2>Dar de baja Administrador</h2>
