@@ -121,4 +121,50 @@ WHERE e.IdUsuario = ?
             return false;
         }
     }
+    // Obtener todas las empresas
+public static function obtenerTodos($conn) {
+    $sql = "SELECT u.IdUsuario, u.Email, e.NombreEmpresa, e.Calle, e.Numero, e.Imagen
+            FROM empresa e
+            JOIN usuario u ON e.IdUsuario = u.IdUsuario";
+    $res = $conn->query($sql);
+    $empresas = [];
+    while ($row = $res->fetch_assoc()) {
+        // instanciamos Empresa sin pasar password
+        $empresa = new Empresa(
+            $row['IdUsuario'],
+            $row['Email'],
+            '',  // pasamos string vacío en vez de null
+            null,
+            $row['NombreEmpresa'],
+            $row['Calle'],
+            $row['Numero'],
+            $row['Imagen']
+        );
+        $empresas[] = $empresa;
+    }
+    return $empresas;
+}
+
+
+// Obtener todos los teléfonos de la empresa
+public function obtenerTelefonos($conn) {
+    return Telefono::obtenerPorUsuario($conn, $this->idUsuario); 
+    // Telefono::obtenerPorUsuario debe devolver un array de strings
+}
+
+// Eliminar empresa junto con teléfonos y usuario
+public function eliminarEmpresa($conn) {
+    // 1. Eliminar teléfonos
+    Telefono::eliminarPorUsuario($conn, $this->idUsuario);
+
+    // 2. Eliminar empresa
+    $stmt = $conn->prepare("DELETE FROM empresa WHERE IdUsuario = ?");
+    $stmt->bind_param("i", $this->idUsuario);
+    if (!$stmt->execute()) return false;
+
+    // 3. Eliminar usuario padre
+    return parent::eliminar($conn); // Usuario::eliminar() debe existir
+}
+
+
 }
