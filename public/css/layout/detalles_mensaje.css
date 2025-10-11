@@ -1,4 +1,6 @@
-/* Fondo general y fuente */
+/* ==============================
+   Fondo general y fuente
+============================== */
 body {
     background-color: #ff914d;
     font-family: 'Lexend', sans-serif;
@@ -6,37 +8,43 @@ body {
     padding: 0;
 }
 
-/* Contenedor centrador */
+/* ==============================
+   Contenedor principal del mensaje
+============================== */
 .detalle-mensaje {
     display: flex;
     justify-content: center;
-    padding: 40px 20px;
+    align-items: flex-start; /* empieza desde arriba */
+    padding: 60px 20px;      /* espacio arriba y abajo */
 }
 
-/* Tarjeta blanca del mensaje */
+/* ==============================
+   Tarjeta blanca del mensaje
+============================== */
 .mensaje-contenedor {
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-    max-width: 700px;
-    width: 100%;
-    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    max-width: 800px;   /* más ancha */
+    width: 95%;         /* casi todo el ancho disponible en móviles */
+    padding: 40px;      /* más espacio interno */
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
 }
 
-/* Título del mensaje */
+/* ==============================
+   Títulos y textos
+============================== */
 .mensaje-contenedor h2 {
     color: #222;
     font-weight: 700;
-    margin: 0 0 8px 0;
-    font-size: 26px;
+    margin: 0 0 10px 0;
+    font-size: 28px;
 }
 
-/* Info del mensaje (emisor y fecha) */
 .mensaje-contenedor p {
-    margin: 4px 0;
+    margin: 5px 0;
     color: #444;
 }
 
@@ -44,38 +52,52 @@ body {
     color: #ff914d;
 }
 
-/* Contenido del mensaje */
+/* ==============================
+   Contenido del mensaje alineado
+============================== */
 .mensaje-contenedor .contenido {
-    margin-top: 10px;
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
     color: #333;
-    line-height: 1.5;
-    white-space: pre-wrap; /* respeta saltos de línea */
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    text-align: left;
+    box-sizing: border-box;
+    font-size: 16px;
 }
 
-/* Botón volver */
-.btn-volver {
+/* ==============================
+   Botones naranjas
+============================== */
+.btn-volver, .btn-responder {
     display: inline-block;
-    margin-top: 20px;
-    padding: 10px 16px;
-    border-radius: 8px;
+    padding: 10px 18px;
+    border-radius: 12px;
     background-color: #ff914d;
     color: #fff;
     font-weight: 600;
-    text-decoration: none;
     text-align: center;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.btn-volver:hover {
-    background-color: #ff6200;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+/* Alineación de los botones juntos */
+.mensaje-contenedor .botones {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
 }
 
-/* Responsive */
+
+/* ==============================
+   Responsive
+============================== */
 @media(max-width: 768px) {
     .mensaje-contenedor {
-        padding: 20px;
+        padding: 25px;
     }
 }

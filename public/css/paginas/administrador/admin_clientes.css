@@ -1,0 +1,185 @@
+/* Fuente y fondo general */
+body {
+    font-family: 'Lexend', sans-serif;
+    background-color: #FF914D; /* color principal */
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Título */
+h1 {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+}
+
+/* Lista de clientes */
+.clientes-list {
+    list-style: none;
+    padding: 0;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.cliente-item {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Info del cliente */
+.info {
+    max-width: 70%;
+}
+
+.info .nombre {
+    display: block;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #FF914D;
+}
+
+.info .email {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.info .telefono {
+    display: block;
+    font-size: 13px;
+    color: #666;
+}
+
+/* Botones de acciones */
+.acciones button {
+    background-color: #FF914D;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.acciones button:hover {
+    background-color: #e6833d;
+}
+
+/* Modal general */
+.modal {
+    display: none; /* oculto por defecto */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenido del modal */
+.modal-content {
+    background-color: #fff;
+    padding: 25px 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    text-align: center;
+    position: relative;
+    color: #333;
+}
+
+/* Botón cerrar modal */
+.modal-content .close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 26px;
+    font-weight: bold;
+    color: #FF914D;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.modal-content .close:hover {
+    color: #e6833d;
+}
+
+/* Botones dentro del modal */
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    background-color: #FF914D;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.modal-buttons button:hover {
+    background-color: #e6833d;
+    color: white;
+}
+
+/* Mensaje dentro del modal */
+.mensaje-modal {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #FF914D;
+}
+
+/* Inputs y textarea del modal */
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-family: 'Lexend', sans-serif;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.modal-content button.btn-submit {
+    margin-top: 15px;
+    background-color: #FF914D;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.modal-content button.btn-submit:hover {
+    background-color: #e6833d;
+}

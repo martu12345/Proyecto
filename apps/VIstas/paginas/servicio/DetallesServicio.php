@@ -164,10 +164,7 @@ $rol = $logueado ? $_SESSION['rol'] : null;
     <link rel="stylesheet" href="/Proyecto/public/css/layout/modal_mensaje.css">
     <script src="/Proyecto/public/js/mensaje/modal_mensaje.js"></script>
 
-    <div id="mensajeExito" style="display:none; color:green; margin-top:10px;">
-        ✅ Mensaje enviado correctamente
-    </div>
-
+    
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
 </body>
 </html>

@@ -5,7 +5,6 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/modelos/comunica.php');
 $idMensaje = $_GET['id'] ?? 0;
 $mensaje = Comunica::obtenerMensajePorId($conn, $idMensaje);
 
-// Validar que el mensaje exista
 if (!$mensaje) {
     echo "Mensaje no encontrado";
     exit;
@@ -28,24 +27,36 @@ if (!$mensaje) {
 
 <div class="detalle-mensaje">
     <div class="mensaje-contenedor">
-        <h2><?= htmlspecialchars($mensaje['Asunto']) ?></h2>
-        <p><strong>Emisor:</strong> <?= htmlspecialchars($mensaje['Emisor']) ?></p>
-        <p><strong>Fecha:</strong> <?= htmlspecialchars($mensaje['FechaHora']) ?></p>
-        <div class="contenido">
-            <?= nl2br(htmlspecialchars($mensaje['Contenido'])) ?>
+
+        <!-- Cabecera del mensaje -->
+        <div class="mensaje-header">
+            <h2><?= htmlspecialchars($mensaje['Asunto']) ?></h2>
+            <p><strong>Emisor:</strong> <?= htmlspecialchars($mensaje['Emisor']) ?></p>
+            <p><strong>Fecha:</strong> <?= htmlspecialchars($mensaje['FechaHora']) ?></p>
         </div>
 
-        <!-- Botón Volver -->
-        <button onclick="history.back()" class="btn-volver">Volver</button>
+        <!-- Contenido del mensaje -->
+        <div class="mensaje-body">
+            <p><?= nl2br(htmlspecialchars($mensaje['Contenido'])) ?></p>
+        </div>
 
-        <!-- Botón Responder con data-attributes -->
-        <button 
-            class="btn-responder" 
-            id="abrirModalResponder"
-            data-emisor="<?= htmlspecialchars($mensaje['IdUsuarioEmisor']) ?>"
-            data-id="<?= $mensaje['IdUsuarioEmisor'] ?>"
-            data-asunto="<?= htmlspecialchars($mensaje['Asunto']) ?>"
-        >Responder</button>
+        <!-- Botones -->
+        <div class="mensaje-footer">
+          
+            <button onclick="history.back()" class="btn-volver">Volver</button>
+            <?php if ($puedeResponder): ?>
+
+            <button 
+                class="btn-responder" 
+                id="abrirModalResponder"
+    data-emisor="<?= htmlspecialchars($mensaje['Emisor']) ?>"
+                data-id="<?= $mensaje['IdUsuarioEmisor'] ?>"
+                data-asunto="<?= htmlspecialchars($mensaje['Asunto']) ?>"
+            >Responder</button>
+            <?php endif; ?>
+
+        </div>
+
     </div>
 </div>
 
@@ -53,10 +64,8 @@ if (!$mensaje) {
 <div id="modalMensaje" class="modal">
     <div class="modal-content">
         <span class="cerrar">&times;</span>
-        <h2>Enviar Mensaje a <span id="empresaNombre"></span></h2>
-        <form id="formMensaje" 
-        action="/Proyecto/apps/controlador/ComunicaControlador.php" 
-        method="POST">
+        <h2>Responder Mensaje a <span id="empresaNombre"></span></h2>
+        <form id="formMensaje" action="/Proyecto/apps/controlador/ComunicaControlador.php" method="POST">
             <input type="hidden" id="empresaIdInput" name="empresa_id" value="">
             <input type="hidden" name="idMensajeRespondido" id="idMensajeRespondido" value="">
             <label for="asunto">Asunto</label>
@@ -64,8 +73,13 @@ if (!$mensaje) {
             <label for="contenido">Mensaje</label>
             <textarea id="contenido" name="contenido" rows="4" placeholder="Escribe tu mensaje..." required></textarea>
             <div id="contadorMensaje">0 / 1000 caracteres</div>
+              <div id="mensajeExito" class="mensaje-exito" style="display: none;">
+    ¡Mensaje enviado correctamente!
+</div>
+
             <div class="boton-contenedor">
                 <button type="submit">Enviar</button>
+            
             </div>
         </form>
     </div>
@@ -86,7 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const contenidoTextarea = document.getElementById("contenido");
     const contador = document.getElementById("contadorMensaje");
 
-    // Abrir modal al hacer clic en "Responder"
     btnResponder.addEventListener("click", () => {
         empresaNombre.textContent = btnResponder.dataset.emisor;
         empresaIdInput.value = btnResponder.dataset.id;
@@ -96,21 +109,43 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.style.display = "block";
     });
 
-    // Cerrar modal al hacer clic en X
-    cerrar.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
+    cerrar.addEventListener("click", () => { modal.style.display = "none"; });
+    window.addEventListener("click", (event) => { if (event.target === modal) modal.style.display = "none"; });
 
-    // Cerrar modal al hacer clic afuera
-    window.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
-    });
-
-    // Contador de caracteres
     contenidoTextarea.addEventListener("input", () => {
         contador.textContent = `${contenidoTextarea.value.length} / 1000 caracteres`;
+    });
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("formMensaje");
+    const mensajeExito = document.getElementById("mensajeExito");
+
+    form.addEventListener("submit", function(e) {
+        e.preventDefault(); // evita que recargue la página
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            // mostrar mensaje de éxito
+            mensajeExito.style.display = "block";
+
+            // limpiar campos
+            form.asunto.value = "";
+            form.contenido.value = "";
+            document.getElementById("contadorMensaje").textContent = "0 / 1000 caracteres";
+
+            // cerrar modal después de 2 segundos
+            setTimeout(() => {
+                mensajeExito.style.display = "none";
+                document.getElementById("modalMensaje").style.display = "none";
+            }, 2000);
+        })
+        .catch(error => console.error("Error:", error));
     });
 });
 </script>

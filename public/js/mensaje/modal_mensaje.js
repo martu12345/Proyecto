@@ -52,8 +52,15 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             console.log(data); // debug
             if (data.trim() === 'ok') {
-                mensajeExito.style.display = 'block'; // mostrar cartel de éxito
+                // Mostrar mensaje de éxito
+                mensajeExito.style.display = 'block';
                 formMensaje.reset(); // limpiar inputs
+
+                // Cerrar modal automáticamente después de 2 segundos
+                setTimeout(() => {
+                    mensajeExito.style.display = 'none';
+                    modal.style.display = 'none';
+                }, 2000);
             } else {
                 alert("Error al enviar mensaje: " + data);
             }

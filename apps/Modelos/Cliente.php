@@ -86,6 +86,18 @@ class Cliente extends Usuario
             return false;
         }
     }
+// Método para obtener todos los teléfonos de un cliente
+public function obtenerTelefonos($conn) {
+    $telefonos = [];
+    $stmt = $conn->prepare("SELECT Telefono FROM telefono WHERE IdUsuario = ?");
+    $stmt->bind_param("i", $this->idUsuario);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $telefonos[] = $row['Telefono'];
+    }
+    return $telefonos;
+}
 
     // actualizar solo la imagen
     public function actualizarImagen($conn)
@@ -96,4 +108,26 @@ class Cliente extends Usuario
         $stmt->bind_param("si", $this->imagen, $this->idUsuario);
         return $stmt->execute();
     }
+public static function obtenerTodos($conn) {
+    $stmt = $conn->prepare("
+        SELECT c.IdUsuario, c.Nombre, c.Apellido, c.Imagen, u.Email
+        FROM cliente c
+        INNER JOIN usuario u ON c.IdUsuario = u.IdUsuario
+    ");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $clientes = [];
+    while ($row = $result->fetch_assoc()) {
+        $clientes[] = new Cliente(
+            $row['IdUsuario'],
+            $row['Nombre'],
+            $row['Apellido'],
+            $row['Email'] ?? null,
+            $row['Imagen'] ?? null
+        );
+    }
+    return $clientes;
+}
+
+
 }

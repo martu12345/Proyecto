@@ -12,6 +12,9 @@
             <label for="contenido">Mensaje</label>
             <textarea id="contenido" name="contenido" rows="4" placeholder="Escribe tu mensaje..." required></textarea>
             <div id="contadorMensaje">0 / 1000 caracteres</div>
+<div id="mensajeExito" style="display:none; color:green; margin-top:10px;">
+        ✅ Mensaje enviado correctamente
+    </div>
 
             <div class="boton-contenedor">
                 <button type="submit">Enviar</button>
