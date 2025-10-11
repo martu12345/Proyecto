@@ -9,33 +9,36 @@ class Administrador extends Usuario
         parent::__construct($idUsuario, $email, $contrasena);
     }
 
-    public function guardarAdministrador($conn, $telefono = null)
-    {
-        echo $this->idUsuario;
-        if (parent::guardar($conn)) {
-            $this->idUsuario = $conn->insert_id; // este es el IdUsuario del propietario
+public function guardarAdministrador($conn, $idPropietario, $telefono = null)
+{
+    // Guarda primero en la tabla usuario
+    if (parent::guardar($conn)) {
+        $this->idUsuario = $conn->insert_id; // este es el IdUsuario del nuevo administrador
 
-     $sql = "INSERT INTO administrador (idUsuarioPropietario) VALUES (?)";
-$stmt = $conn->prepare($sql);
+        // Insertamos en la tabla administrador
+        $sql = "INSERT INTO administrador (idUsuarioAdministrador, idUsuarioPropietario) VALUES (?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $this->idUsuario, $idPropietario);
 
-$idPropietario = $this->idUsuario; // ahora sí definimos la variable
-$stmt->bind_param("i", $idPropietario);
-
-if (!$stmt->execute()) {
-    echo "Error insertando administrador: " . $stmt->error;
-    return false;
-}
-
-
-
-            // Insertamos el teléfono si existe
-            Telefono::insertarTelefono($conn, $this->idUsuario, $telefono);
-
-            return true;
-        } else {
+        if (!$stmt->execute()) {
+            echo "Error insertando administrador: " . $stmt->error;
             return false;
         }
+
+        // Si se pasó teléfono, lo insertamos
+        if ($telefono !== null) {
+            Telefono::insertarTelefono($conn, $this->idUsuario, $telefono);
+        }
+
+        return true;
+    } else {
+        return false;
     }
+} // 👈 esta llave es MUY importante
+
+
+
+    
 
     public static function darDeBajaAdministrador($conn, $email)
     {

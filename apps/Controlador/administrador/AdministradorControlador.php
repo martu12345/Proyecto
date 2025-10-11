@@ -29,7 +29,11 @@ if (!$idPropietario) {
 // Crear administrador usando el propietario de la sesión
 $unAdministrador = new Administrador($idPropietario, $email, $contrasena);
 
-if ($unAdministrador->guardarAdministrador($conn, $telefono)) {
+// Crear administrador sin IdUsuario (se genera al guardar)
+$unAdministrador = new Administrador(null, $email, $contrasena);
+
+// Guardar pasando el id del propietario desde la sesión
+if ($unAdministrador->guardarAdministrador($conn, $idPropietario, $telefono)) {
     echo "Administrador creado correctamente!";
 } else {
     echo "Error al guardar el administrador.";
