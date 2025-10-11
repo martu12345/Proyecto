@@ -3,10 +3,10 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Contrata.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Brinda.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Comunica.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/Contrata.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/Brinda.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/Comunica.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/conexion.php');
 
 $logueado = isset($_SESSION['idUsuario']);
 $rol = $logueado ? $_SESSION['rol'] : null;
@@ -20,9 +20,7 @@ $notificacionesAgendados = 0;
 if ($logueado) {
 
     if ($rol === 'admin') {
-        $home_url = "/Proyecto/apps/vistas/paginas/admin/dashboard.php";
-        $perfil_url = "/Proyecto/apps/vistas/paginas/admin/perfil.php";
-
+        $home_url = "/Proyecto/apps/vistas/paginas/administrador/home_admin.php";
     } elseif ($rol === 'empresa') {
         $home_url = "/Proyecto/apps/vistas/paginas/empresa/home_empresa.php";
         $perfil_url = "/Proyecto/apps/vistas/paginas/empresa/perfil_empresa.php";
@@ -46,10 +44,11 @@ if ($logueado) {
                 $notificacionesAgendados++;
             }
         }
-
     } elseif ($rol === 'cliente') {
         $home_url = "/Proyecto/apps/vistas/paginas/cliente/home_cliente.php";
         $perfil_url = "/Proyecto/apps/vistas/paginas/cliente/perfil_cliente.php";
+        
+    } elseif ($rol === 'propietario') {
+        $home_url = "/Proyecto/apps/vistas/paginas/propietario/home_propietario.php";
     }
 }
-?>

@@ -54,4 +54,4 @@ $servicios = Brinda::obtenerServiciosPorEmpresa($conn, $idUsuario);
 <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/modal_servicio.php'; ?>
 
 <link rel="stylesheet" href="/Proyecto/public/css/layout/modal_servicio.css">
-<script src="/Proyecto/public/js/empresa/editar_servicios.js"></script>
+<script src="/Proyecto/public/js/servicio/editar_servicios.js"></script>

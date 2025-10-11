@@ -54,9 +54,7 @@ class Servicio {
         $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, departamento, imagen, duracion) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        if (!$stmt) {
-            die("Error al preparar la consulta: " . $conn->error);
-        }
+        if (!$stmt) die("Error al preparar la consulta: " . $conn->error);
 
         $stmt->bind_param(
             "sssdssi",
@@ -69,20 +67,14 @@ class Servicio {
             $this->duracion
         );
 
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            die("Error al guardar servicio: " . $stmt->error);
-        }
+        return $stmt->execute();
     }
 
     // Obtener servicio por ID
     public static function obtenerPorId($conn, $idServicio) {
         $sql = "SELECT * FROM Servicio WHERE IdServicio = ?";
         $stmt = $conn->prepare($sql);
-        if (!$stmt) {
-            die("Error al preparar la consulta: " . $conn->error);
-        }
+        if (!$stmt) die("Error al preparar la consulta: " . $conn->error);
 
         $stmt->bind_param("i", $idServicio);
         $stmt->execute();
@@ -117,20 +109,24 @@ class Servicio {
                 WHERE idServicio = ?";
 
         $stmt = $conn->prepare($sql);
+        if (!$stmt) die("Error al preparar consulta: " . $conn->error);
+
         $stmt->bind_param(
-            "sssdisii",
-            $this->titulo,
-            $this->categoria,
-            $this->descripcion,
-            $this->precio,
-            $this->departamento,
-            $this->imagen,
-            $this->duracion,
-            $this->idServicio
+            "sssdssii",
+            $this->titulo,       // string
+            $this->categoria,    // string
+            $this->descripcion,  // string
+            $this->precio,       // double
+            $this->departamento, // string
+            $this->imagen,       // string
+            $this->duracion,     // int
+            $this->idServicio    // int
         );
 
         return $stmt->execute();
     }
+
+
 
     
     public static function buscarServicios($conn, $q = '', $departamento = '', $estrellas = 0) {

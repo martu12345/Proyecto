@@ -1,4 +1,4 @@
-<?php
+<?php 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -22,7 +22,8 @@ $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
             </a>
         </div>
 
-        <!-- Selector de Departamento -->
+        <!-- 🔹 Mostrar departamentos solo si NO es admin ni propietario -->
+        <?php if ($rol !== 'admin' && $rol !== 'propietario'): ?>
         <div class="departamentos">
             <form id="form-departamento" action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST">
                 <select name="departamento" onchange="document.getElementById('form-departamento').submit()">
@@ -44,13 +45,15 @@ $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
                 <input type="hidden" name="q" value="<?= htmlspecialchars($ultima_busqueda) ?>">
             </form>
         </div>
+        <?php endif; ?>
 
     </div>
 
     <!-- DERECHA: BUSCADOR + PERFIL -->
     <div class="navbar-right">
 
-        <!-- Barra de búsqueda -->
+        <!-- 🔹 Mostrar buscador solo si NO es admin ni propietario -->
+        <?php if ($rol !== 'admin' && $rol !== 'propietario'): ?>
         <div class="busqueda">
             <form id="form-buscador" action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST">
                 <input type="text" name="q" id="buscador" placeholder="Buscar..." value="<?= htmlspecialchars($ultima_busqueda) ?>">
@@ -60,6 +63,7 @@ $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
                 </button>
             </form>
         </div>
+        <?php endif; ?>
 
         <!-- Perfil -->
         <div class="perfil">
@@ -74,14 +78,18 @@ $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
                     <?php if($notificacionesAgendados > 0): ?>
                         <span class="punto-rojo agendados"></span>
                     <?php endif; ?>
-
                 </a>
             </div>
 
             <div class="perfil-menu">
                 <?php if ($logueado): ?>
-                    <a href="<?= $perfil_url ?>">Mi perfil</a>
-                    <a href="/Proyecto/apps/controlador/LogoutControlador.php">Cerrar sesión</a>
+                    <!-- 🔹 Si es admin o propietario: solo "Cerrar sesión" -->
+                    <?php if ($rol === 'admin' || $rol === 'propietario'): ?>
+                        <a href="/Proyecto/apps/controlador/LogoutControlador.php">Cerrar sesión</a>
+                    <?php else: ?>
+                        <a href="<?= $perfil_url ?>">Mi perfil</a>
+                        <a href="/Proyecto/apps/controlador/LogoutControlador.php">Cerrar sesión</a>
+                    <?php endif; ?>
                 <?php else: ?>
                     <a href="/Proyecto/apps/vistas/autenticacion/login.php">Iniciar sesión</a>
                     <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>
