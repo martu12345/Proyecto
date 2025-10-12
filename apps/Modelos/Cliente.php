@@ -118,16 +118,45 @@ public static function obtenerTodos($conn) {
     $result = $stmt->get_result();
     $clientes = [];
     while ($row = $result->fetch_assoc()) {
-        $clientes[] = new Cliente(
-            $row['IdUsuario'],
-            $row['Nombre'],
-            $row['Apellido'],
-            $row['Email'] ?? null,
-            $row['Imagen'] ?? null
+$clientes[] = new Cliente(
+    $row['IdUsuario'],   // idUsuario
+    $row['Email'] ?? null, // email
+    null,                 // contrasena (no necesitamos ahora)
+    $row['Nombre'],       // nombre
+    $row['Apellido'],     // apellido
+    $row['Imagen'] ?? null // imagen
+
         );
     }
     return $clientes;
 }
+public static function eliminarPorId($conn, $idCliente) {
+    try {
+        // Primero eliminar teléfonos asociados si los tenés
+        $stmtTel = $conn->prepare("DELETE FROM telefono WHERE IdUsuario = ?");
+        $stmtTel->bind_param("i", $idCliente);
+        $stmtTel->execute();
+        $stmtTel->close();
+
+        // Luego eliminar de la tabla cliente
+        $stmtCliente = $conn->prepare("DELETE FROM cliente WHERE IdUsuario = ?");
+        $stmtCliente->bind_param("i", $idCliente);
+        $stmtCliente->execute();
+        $stmtCliente->close();
+
+        // Por último, eliminar de la tabla usuario
+        $stmtUsuario = $conn->prepare("DELETE FROM usuario WHERE IdUsuario = ?");
+        $stmtUsuario->bind_param("i", $idCliente);
+        $stmtUsuario->execute();
+        $stmtUsuario->close();
+
+        return true;
+    } catch (Exception $e) {
+        error_log("Error al eliminar cliente: " . $e->getMessage());
+        return false;
+    }
+}
+
 
 
 }

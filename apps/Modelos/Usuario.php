@@ -9,7 +9,12 @@ class Usuario
     {
         $this->idUsuario = $idUsuario;
         $this->email = $email;
-        $this->contrasena = password_hash($contrasena, PASSWORD_DEFAULT);
+    if ($contrasena !== null) {
+        $this->contrasena = password_hash($contrasena, PASSWORD_BCRYPT);
+    } else {
+        $this->contrasena = null;
+    }
+
     }
 
     // getters
