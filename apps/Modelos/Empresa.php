@@ -152,18 +152,64 @@ public function obtenerTelefonos($conn) {
     // Telefono::obtenerPorUsuario debe devolver un array de strings
 }
 
-// Eliminar empresa junto con teléfonos y usuario
-public function eliminarEmpresa($conn) {
-    // 1. Eliminar teléfonos
-    Telefono::eliminarPorUsuario($conn, $this->idUsuario);
 
-    // 2. Eliminar empresa
-    $stmt = $conn->prepare("DELETE FROM empresa WHERE IdUsuario = ?");
-    $stmt->bind_param("i", $this->idUsuario);
-    if (!$stmt->execute()) return false;
 
-    // 3. Eliminar usuario padre
-    return parent::eliminar($conn); // Usuario::eliminar() debe existir
+      // Método para eliminar empresa + usuario + teléfonos
+    public static function eliminarPorId($conn, $idEmpresa) {
+        try {
+            // Primero eliminar teléfonos asociados
+            $stmtTel = $conn->prepare("DELETE FROM telefono WHERE IdUsuario = ?");
+            $stmtTel->bind_param("i", $idEmpresa);
+            $stmtTel->execute();
+            $stmtTel->close();
+
+            // Luego eliminar de la tabla empresa
+            $stmtEmp = $conn->prepare("DELETE FROM empresa WHERE IdUsuario = ?");
+            $stmtEmp->bind_param("i", $idEmpresa);
+            $stmtEmp->execute();
+            $stmtEmp->close();
+
+            // Por último, eliminar de la tabla usuario
+            $stmtUsu = $conn->prepare("DELETE FROM usuario WHERE IdUsuario = ?");
+            $stmtUsu->bind_param("i", $idEmpresa);
+            $stmtUsu->execute();
+            $stmtUsu->close();
+
+            return true;
+        } catch (Exception $e) {
+            error_log("Error al eliminar empresa: " . $e->getMessage());
+            return false;
+        }
+    }
+
+
+// Método para actualizar empresa (nombre, email y teléfono)
+public function actualizarDatosEmpresa($conn, $telefono = null) {
+    try {
+        // Actualizar email en tabla usuario
+        $stmt1 = $conn->prepare("UPDATE usuario SET Email = ? WHERE IdUsuario = ?");
+        $email = $this->getEmail();
+        $stmt1->bind_param("si", $email, $this->idUsuario);
+        $stmt1->execute();
+        $stmt1->close();
+
+        // Actualizar nombre en tabla empresa
+        $stmt2 = $conn->prepare("UPDATE empresa SET NombreEmpresa = ? WHERE IdUsuario = ?");
+        $stmt2->bind_param("si", $this->nombreEmpresa, $this->idUsuario);
+        $stmt2->execute();
+        $stmt2->close();
+
+        // Actualizar teléfono si se pasó
+        if ($telefono !== null) {
+            require_once('Telefono.php');
+            Telefono::actualizarTelefono($conn, $this->idUsuario, $telefono);
+        }
+
+        return true;
+    } catch (Exception $e) {
+        error_log("Error al actualizar empresa: " . $e->getMessage());
+        return false;
+    }
 }
 
 
