@@ -57,4 +57,14 @@ class Telefono
         $stmt->close();
         return $telefonos; // array de strings con los teléfonos
     }
+    public static function actualizarTelefono($conn, $idUsuario, $telefono) {
+    $stmt = $conn->prepare("DELETE FROM telefono WHERE IdUsuario = ?");
+    $stmt->bind_param("i", $idUsuario);
+    $stmt->execute();
+    $stmt->close();
+
+    if ($telefono) {
+        self::insertarTelefono($conn, $idUsuario, $telefono);
+    }
+}
 }
