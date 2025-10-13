@@ -28,7 +28,7 @@
             <button type="button" onclick="window.location.href='/Proyecto/apps/vistas/paginas/administrador/admin_empresas.php'">
                 Administrar Empresas
             </button>
-            <button type="button" onclick="window.location.href='/Proyecto/apps/vistas/paginas/propietario/denuncias.php'">
+            <button type="button" onclick="window.location.href='/Proyecto/apps/vistas/paginas/administrador/admin_denuncias.php'">
                 Denuncias
             </button>
         </div>

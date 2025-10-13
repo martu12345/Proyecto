@@ -3,15 +3,24 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Empresa.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Contrata.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
 
+
 $empresa = Empresa::obtenerPorId($conn, $_SESSION['idUsuario'] ?? 0);
+
+// Traer servicios finalizados y cancelados de la empresa
+$serviciosFinalizados = Contrata::obtenerPorEmpresaYEstado($conn, $empresa->getIdUsuario(), 'Finalizado');
+$serviciosCancelados  = Contrata::obtenerPorEmpresaYEstado($conn, $empresa->getIdUsuario(), 'Cancelado');
+
 ?>
+
+
 
 <h2>Historial de Servicios</h2>
 
 <div class="botones-filtro">
     <button class="filtro-btn activa" data-estado="Finalizado">Finalizados</button>
-<button class="filtro-btn" data-estado="Cancelado">Cancelados</button>
+    <button class="filtro-btn" data-estado="Cancelado">Cancelados</button>
 </div>
+
 
 <div class="agendados-container">
 
@@ -28,11 +37,28 @@ $empresa = Empresa::obtenerPorId($conn, $_SESSION['idUsuario'] ?? 0);
                 <th>Reseña</th>
             </tr>
         </thead>
-        <tbody></tbody>
+       <tbody>
+  <?php if (!empty($serviciosFinalizados)): ?>
+    <?php foreach ($serviciosFinalizados as $servicio): ?>
+      <tr>
+        <td><?= htmlspecialchars($servicio['nombre_servicio']) ?></td>
+        <td><?= htmlspecialchars($servicio['usuario_email']) ?></td>
+        <td><?= htmlspecialchars($servicio['Fecha']) ?></td>
+        <td><?= htmlspecialchars($servicio['Hora']) ?></td>
+        <td><?= htmlspecialchars($servicio['Estado']) ?></td>
+        <td><?= $servicio['Calificacion'] ?? '-' ?></td>
+        <td><?= $servicio['Reseña'] ?? '-' ?></td>
+      </tr>
+    <?php endforeach; ?>
+  <?php else: ?>
+  <?php endif; ?>
+</tbody>
+
+
     </table>
 
     <!-- Tabla de cancelados -->
-<table id="tablaCancelado" class="tabla-agendados">
+    <table id="tablaCancelado" class="tabla-agendados">
         <thead>
             <tr>
                 <th>Servicio</th>
@@ -42,9 +68,86 @@ $empresa = Empresa::obtenerPorId($conn, $_SESSION['idUsuario'] ?? 0);
                 <th>Estado</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+            <?php foreach ($serviciosCancelados as $servicio): ?>
+                <tr>
+                    <td><?= $servicio['nombre_servicio'] ?></td>
+                    <td><?= $servicio['usuario_email'] ?></td>
+                    <td><?= $servicio['Fecha'] ?></td>
+                    <td><?= $servicio['Hora'] ?></td>
+                    <td><?= $servicio['Estado'] ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
     </table>
 
 </div>
 
+<!-- Modal de denuncia de cliente -->
+<div id="denunciaModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModalBtn" class="cerrar">&times;</span>
+        <h2>Denunciar Cliente</h2>
+        <form id="denunciaForm">
+            <input type="hidden" name="idCliente" value="">
+            <input type="hidden" name="idEmpresa" value="<?= $_SESSION['idUsuario'] ?>">
+            <input type="hidden" name="asunto" value="DenunciarCliente">
+            <label for="detalle">Detalles adicionales (opcional):</label>
+            <textarea id="detalle" name="detalle" rows="4" placeholder="Escribe más sobre tu denuncia..."></textarea>
+            <button type="submit" class="btn-submit">Enviar denuncia</button>
+        </form>
+        <div id="mensajeDenuncia" class="mensaje-denuncia"></div>
+    </div>
+</div>
 
+<!-- JS para abrir modal y enviar denuncia -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.getElementById("denunciaModal");
+        const closeBtn = document.getElementById("closeModalBtn");
+        const form = document.getElementById("denunciaForm");
+        const mensajeDiv = document.getElementById("mensajeDenuncia");
+
+        // Abrir modal al hacer click en "Denunciar"
+        document.querySelectorAll(".btn-denunciar").forEach(btn => {
+            btn.addEventListener("click", () => {
+                form.idCliente.value = btn.dataset.idcliente;
+                mensajeDiv.innerHTML = "";
+                modal.style.display = "block";
+            });
+        });
+
+        // Cerrar modal
+        closeBtn.addEventListener("click", () => modal.style.display = "none");
+        window.addEventListener("click", (e) => {
+            if (e.target === modal) modal.style.display = "none";
+        });
+
+        // Enviar denuncia
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            mensajeDiv.innerHTML = "";
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch("/Proyecto/apps/controlador/empresa/DenunciarClienteControlador.php", {
+                    method: "POST",
+                    body: formData
+                });
+                const data = await response.json();
+
+                mensajeDiv.textContent = data.message;
+                mensajeDiv.className = "mensaje-denuncia " + (data.success ? "exito" : "error");
+
+                if (data.success) {
+                    form.reset();
+                    setTimeout(() => modal.style.display = "none", 1500);
+                }
+            } catch (err) {
+                mensajeDiv.textContent = "Ocurrió un error al enviar la denuncia.";
+                mensajeDiv.className = "mensaje-denuncia error";
+            }
+        });
+    });
+</script>

@@ -470,6 +470,12 @@ body {
     background-color: #e57373;
 }
 
+.btn-denunciar-importante {
+    display: inline-block !important;
+    visibility: visible !important;
+}
+
+
 @media (max-width: 900px) and (min-width: 600px) {
     .perfil-box {
         flex-direction: column;

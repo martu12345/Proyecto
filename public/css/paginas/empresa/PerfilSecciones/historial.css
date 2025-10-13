@@ -38,6 +38,10 @@ body, html {
     background: #ff914d;
     color: white;
 }
+.btn-denunciar-importante {
+    display: inline-block !important;
+    visibility: visible !important;
+}
 
 
 
@@ -147,6 +151,16 @@ body, html {
 
 #tablaCancelado tbody tr:hover td {
     background-color: #f9f9f9;
+}
+
+.btn-denunciar {
+    display: inline-block !important;
+    padding: 5px 10px;
+    background-color: red !important;
+    color: white !important;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
 }
 
 

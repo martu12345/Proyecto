@@ -359,6 +359,34 @@ public static function obtenerFinalizadosConCalificacion($conn, $IdUsuario) {
     $stmt->execute();
     $stmt->close();
 }
+public static function obtenerPorEmpresaYEstado($conn, $idEmpresa, $estado) {
+    $stmt = $conn->prepare(
+        "SELECT c.*, 
+                u.IdUsuario AS idCliente,
+                u.email AS usuario_email, 
+                s.Titulo AS nombre_servicio
+           FROM contrata c
+           LEFT JOIN brinda b ON c.IdServicio = b.IdServicio AND b.IdUsuario = ?
+           LEFT JOIN usuario u ON c.IdUsuario = u.IdUsuario
+           LEFT JOIN servicio s ON c.IdServicio = s.IdServicio
+          WHERE c.Estado = ?
+          ORDER BY c.Fecha DESC, c.Hora DESC"
+    );
+    $stmt->bind_param("is", $idEmpresa, $estado);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    $contratas = [];
+    while ($row = $resultado->fetch_assoc()) {
+        // Solo devolver registros donde el servicio realmente pertenece a esta empresa
+        if ($row['IdUsuario'] || $row['idCliente']) {
+            $contratas[] = $row;
+        }
+    }
+    $stmt->close();
+    return $contratas;
+}
+
 
 }
 

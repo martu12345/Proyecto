@@ -18,17 +18,21 @@
   max-width: 500px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.25);
 }
-
+/* Estilo de la X de cerrar */
 .cerrar {
-  float: right;
-  font-size: 28px;
+  position: absolute;       /* para ubicarla dentro del modal */
+  top: 15px;                /* arriba del contenido */
+  right: 20px;              /* a la derecha del modal */
+  font-size: 32px;          /* más grande */
   font-weight: bold;
   cursor: pointer;
-  color: #FF914D;
+  color: #FF914D;           /* naranja base */
+  transition: 0.2s;
 }
 
 .cerrar:hover {
-  color: #e6733c;
+  color: #e6733c;           /* naranja más oscuro al pasar el mouse */
+  transform: scale(1.2);    /* ligeramente más grande al pasar */
 }
 
 .modal-content label {

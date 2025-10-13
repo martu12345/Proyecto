@@ -83,8 +83,10 @@ body {
     margin-top: auto;
 }
 
+
 .boton-servicio {
     width: 50px;
+    border: none;
     height: 50px;
     border-radius: 50%;
     background: #ff914d;
@@ -395,6 +397,9 @@ body {
     background-color: #ff7a1a;
 }
 
+.mensaje-denuncia { margin-top: 10px; font-weight: bold; }
+.mensaje-denuncia.exito { color: green; }
+.mensaje-denuncia.error { color: #ca3434; }
 
 
 /* RESPONSIVE */

@@ -70,13 +70,7 @@ $idServicio = $_GET['idServicio'] ?? null; // <-- Necesario para el botón volve
 
 
                <div class="botones-empresa">
-    <!-- Botón para abrir modal solo para clientes -->
-    <?php if ($rol === 'cliente'): ?>
-        <button id="openModalBtn" class="boton-empresa">
-            <img src="/Proyecto/public/imagen/icono/icono_queja.png" alt="Bandera">
-        </button>
-    <?php endif; ?>
-
+   
     <?php if ($idServicio): ?>
         <a href="/Proyecto/apps/controlador/servicio/DetallesServicioControlador.php?idServicio=<?= $idServicio ?>" class="boton-empresa">
             <img src="/Proyecto/public/imagen/icono/icono_volver.png" alt="Volver">
@@ -92,36 +86,8 @@ $idServicio = $_GET['idServicio'] ?? null; // <-- Necesario para el botón volve
 
         </div>
     </div>
-    <!-- Modal para denunciar empresa -->
-    <div id="denunciaModal" class="modal">
-        <div class="modal-content">
-            <span id="closeModalBtn" class="close">&times;</span>
-            <h2>Denunciar Empresa</h2>
-            <form id="denunciaForm">
-                <input type="hidden" name="usuario_id" value="<?= $usuario_id ?>">
-                <input type="hidden" name="empresa_id" value="<?= $idEmpresa ?>">
-
-                <label for="motivo">Motivo de la denuncia:</label>
-                <select id="motivo" name="motivo" required>
-                    <option value="">-- Selecciona un motivo --</option>
-                    <option value="estafa">Estafa / fraude</option>
-                    <option value="mal_servicio">Mal servicio / incumplimiento</option>
-                    <option value="publicidad_engañosa">Publicidad engañosa</option>
-                    <option value="trato_incorrecto">Trato incorrecto / abuso</option>
-                    <option value="producto_defectuoso">Producto defectuoso</option>
-                    <option value="otros">Otros</option>
-                </select>
-
-                <label for="detalle">Detalles adicionales (opcional):</label>
-                <textarea id="detalle" name="detalle" rows="4" placeholder="Escribe más sobre tu denuncia..."></textarea>
-
-                <button type="submit" class="btn-submit">Enviar denuncia</button>
-            </form>
-        </div>
-    </div>
-
+   
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
-    <script src="/Proyecto/public/js/denuncia/denuncia.js"></script>
 
 </body>
 
