@@ -49,23 +49,33 @@ class Comunica
     public function setIdMensajePadre($idMensajePadre) { $this->idMensajePadre = $idMensajePadre; } // 🔹 nuevo setter
 
     // 🔹 Función para enviar mensaje (con IdMensajePadre opcional)
-    public function enviar($conn) {
-        $sql = "INSERT INTO comunica (idUsuarioCliente, idUsuarioEmpresa, asunto, contenido, FechaHora, idUsuarioEmisor, notificacion, IdMensajePadre) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param(
-            "iisssisi",
-            $this->idUsuarioCliente,
-            $this->idUsuarioEmpresa,
-            $this->asunto,
-            $this->contenido,
-            $this->fecha,
-            $this->idUsuarioEmisor,
-            $this->notificacion,
-            $this->idMensajePadre // puede ser NULL
-        );
-        return $stmt->execute();
+  public function enviar($conn) {
+    $sql = "INSERT INTO comunica (IdUsuarioCliente, idUsuarioEmpresa, asunto, contenido, FechaHora, idUsuarioEmisor, notificacion, IdMensajePadre) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+
+    // Si IdMensajePadre es null, lo convertimos a NULL explícito
+    $idPadre = $this->idMensajePadre ?: null;
+
+    $stmt->bind_param(
+        "iisssisi",
+        $this->idUsuarioCliente,
+        $this->idUsuarioEmpresa,
+        $this->asunto,
+        $this->contenido,
+        $this->fecha,
+        $this->idUsuarioEmisor,
+        $this->notificacion,
+        $idPadre
+    );
+
+    if(!$stmt) {
+        file_put_contents("C:/wamp64/www/Proyecto/debug.txt", "Error prepare: " . $conn->error . PHP_EOL, FILE_APPEND);
     }
+
+    return $stmt->execute();
+}
+
 
     // 🔹 Obtener mensajes por empresa
     public static function obtenerMensajesRecibidosPorEmpresa($conn, $idEmpresa) {

@@ -3,24 +3,38 @@ session_start();
 require_once '../Modelos/Comunica.php';
 require_once '../Modelos/conexion.php';
 
-// Verificar que el usuario esté logueado
 if (!isset($_SESSION['idUsuario'])) {
     header("Location: /Proyecto/apps/vistas/login.php?error=debes_iniciar_sesion");
     exit();
 }
 
-$idUsuarioCliente = $_SESSION['idUsuario'];
-$idUsuarioEmpresa = $_POST['empresa_id'] ?? null;
 $asunto = $_POST['asunto'] ?? '';
 $contenido = $_POST['contenido'] ?? '';
-$idUsuarioEmisor = $_SESSION['idUsuario'];
-$idMensajeRespondido = $_POST['idMensajeRespondido'] ?? null; // NUEVO
+$idMensajeRespondido = $_POST['idMensajeRespondido'] ?? null;
+$mensajePadre = $idMensajeRespondido ? Comunica::obtenerMensajePorId($conn, $idMensajeRespondido) : null;
 
-if ($idUsuarioEmpresa && $asunto && $contenido) {
+$idUsuarioEmisor = $_SESSION['idUsuario'];
+$idUsuarioCliente = null;
+$idUsuarioEmpresa = null;
+
+// Lógica según rol
+if ($_SESSION['rol'] === 'empresa') {
+    $idUsuarioEmpresa = $_SESSION['idUsuario']; // la empresa que responde
+    $idUsuarioCliente = $mensajePadre ? $mensajePadre['IdUsuarioCliente'] : $_POST['cliente_id'] ?? null;
+} else {
+    $idUsuarioCliente = $_SESSION['idUsuario']; // el cliente que responde
+    $idUsuarioEmpresa = $mensajePadre ? $mensajePadre['IdUsuarioEmpresa'] : $_POST['empresa_id'] ?? null;
+}
+
+// Debug
+$debug = "=== " . date('Y-m-d H:i:s') . " ===\n";
+$debug .= "Cliente: $idUsuarioCliente | Empresa: $idUsuarioEmpresa | Emisor: $idUsuarioEmisor | IdMensajePadre: $idMensajeRespondido\n";
+$debug .= "Asunto: $asunto\nContenido: $contenido\n----------------------\n";
+file_put_contents("C:/wamp64/www/Proyecto/debug.txt", $debug, FILE_APPEND);
+
+if ($idUsuarioCliente && $idUsuarioEmpresa && $asunto && $contenido) {
     $fecha = date("Y-m-d H:i:s");
 
-
-    // Crear objeto Comunica
     $mensaje = new Comunica(
         $idUsuarioCliente,
         $idUsuarioEmpresa,
@@ -29,17 +43,11 @@ if ($idUsuarioEmpresa && $asunto && $contenido) {
         $contenido,
         $fecha,
         $idUsuarioEmisor,
-        "no leido",              // notificación (por ahora nula)
-        $idMensajeRespondido // NUEVO: respuesta a otro mensaje
+        "no leido",
+        $idMensajeRespondido
     );
 
-    // Enviar mensaje
-    if ($mensaje->enviar($conn)) {
-        echo "ok";
-    } else {
-        echo "error";
-    }
+    echo $mensaje->enviar($conn) ? "ok" : "error";
 } else {
     echo "incompleto";
 }
-?>

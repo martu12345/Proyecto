@@ -42,15 +42,15 @@ if (!$mensaje) {
 
         <!-- Botones -->
         <div class="mensaje-footer">
-          
             <button onclick="history.back()" class="btn-volver">Volver</button>
-            <?php if ($puedeResponder): ?>
 
+            <?php if ($puedeResponder): ?>
             <button 
                 class="btn-responder" 
                 id="abrirModalResponder"
-    data-emisor="<?= htmlspecialchars($mensaje['Emisor']) ?>"
-                data-id="<?= $mensaje['IdUsuarioEmisor'] ?>"
+                data-emisor="<?= htmlspecialchars($mensaje['Emisor']) ?>"
+                data-usuario="<?= $mensaje['IdUsuarioEmisor'] ?>"
+                data-mensaje="<?= $mensaje['IdMensaje'] ?>"
                 data-asunto="<?= htmlspecialchars($mensaje['Asunto']) ?>"
             >Responder</button>
             <?php endif; ?>
@@ -73,13 +73,11 @@ if (!$mensaje) {
             <label for="contenido">Mensaje</label>
             <textarea id="contenido" name="contenido" rows="4" placeholder="Escribe tu mensaje..." required></textarea>
             <div id="contadorMensaje">0 / 1000 caracteres</div>
-              <div id="mensajeExito" class="mensaje-exito" style="display: none;">
-    ¡Mensaje enviado correctamente!
-</div>
-
+            <div id="mensajeExito" class="mensaje-exito" style="display: none;">
+                ¡Mensaje enviado correctamente!
+            </div>
             <div class="boton-contenedor">
                 <button type="submit">Enviar</button>
-            
             </div>
         </form>
     </div>
@@ -91,18 +89,18 @@ if (!$mensaje) {
 document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("modalMensaje");
     const btnResponder = document.getElementById("abrirModalResponder");
-    document.getElementById("idMensajeRespondido").value = btnResponder.dataset.id;
-
     const cerrar = document.querySelector("#modalMensaje .cerrar");
     const empresaIdInput = document.getElementById("empresaIdInput");
     const empresaNombre = document.getElementById("empresaNombre");
     const asuntoInput = document.getElementById("asunto");
     const contenidoTextarea = document.getElementById("contenido");
     const contador = document.getElementById("contadorMensaje");
+    const idMensajeInput = document.getElementById("idMensajeRespondido");
 
     btnResponder.addEventListener("click", () => {
         empresaNombre.textContent = btnResponder.dataset.emisor;
-        empresaIdInput.value = btnResponder.dataset.id;
+        empresaIdInput.value = btnResponder.dataset.usuario; // empresa original
+        idMensajeInput.value = btnResponder.dataset.mensaje;  // ID del mensaje
         asuntoInput.value = "Re: " + btnResponder.dataset.asunto;
         contenidoTextarea.value = "";
         contador.textContent = "0 / 1000 caracteres";
@@ -115,13 +113,13 @@ document.addEventListener("DOMContentLoaded", () => {
     contenidoTextarea.addEventListener("input", () => {
         contador.textContent = `${contenidoTextarea.value.length} / 1000 caracteres`;
     });
-});
-document.addEventListener("DOMContentLoaded", () => {
+
+    // Enviar mensaje vía fetch
     const form = document.getElementById("formMensaje");
     const mensajeExito = document.getElementById("mensajeExito");
 
     form.addEventListener("submit", function(e) {
-        e.preventDefault(); // evita que recargue la página
+        e.preventDefault();
 
         const formData = new FormData(form);
 
@@ -131,24 +129,23 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(response => response.text())
         .then(data => {
-            // mostrar mensaje de éxito
-            mensajeExito.style.display = "block";
+            if(data === "ok"){
+                mensajeExito.style.display = "block";
+                form.asunto.value = "";
+                form.contenido.value = "";
+                contador.textContent = "0 / 1000 caracteres";
 
-            // limpiar campos
-            form.asunto.value = "";
-            form.contenido.value = "";
-            document.getElementById("contadorMensaje").textContent = "0 / 1000 caracteres";
-
-            // cerrar modal después de 2 segundos
-            setTimeout(() => {
-                mensajeExito.style.display = "none";
-                document.getElementById("modalMensaje").style.display = "none";
-            }, 2000);
+                setTimeout(() => {
+                    mensajeExito.style.display = "none";
+                    modal.style.display = "none";
+                }, 2000);
+            } else {
+                alert("Error al enviar el mensaje");
+            }
         })
         .catch(error => console.error("Error:", error));
     });
 });
 </script>
-
 </body>
 </html>
