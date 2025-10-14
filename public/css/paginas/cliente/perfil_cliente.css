@@ -195,6 +195,15 @@ body {
     font-weight: bold;
 }
 
+.aviso-editar {
+    display: none; /* ya lo tenías oculto por defecto */
+    color: #555;   /* opcional: color más suave */
+    font-size: 0.85rem; /* tamaño pequeño */
+    margin-top: 5px;    /* separación del input */
+    display: block;     /* se mostrará cuando se edite */
+}
+
+
 
 
 @media (max-width: 900px) and (min-width: 700px) {

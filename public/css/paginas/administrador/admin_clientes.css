@@ -178,49 +178,79 @@ html, body {
     font-family: 'Lexend', sans-serif;
     font-size: 14px;
 }
+/* ----------------------- RESPONSIVE MÓVILES MEJORADO ----------------------- */
 
-/* ----------------------- RESPONSIVE ----------------------- */
+/* Tablets y móviles medianos */
 @media (max-width: 900px) {
-    .admin-clientes-page .info {
-        max-width: 100%;
-        margin-bottom: 10px;
-    }
-
     .admin-clientes-page .cliente-item {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         gap: 10px;
+        padding: 12px 15px;
     }
 
-    nav.navbar {
-        flex-direction: column;
-        height: auto;
-        padding: 10px 15px;
+    .admin-clientes-page .info {
+        flex: 1 1 100%;
+        min-width: 0; /* evita overflow */
     }
 
-    nav.navbar .navbar-left,
-    nav.navbar .navbar-right {
-        gap: 10px;
+    .admin-clientes-page .acciones {
+        display: flex;
         flex-wrap: wrap;
-    }
-
-    .admin-clientes-page h1 {
-        font-size: 26px;
+        gap: 8px;
+        justify-content: flex-start;
     }
 
     .admin-clientes-page .acciones button {
-        padding: 6px 12px;
+        flex: 1 1 auto; /* se adaptan al espacio */
+        min-width: 90px; /* nunca demasiado pequeños */
+    }
+}
+
+/* Móviles pequeños */
+@media (max-width: 600px) {
+    .admin-clientes-page .cliente-item {
+        padding: 10px 12px;
+    }
+
+    .admin-clientes-page .acciones {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: space-between;
+    }
+
+    .admin-clientes-page .acciones button {
+        flex: 1 1 calc(50% - 6px); /* dos botones por fila */
+        min-width: 80px;
+        font-size: 12px;
+        padding: 6px 5px;
+    }
+
+    .admin-clientes-page .info .nombre {
+        font-size: 16px;
+    }
+
+    .admin-clientes-page .info .email,
+    .admin-clientes-page .info .telefono {
         font-size: 13px;
     }
 }
 
-@media (max-width: 600px) {
-    .admin-clientes-page h1 {
-        font-size: 22px;
+/* Pantallas súper chicas (menos de 400px) */
+@media (max-width: 400px) {
+    .admin-clientes-page .acciones button {
+        flex: 1 1 100%; /* un botón por fila */
+        font-size: 11px;
+        padding: 5px 0;
     }
 
-    .admin-clientes-page .acciones button {
-        padding: 5px 10px;
+    .admin-clientes-page .info .nombre {
+        font-size: 14px;
+    }
+
+    .admin-clientes-page .info .email,
+    .admin-clientes-page .info .telefono {
         font-size: 12px;
     }
 }

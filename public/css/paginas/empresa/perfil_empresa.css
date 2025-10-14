@@ -39,7 +39,7 @@ body {
 .foto-circulo {
     width: 120px;
     height: 120px;
-    border-radius: 16px;
+    border-radius: 50%; /* antes era 16px */
     background-color: #ddd;
     display: flex;
     justify-content: center;
@@ -56,10 +56,11 @@ body {
 .foto-circulo img.foto-perfil {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    border-radius: 16px;
+    object-fit: cover; /* mejor que contain para que ocupe todo el círculo */
+    border-radius: 50%; /* antes era 16px */
     background-color: #fff;
 }
+
 
 .foto-circulo .cambiar-foto {
     position: absolute;
@@ -221,6 +222,16 @@ body {
     display: inline-block !important;
     visibility: visible !important;
 }
+
+.aviso-editar {
+    display: none; /* ya lo tenías oculto por defecto */
+    color: #555;   /* opcional: color más suave */
+    font-size: 0.85rem; /* tamaño pequeño */
+    margin-top: 5px;    /* separación del input */
+    display: block;     /* se mostrará cuando se edite */
+}
+
+
 
 /* --- responsive --- */
 @media (max-width: 900px) and (min-width: 600px) {

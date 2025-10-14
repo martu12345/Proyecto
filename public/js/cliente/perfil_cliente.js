@@ -9,27 +9,40 @@ document.addEventListener("DOMContentLoaded", function () {
     if (btnEditar && btnGuardar && btnCancelar && campos.length > 0 && form) {
 
         btnEditar.addEventListener("click", () => {
-            campos.forEach(campo => {
-                campo.classList.add("editando");
-                campo.querySelector(".input-campo").style.display = "inline-block";
-                campo.querySelector(".texto").style.display = "none";
-            });
-            btnEditar.style.display = "none";
-            btnGuardar.style.display = "inline-block";
-            btnCancelar.style.display = "inline-block";
-        });
+    campos.forEach(campo => {
+        campo.classList.add("editando");
+        const input = campo.querySelector(".input-campo");
+        const texto = campo.querySelector(".texto");
+        const aviso = campo.querySelector(".aviso-editar"); // <- capturamos el small
 
-        btnCancelar.addEventListener("click", () => {
-            campos.forEach(campo => {
-                campo.classList.remove("editando");
-                campo.querySelector(".input-campo").style.display = "none";
-                campo.querySelector(".texto").style.display = "inline-block";
-                campo.querySelector(".input-campo").value = campo.querySelector(".texto").textContent;
-            });
-            btnEditar.style.display = "inline-block";
-            btnGuardar.style.display = "none";
-            btnCancelar.style.display = "none";
-        });
+        if(input) input.style.display = "inline-block";
+        if(texto) texto.style.display = "none";
+        if(aviso) aviso.style.display = "block"; // <- mostramos el aviso
+    });
+    btnEditar.style.display = "none";
+    btnGuardar.style.display = "inline-block";
+    btnCancelar.style.display = "inline-block";
+});
+
+btnCancelar.addEventListener("click", () => {
+    campos.forEach(campo => {
+        campo.classList.remove("editando");
+        const input = campo.querySelector(".input-campo");
+        const texto = campo.querySelector(".texto");
+        const aviso = campo.querySelector(".aviso-editar"); // <- capturamos el small
+
+        if(input) {
+            input.style.display = "none";
+            input.value = texto.textContent; // reset valor
+        }
+        if(texto) texto.style.display = "inline-block";
+        if(aviso) aviso.style.display = "none"; // <- ocultamos aviso
+    });
+    btnEditar.style.display = "inline-block";
+    btnGuardar.style.display = "none";
+    btnCancelar.style.display = "none";
+});
+
 
         btnGuardar.addEventListener("click", (e) => {
             e.preventDefault();
