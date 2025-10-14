@@ -47,6 +47,8 @@ if ($logueado) {
         }
 
     } elseif ($rol === 'cliente') {
+        $idCliente = $_SESSION['idUsuario'];
+    $notificacionesAgendados = Brinda::contarNoLeidosPorCliente($conn, $idCliente);
         $home_url = "/Proyecto/apps/vistas/paginas/cliente/home_cliente.php";
         $perfil_url = "/Proyecto/apps/vistas/paginas/cliente/perfil_cliente.php";
 
