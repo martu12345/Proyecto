@@ -33,9 +33,13 @@ if (count($empresas) === 0) {
     <meta charset="UTF-8">
     <title>Administrar Empresas</title>
     <link rel="stylesheet" href="/Proyecto/public/css/fonts.css">
-    <link rel="stylesheet" href="/Proyecto/public/css/paginas/administrador/admin_clientes.css">
+    <link rel="stylesheet" href="/Proyecto/public/css/layout/navbar.css">
+    <link rel="stylesheet" href="/Proyecto/public/css/paginas/administrador/admin_empresas.css">
 </head>
-<body>
+<body class="admin-empresas-page">
+
+    <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
+
 <h1>Administrar Empresas</h1>
 <?= $htmlEmpresas ?>
 

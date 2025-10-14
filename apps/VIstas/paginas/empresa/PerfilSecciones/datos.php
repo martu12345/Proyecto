@@ -25,12 +25,13 @@
         <span class="texto"><?php echo htmlspecialchars($datos['Email']); ?></span>
         <input type="email" name="email" class="input-campo" value="<?php echo htmlspecialchars($datos['Email']); ?>">
     </div>
+<div class="campo-perfil">
+    <label>Contraseña:</label>
+    <span class="texto">********</span>
+    <input type="password" name="contrasena" class="input-campo" placeholder="Nueva contraseña">
+    <small class="aviso-editar" style="display:none;">Dejar vacío para mantener la contraseña actual</small>
+</div>
 
-    <div class="campo-perfil">
-        <label>Contraseña:</label>
-        <span class="texto">********</span>
-        <input type="password" name="contrasena" class="input-campo" placeholder="Nueva contraseña">
-    </div>
 
     <div class="botones-perfil">
     <button type="button" id="btnEditar">Editar</button>

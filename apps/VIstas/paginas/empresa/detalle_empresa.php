@@ -69,8 +69,7 @@ $idServicio = $_GET['idServicio'] ?? null; // <-- Necesario para el botón volve
             </div>
 
 
-               <div class="botones-empresa">
-   
+             <div class="botones-empresa">
     <?php if ($idServicio): ?>
         <a href="/Proyecto/apps/controlador/servicio/DetallesServicioControlador.php?idServicio=<?= $idServicio ?>" class="boton-empresa">
             <img src="/Proyecto/public/imagen/icono/icono_volver.png" alt="Volver">
@@ -81,6 +80,7 @@ $idServicio = $_GET['idServicio'] ?? null; // <-- Necesario para el botón volve
         </a>
     <?php endif; ?>
 </div>
+
 
             </div>
 

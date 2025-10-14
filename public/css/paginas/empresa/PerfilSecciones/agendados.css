@@ -21,7 +21,7 @@ body, html {
 
 .filtro-btn {
     padding: 10px 20px;
-    border: none;
+    border: none; /* sin borde */
     cursor: pointer;
     background: #f0f0f0;
     font-weight: bold;
@@ -80,7 +80,7 @@ body, html {
     border-radius: 6px;
     cursor: pointer;
     white-space: nowrap;
-    border: none;
+    border: none; /* sin borde */
     outline: none;
     transition: all 0.2s ease;
 }
@@ -194,7 +194,7 @@ body, html {
 #modalCancelarEmpresa .btn-confirm {
     background-color: #28a745;
     color: white;
-    border: none;
+    border: none; /* sin borde */
     padding: 8px 18px;
     border-radius: 8px;
     cursor: pointer;
@@ -207,7 +207,7 @@ body, html {
 #modalCancelarEmpresa .btn-cancel {
     background-color: #dc3545;
     color: white;
-    border: none;
+    border: none; /* sin borde */
     padding: 8px 18px;
     border-radius: 8px;
     cursor: pointer;
@@ -256,7 +256,7 @@ body, html {
     background-color: #ff914d;
     color: #fff;
     padding: 10px 20px;
-    border: none;
+    border: none; /* sin borde */
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
@@ -266,7 +266,31 @@ body, html {
     background-color: #e7620f;
 }
 
-/* --- Fondo del modal más suave y con transición --- */
+#btnConfirmar {
+    background-color: #ff914d; /* naranja principal */
+    color: white;
+    padding: 10px 24px;
+    font-weight: bold;
+    font-size: 16px;
+    border: none; /* sin borde */
+    border-radius: 12px; /* redondeado */
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* sombra sutil */
+    transition: all 0.25s ease;
+}
+
+#btnConfirmar:hover {
+    background-color: #e7620f; /* naranja más oscuro al pasar el mouse */
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+}
+
+#btnConfirmar:active {
+    transform: scale(0.98);
+}
+
+
+/* --- Fondo del modal más suave --- */
 #modalCancelarEmpresa {
     display: none;
     position: fixed;
@@ -275,8 +299,8 @@ body, html {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.6); /* ligeramente más oscuro */
-    backdrop-filter: blur(6px); /* más blur */
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(6px);
     justify-content: center;
     align-items: center;
     transition: opacity 0.3s ease;
@@ -296,14 +320,6 @@ body, html {
     align-items: center;
 }
 
-/* --- Texto del modal --- */
-#modalCancelarEmpresa p {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 25px;
-    line-height: 1.5;
-}
-
 /* --- Botones del modal más modernos --- */
 #modalCancelarEmpresa .btn-confirm,
 #modalCancelarEmpresa .btn-cancel {
@@ -312,7 +328,7 @@ body, html {
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
-    border: none;
+    border: none; /* sin borde */
     transition: all 0.2s ease;
 }
 
@@ -334,29 +350,6 @@ body, html {
     transform: scale(1.05);
 }
 
-/* --- Mensaje dentro del modal --- */
-#mensajeModalEmpresa {
-    margin-top: 15px;
-    font-size: 15px;
-    color: #555;
-    min-height: 20px; /* para que no salte el contenido al aparecer */
-}
-
-/* --- Icono cerrar más grande y moderno --- */
-#modalCancelarEmpresa .close {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    font-size: 26px;
-    color: #333;
-    cursor: pointer;
-    transition: color 0.2s ease, transform 0.2s ease;
-}
-#modalCancelarEmpresa .close:hover {
-    color: #ff914d;
-    transform: rotate(90deg);
-}
-
 /* --- Botón de tabla cancelar más llamativo --- */
 .btn-cancelar-empresa {
     background-color: #dc3545;
@@ -365,7 +358,7 @@ body, html {
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-    border: none;
+    border: none; /* sin borde */
     transition: all 0.2s ease;
 }
 .btn-cancelar-empresa:hover {

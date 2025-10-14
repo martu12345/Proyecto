@@ -70,8 +70,8 @@ $usuario_id = $_SESSION['idUsuario'] ?? null;
                 </p>
 
                 <?php if (!empty($empresa)): ?>
-                    <p class="empresa-line">
-                        <span>Empresa:</span>
+                    <p class="info-line">
+                        <span CLASS="titulo-info">Empresa:</span>
                         <form action="/Proyecto/apps/controlador/empresa/DetalleEmpresaControlador.php" method="get">
                             <input type="hidden" name="idEmpresa" value="<?= $empresa->getIdUsuario() ?>">
                             <input type="hidden" name="idServicio" value="<?= $servicio->getIdServicio() ?>">

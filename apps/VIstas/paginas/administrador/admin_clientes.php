@@ -12,11 +12,16 @@ $clientes = $controlador->obtenerTodos();
     <meta charset="UTF-8">
     <title>Administrar Clientes - Administrador</title>
     <link rel="stylesheet" href="/Proyecto/public/css/fonts.css">
+        <link rel="stylesheet" href="/Proyecto/public/css/layout/navbar.css">
+
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/administrador/admin_clientes.css">
 
 </head>
-<body>
 
+<body>
+            <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
+
+<div class="admin-clientes-page"> 
 <h1>Administrar Clientes</h1>
 
 <?php if (count($clientes) === 0): ?>
@@ -83,6 +88,7 @@ $clientes = $controlador->obtenerTodos();
             <div id="mensajeEditar" class="mensaje-modal" style="display:none;"></div>
         </form>
     </div>
+</div>
 </div>
 
 <script>

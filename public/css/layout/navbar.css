@@ -1,40 +1,40 @@
 body {
     margin: 0;
+    font-family: 'Lexend', sans-serif;
 }
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 30px; /* más espacio lateral */
     background-color: #ffffff;
     border-bottom: 1px solid #ddd;
     height: 90px;
     box-sizing: border-box;
-    font-family: 'Lexend', sans-serif;
-    max-width: 1200px;
-    margin: 0 auto; 
+    max-width: 1350px;
+    margin: 0 auto;
 }
 
 .navbar-left,
 .navbar-right {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 35px; /* más separación entre elementos sin cambiar tamaños */
 }
 
 .logo img {
-    height: 100%;
-    max-height: 100px;
+    height: 60px; /* tamaño original aproximado */
     width: auto;
     object-fit: contain;
     display: block;
 }
 
-/* Departamentos */
+/* Departamentos: no se cambia diseño, solo respeta el original */
 .departamentos select {
-    padding: 6px 10px;
-    padding-right: 30px;
+    min-width: 150px; /* ancho mínimo para que no se rompa */
+    max-width: 200px; /* opcional: que no quede gigante */
+    padding: 6px 30px 6px 10px; /* padding derecho más grande para la flecha */
     border-radius: 5px;
     font-family: 'Lexend', sans-serif;
     background-color: #ffffff;
@@ -43,12 +43,17 @@ body {
     -webkit-appearance: none;
     -moz-appearance: none;
     border: none;
+    box-sizing: border-box; /* importante para que el padding no rompa */
     background-image: url("../../imagen/icono/icono_flecha.png");
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 10px 6px;
     cursor: pointer;
+    overflow: hidden; /* evita que el texto se salga */
+    text-overflow: ellipsis; /* muestra "..." si es muy largo */
+    white-space: nowrap;
 }
+
 
 .departamentos select option:checked {
     background-color: #ff914d;
@@ -103,20 +108,21 @@ body {
     cursor: pointer;
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .perfil-btn img {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
 }
 
 .perfil-menu {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease; /* duración del efecto */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
     position: absolute;
-    top: 40px;
+    top: 45px;
     right: 0;
     background-color: #ffffff;
     border: 1px solid #ddd;
@@ -140,15 +146,9 @@ body {
     color: #fff;
 }
 
-/* Mostrar menú al pasar el mouse con transición */
 .perfil:hover .perfil-menu {
     opacity: 1;
     visibility: visible;
-}
-
-/* Contenedor del icono de perfil */
-.perfil-btn {
-    position: relative;
 }
 
 /* Puntito rojo sobre el avatar */
@@ -162,15 +162,6 @@ body {
     border-radius: 50%;
     display: inline-block;
 }
-
-/* Para que el avatar mantenga tamaño */
-.perfil-btn img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
-
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -197,21 +188,13 @@ body {
     }
 
     .busqueda form {
-        width: 250px;
-    }
-
-    .busqueda input {
-        width: 100%;
+        width: 220px;
     }
 }
 
 @media (max-width: 480px) {
     .busqueda form {
-        width: 180px;
-    }
-
-    .busqueda input {
-        width: 100%;
+        width: 160px;
     }
 
     .navbar-left,

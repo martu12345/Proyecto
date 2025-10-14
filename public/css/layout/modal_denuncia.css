@@ -18,22 +18,37 @@
   max-width: 500px;
   box-shadow: 0 6px 15px rgba(0,0,0,0.25);
 }
-/* Estilo de la X de cerrar */
-.cerrar {
-  position: absolute;       /* para ubicarla dentro del modal */
-  top: 15px;                /* arriba del contenido */
-  right: 20px;              /* a la derecha del modal */
-  font-size: 32px;          /* más grande */
-  font-weight: bold;
-  cursor: pointer;
-  color: #FF914D;           /* naranja base */
-  transition: 0.2s;
+/* --- Estilo específico para la X de cerrar del modal de denuncia --- */
+/* --- Contenedor del contenido del modal --- */
+#denunciaModal .modal-content {
+  background-color: #ffffff;
+  margin: 10% auto;
+  padding: 25px 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  position: relative; /* 🔹 Hace que los hijos con position:absolute se ubiquen dentro */
 }
 
-.cerrar:hover {
-  color: #e6733c;           /* naranja más oscuro al pasar el mouse */
-  transform: scale(1.2);    /* ligeramente más grande al pasar */
+/* --- Cruz de cerrar dentro del modal --- */
+#denunciaModal .close {
+  position: absolute;
+  top: 10px;        /* dentro del modal blanco */
+  right: 15px;
+  font-size: 42px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #FF914D;
+  z-index: 10;      /* suficiente para estar encima del texto */
 }
+
+#denunciaModal .close:hover {
+  color: red;
+}
+
+
+
 
 .modal-content label {
   display: block;

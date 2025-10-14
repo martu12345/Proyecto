@@ -10,28 +10,34 @@
     overflow: auto;
     background-color: rgba(0,0,0,0.5);
 }
-
-.modal-content {
-
+/* --- Contenedor del contenido del modal de mensaje --- */
+#modalMensaje .modal-content {
     background-color: #fff;
-    margin: 10% auto; /* centrado vertical y horizontal */
+    margin: 10% auto;
     padding: 20px;
     border-radius: 8px;
     width: 90%;
     max-width: 500px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: relative; /* 🔹 para que la cruz se posicione dentro */
 }
 
-.cerrar {
-    float: right;
-    font-size: 28px;
+/* --- Cruz de cerrar del modal de mensaje --- */
+#modalMensaje .cerrar {
+    position: absolute;
+    top: 10px;           /* dentro del recuadro blanco */
+    right: 15px;
+    font-size: 42px;
     font-weight: bold;
     cursor: pointer;
+    color: #FF914D;
+    z-index: 10;
 }
 
-.cerrar:hover {
-    color: red;
+#modalMensaje .cerrar:hover {
+    color: red;          /* se pinta de rojo */
 }
+
 
 /* Solo inputs, textarea y botones dentro del modal */
 .modal-content input,

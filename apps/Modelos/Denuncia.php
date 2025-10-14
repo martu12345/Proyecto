@@ -60,27 +60,45 @@ class Denuncia {
         return $resultado;
     }
 
-    // Traer denuncias por asunto
     public static function obtenerPorAsunto($asunto) {
-        global $conn;
-        $sql = "SELECT * FROM denuncia WHERE asunto = ? ORDER BY fecha DESC";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $asunto);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $denuncias = [];
-        while ($row = $result->fetch_assoc()) {
-            $denuncias[] = new Denuncia(
-                $row['idCliente'],
-                $row['idEmpresa'],
-                $row['asunto'],
-                $row['motivo'],
-                $row['fecha'],
-                $row['idDenuncia']
-            );
-        }
-        $stmt->close();
-        return $denuncias;
+    global $conn;
+
+    $sql = "SELECT 
+                d.*, 
+                uc.Email AS emailCliente, 
+                ue.Email AS emailEmpresa
+            FROM denuncia d
+            LEFT JOIN usuario uc ON d.idCliente = uc.IdUsuario
+            LEFT JOIN usuario ue ON d.idEmpresa = ue.IdUsuario
+            WHERE d.asunto = ?
+            ORDER BY d.fecha DESC";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $asunto);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $denuncias = [];
+    while ($row = $result->fetch_assoc()) {
+        // Guardamos el objeto Denuncia como siempre
+        $denuncia = new Denuncia(
+            $row['idCliente'],
+            $row['idEmpresa'],
+            $row['asunto'],
+            $row['motivo'],
+            $row['fecha'],
+            $row['idDenuncia']
+        );
+
+        // Guardamos los emails junto al objeto en un array asociativo
+        $denuncias[] = [
+            'denuncia' => $denuncia,
+            'emailCliente' => $row['emailCliente'],
+            'emailEmpresa' => $row['emailEmpresa']
+        ];
     }
 
+    $stmt->close();
+    return $denuncias;
 }
+} 
