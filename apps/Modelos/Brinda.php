@@ -99,24 +99,4 @@ class Brinda
         $stmt->close();
         return $servicios;
     }
-
-    public static function contarNoLeidosPorCliente($conn, $idCliente)
-    {
-        $stmt = $conn->prepare("SELECT COUNT(*) as total FROM Brinda WHERE IdUsuario = ? AND notificacion='no leido'");
-        $stmt->bind_param("i", $idCliente);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        $row = $res->fetch_assoc();
-        return (int)$row['total'];
-    }
-
-    // Marcar notificaciones como leídas
-    public static function marcarComoLeido($conn, $idCliente)
-    {
-        $stmt = $conn->prepare("UPDATE Brinda SET notificacion='leido' WHERE IdUsuario = ? AND notificacion='no leido'");
-        $stmt->bind_param("i", $idCliente);
-        $stmt->execute();
-        $stmt->close();
-    }
-
 }

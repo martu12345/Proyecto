@@ -254,15 +254,16 @@ class Comunica
         
     }
     
-    public static function contarNoLeidosPorEmpresa($conn, $idEmpresa) {
+   public static function contarNoLeidosPorEmpresa($conn, $idEmpresa) {
     $sql = "
         SELECT COUNT(*) as total
-        FROM comunica c
-        JOIN comunica mp ON c.IdMensajePadre = mp.IdMensaje
-        WHERE mp.idUsuarioEmisor = ? AND c.notificacion = 'no leido'
+        FROM comunica
+        WHERE idUsuarioEmpresa = ? 
+          AND idUsuarioEmisor != ? 
+          AND notificacion = 'no leido'
     ";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $idEmpresa);
+    $stmt->bind_param("ii", $idEmpresa, $idEmpresa); // el segundo parámetro evita contar los propios mensajes
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
@@ -271,15 +272,17 @@ class Comunica
 
 public static function marcarComoLeidoPorEmpresa($conn, $idEmpresa) {
     $sql = "
-        UPDATE comunica c
-        JOIN comunica mp ON c.IdMensajePadre = mp.IdMensaje
-        SET c.notificacion = 'leido'
-        WHERE mp.idUsuarioEmisor = ?
+        UPDATE comunica
+        SET notificacion = 'leido'
+        WHERE idUsuarioEmpresa = ?
+          AND idUsuarioEmisor != ?
+          AND notificacion = 'no leido'
     ";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $idEmpresa);
+    $stmt->bind_param("ii", $idEmpresa, $idEmpresa);
     $stmt->execute();
 }
+
 
 
 public static function contarNoLeidosPorCliente($conn, $idCliente) {

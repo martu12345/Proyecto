@@ -30,7 +30,6 @@ if ($_SESSION['rol'] === 'empresa') {
 $debug = "=== " . date('Y-m-d H:i:s') . " ===\n";
 $debug .= "Cliente: $idUsuarioCliente | Empresa: $idUsuarioEmpresa | Emisor: $idUsuarioEmisor | IdMensajePadre: $idMensajeRespondido\n";
 $debug .= "Asunto: $asunto\nContenido: $contenido\n----------------------\n";
-file_put_contents("C:/wamp64/www/Proyecto/debug.txt", $debug, FILE_APPEND);
 
 if ($idUsuarioCliente && $idUsuarioEmpresa && $asunto && $contenido) {
     $fecha = date("Y-m-d H:i:s");
