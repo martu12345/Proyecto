@@ -45,7 +45,12 @@ $_SESSION['idCliente'] = $cliente->getIdUsuario();
 
             <div class="opciones-lista">
                 <a href="?seccion=perfil" data-seccion="perfil" class="opcion <?php echo $seccion == 'perfil' ? 'activa' : ''; ?>">Mi perfil</a>
-                <a href="?seccion=mensajes" data-seccion="mensajes" class="opcion <?php echo $seccion == 'mensajes' ? 'activa' : ''; ?>">Mensajes</a>
+<a href="?seccion=mensajes" data-seccion="mensajes" class="opcion <?php echo $seccion == 'mensajes' ? 'activa' : ''; ?>">
+    Mensajes
+    <?php if($notificacionesMensajesCliente > 0 && $seccion != 'mensajes'): ?>
+        <span class="contador-notificaciones-mensajes"><?= $notificacionesMensajesCliente ?></span>
+    <?php endif; ?>
+</a>
                 <a href="?seccion=servicios" data-seccion="servicios" class="opcion <?php echo $seccion == 'servicios' ? 'activa' : ''; ?>">Servicios</a>
             </div>
         </div>

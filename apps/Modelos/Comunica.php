@@ -252,8 +252,16 @@ class Comunica
         }
         return $mensajes;
         
-    }public static function contarNoLeidosPorEmpresa($conn, $idEmpresa) {
-    $stmt = $conn->prepare("SELECT COUNT(*) as total FROM comunica WHERE idUsuarioEmpresa = ? AND notificacion = 'no leido'");
+    }
+    
+    public static function contarNoLeidosPorEmpresa($conn, $idEmpresa) {
+    $sql = "
+        SELECT COUNT(*) as total
+        FROM comunica c
+        JOIN comunica mp ON c.IdMensajePadre = mp.IdMensaje
+        WHERE mp.idUsuarioEmisor = ? AND c.notificacion = 'no leido'
+    ";
+    $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $idEmpresa);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -262,9 +270,42 @@ class Comunica
 }
 
 public static function marcarComoLeidoPorEmpresa($conn, $idEmpresa) {
-    $sql = "UPDATE comunica SET notificacion = 'leido' WHERE idUsuarioEmpresa = ?";
+    $sql = "
+        UPDATE comunica c
+        JOIN comunica mp ON c.IdMensajePadre = mp.IdMensaje
+        SET c.notificacion = 'leido'
+        WHERE mp.idUsuarioEmisor = ?
+    ";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $idEmpresa);
+    $stmt->execute();
+}
+
+
+public static function contarNoLeidosPorCliente($conn, $idCliente) {
+    $sql = "
+        SELECT COUNT(*) as total
+        FROM comunica c
+        JOIN comunica mp ON c.IdMensajePadre = mp.IdMensaje
+        WHERE mp.idUsuarioEmisor = ? AND c.notificacion = 'no leido'
+    ";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idCliente);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    return $row['total'] ?? 0;
+}
+
+public static function marcarComoLeidoPorCliente($conn, $idCliente) {
+    $sql = "
+        UPDATE comunica c
+        JOIN comunica mp ON c.IdMensajePadre = mp.IdMensaje
+        SET c.notificacion = 'leido'
+        WHERE mp.idUsuarioEmisor = ?
+    ";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idCliente);
     $stmt->execute();
 }
 

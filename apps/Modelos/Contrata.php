@@ -388,6 +388,8 @@ public static function obtenerPorEmpresaYEstado($conn, $idEmpresa, $estado) {
 }
 
 
+
+
 }
 
 

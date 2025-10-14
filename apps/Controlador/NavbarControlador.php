@@ -21,6 +21,7 @@ if ($logueado) {
 
     if ($rol === 'admin') {
         $home_url = "/Proyecto/apps/vistas/paginas/administrador/home_admin.php";
+
     } elseif ($rol === 'empresa') {
         $home_url = "/Proyecto/apps/vistas/paginas/empresa/home_empresa.php";
         $perfil_url = "/Proyecto/apps/vistas/paginas/empresa/perfil_empresa.php";
@@ -31,7 +32,7 @@ if ($logueado) {
         try {
             $notificacionesMensajes = Comunica::contarNoLeidosPorEmpresa($conn, $idEmpresa);
         } catch (\Exception $e) {
-            // Opcional: loggear el error sin mostrar en pantalla
+            // Opcional: loggear el error
         }
 
         // 🔹 Agendados no leídos
@@ -44,10 +45,23 @@ if ($logueado) {
                 $notificacionesAgendados++;
             }
         }
+
     } elseif ($rol === 'cliente') {
         $home_url = "/Proyecto/apps/vistas/paginas/cliente/home_cliente.php";
         $perfil_url = "/Proyecto/apps/vistas/paginas/cliente/perfil_cliente.php";
-        
+
+        $idCliente = $_SESSION['idUsuario'];
+
+        // 🔹 Mensajes no leídos del cliente
+        try {
+            $notificacionesMensajes = Comunica::contarNoLeidosPorCliente($conn, $idCliente);
+        } catch (\Exception $e) {
+            // Opcional: loggear el error
+        }
+
+        // 🔹 Agendados no leídos (si aplica para clientes, sino queda 0)
+        $notificacionesAgendados = 0;
+
     } elseif ($rol === 'propietario') {
         $home_url = "/Proyecto/apps/vistas/paginas/propietario/home_propietario.php";
     }

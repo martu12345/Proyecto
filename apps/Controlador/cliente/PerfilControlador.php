@@ -3,6 +3,7 @@ session_start();
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/conexion.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Cliente.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Usuario.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Comunica.php');
 
 if (!isset($_SESSION['idUsuario'])) {
     header("Location: /Proyecto/apps/vistas/autenticacion/login.php");
@@ -10,8 +11,11 @@ if (!isset($_SESSION['idUsuario'])) {
 }
 
 $idUsuario = (int)$_SESSION['idUsuario'];
+$idCliente = $_SESSION['idUsuario'] ?? 0;
 
+// ------------------
 // Obtener datos del cliente
+// ------------------
 $stmt = $conn->prepare("
     SELECT u.Email, u.Contraseña, c.Nombre, c.Apellido, c.Imagen
     FROM usuario u
@@ -28,7 +32,9 @@ $stmt->close();
 
 if(!$datosCliente) die("No se encontraron datos del usuario");
 
-// Crear objeto Cliente (igual que en empresa)
+// ------------------
+// Crear objeto Cliente
+// ------------------
 $cliente = new Cliente(
     $idUsuario,
     $datosCliente['Email'],
@@ -38,7 +44,9 @@ $cliente = new Cliente(
     $datosCliente['Imagen']
 );
 
+// ------------------
 // Array $datos para la vista
+// ------------------
 $datos = [
     "Email" => $cliente->getEmail(),
     "Nombre" => $cliente->getNombre(),
@@ -46,7 +54,9 @@ $datos = [
     "Imagen" => $cliente->getImagen()
 ];
 
+// ------------------
 // Subida de imagen
+// ------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
     $nombreArchivo = $_FILES['imagen']['name'];
     $tmpName = $_FILES['imagen']['tmp_name'];
@@ -68,3 +78,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagen']) && $_FILES
         echo "Error al subir la imagen.";
     }
 }
+
+// ------------------
+// Manejo de secciones
+// ------------------
+$seccion = $_GET['seccion'] ?? 'perfil';
+if ($seccion === "null") $seccion = 'perfil';
+$_SESSION['idCliente'] = $cliente->getIdUsuario();
+
+// ------------------
+// Notificaciones de mensajes no leídos
+// ------------------
+$notificacionesMensajesCliente = Comunica::contarNoLeidosPorCliente($conn, $idCliente);
+
+// Si estamos en la sección de mensajes, marcamos los mensajes como leídos
+if($seccion === 'mensajes') {
+    Comunica::marcarComoLeidoPorCliente($conn, $idCliente);
+}
+?>

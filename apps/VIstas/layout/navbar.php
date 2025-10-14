@@ -22,7 +22,7 @@ $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
             </a>
         </div>
 
-        <!-- 🔹 Mostrar departamentos solo si NO es admin ni propietario -->
+        <!-- Mostrar departamentos solo si NO es admin ni propietario -->
         <?php if ($rol !== 'admin' && $rol !== 'propietario'): ?>
         <div class="departamentos">
             <form id="form-departamento" action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST">
@@ -52,7 +52,7 @@ $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
     <!-- DERECHA: BUSCADOR + PERFIL -->
     <div class="navbar-right">
 
-        <!-- 🔹 Mostrar buscador solo si NO es admin ni propietario -->
+        <!-- Mostrar buscador solo si NO es admin ni propietario -->
         <?php if ($rol !== 'admin' && $rol !== 'propietario'): ?>
         <div class="busqueda">
             <form id="form-buscador" action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST">
@@ -83,13 +83,8 @@ $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
 
             <div class="perfil-menu">
                 <?php if ($logueado): ?>
-                    <!-- 🔹 Si es admin o propietario: solo "Cerrar sesión" -->
-                    <?php if ($rol === 'admin' || $rol === 'propietario'): ?>
-                        <a href="/Proyecto/apps/controlador/LogoutControlador.php">Cerrar sesión</a>
-                    <?php else: ?>
-                        <a href="<?= $perfil_url ?>">Mi perfil</a>
-                        <a href="/Proyecto/apps/controlador/LogoutControlador.php">Cerrar sesión</a>
-                    <?php endif; ?>
+                    <a href="<?= $perfil_url ?>">Mi perfil</a>
+                    <a href="/Proyecto/apps/controlador/LogoutControlador.php">Cerrar sesión</a>
                 <?php else: ?>
                     <a href="/Proyecto/apps/vistas/autenticacion/login.php">Iniciar sesión</a>
                     <a href="/Proyecto/apps/vistas/autenticacion/registro.php">Registrarse</a>

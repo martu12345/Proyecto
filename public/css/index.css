@@ -1,0 +1,107 @@
+/* Reset básico */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Playfair Display', serif; /* letra elegante para todo */
+}
+
+/* --- Hero Section --- */
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #FF914D, #fd7019);
+    color: white;
+    padding: 20px;
+}
+
+.hero-title {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    max-width: 95%;
+    margin-bottom: 40px;
+}
+
+/* --- Botones --- */
+.hero-buttons {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+.hero-btn {
+    display: inline-block;
+    padding: 20px 50px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-radius: 15px;
+    border: 2px solid rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.25);
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: 0.3s;
+}
+
+.hero-btn:hover {
+    background: rgba(255,255,255,0.45);
+    transform: translateY(-3px);
+}
+
+/* --- Categorías --- */
+.categories {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.category:hover {
+    transform: translateY(-5px);
+}
+
+.category img {
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-bottom: 5px;
+}
+
+.category span {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: white;
+}
+
+/* --- Responsive --- */
+@media(max-width: 768px){
+    .hero-title { font-size: 3rem; }
+    .hero-btn { padding: 15px 40px; font-size: 1.3rem; }
+    .category img { width: 50px; height: 50px; }
+    .category span { font-size: 0.9rem; }
+}
+
+@media(max-width: 480px){
+    .hero-title { font-size: 2rem; }
+    .hero-buttons { flex-direction: column; }
+    .hero-btn { width: 160px; padding: 12px 0; font-size: 1.1rem; }
+    .category img { width: 45px; height: 45px; }
+    .category span { font-size: 0.8rem; }
+}
