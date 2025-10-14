@@ -4,6 +4,8 @@ header('Content-Type: application/json');
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Servicio.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Administra.php');
+
 
 // Obtener rol e ID de usuario
 $rol = $_SESSION['rol'] ?? '';
@@ -41,6 +43,15 @@ if ($rol === 'empresa') {
 } elseif ($rol !== 'admin') {
     echo json_encode(['success' => false, 'error' => 'Acceso denegado']);
     exit;
+}
+
+// Registrar en administra si es admin
+if ($rol === 'admin') {
+    $administra = new Administra($idServicio, $idUsuario, date('Y-m-d H:i:s'));
+    if (!$administra->guardar($conn)) {
+        echo json_encode(['success' => false, 'error' => 'No se pudo registrar en administra']);
+        exit;
+    }
 }
 
 // Intentar eliminar

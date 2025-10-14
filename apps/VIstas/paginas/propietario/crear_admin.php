@@ -11,7 +11,7 @@
 
 </head>
 
-<body>
+<body class="historial-cambios">
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
 

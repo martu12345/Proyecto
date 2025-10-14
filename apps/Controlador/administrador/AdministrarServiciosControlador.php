@@ -2,6 +2,8 @@
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Administra.php');
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Servicio.php');
 
 // Verificación de rol administrador
@@ -37,6 +39,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+// Registrar edición en administra
+$idAdmin = $_SESSION['idUsuario'];
+$administra = new Administra($id, $idAdmin, date('Y-m-d H:i:s'));
+if (!$administra->guardar($conn)) {
+    echo "<p>Error al registrar en administra</p>";
+    exit;
+}
+
+
     // Actualizar datos
     $servicio->setTitulo($titulo);
     $servicio->setCategoria($categoria);
@@ -55,4 +66,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<p>Error al actualizar el servicio con ID $id</p>";
     }
 }
-?>
