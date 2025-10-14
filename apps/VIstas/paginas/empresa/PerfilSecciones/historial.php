@@ -15,6 +15,7 @@ $serviciosCancelados  = Contrata::obtenerPorEmpresaYEstado($conn, $empresa->getI
 
 
 <h2>Historial de Servicios</h2>
+    <link rel="stylesheet" href="/Proyecto/public/css/layout/modal_denuncia.css">
 
 <div class="botones-filtro">
     <button class="filtro-btn activa" data-estado="Finalizado">Finalizados</button>
@@ -35,26 +36,37 @@ $serviciosCancelados  = Contrata::obtenerPorEmpresaYEstado($conn, $empresa->getI
                 <th>Estado</th>
                 <th>Calificación</th>
                 <th>Reseña</th>
+                <th>Acciones</th>
             </tr>
         </thead>
-       <tbody>
-  <?php if (!empty($serviciosFinalizados)): ?>
-    <?php foreach ($serviciosFinalizados as $servicio): ?>
-      <tr>
-        <td><?= htmlspecialchars($servicio['nombre_servicio']) ?></td>
-        <td><?= htmlspecialchars($servicio['usuario_email']) ?></td>
-        <td><?= htmlspecialchars($servicio['Fecha']) ?></td>
-        <td><?= htmlspecialchars($servicio['Hora']) ?></td>
-        <td><?= htmlspecialchars($servicio['Estado']) ?></td>
-        <td><?= $servicio['Calificacion'] ?? '-' ?></td>
-        <td><?= $servicio['Reseña'] ?? '-' ?></td>
-      </tr>
-    <?php endforeach; ?>
-  <?php else: ?>
-  <?php endif; ?>
-</tbody>
-
-
+        <tbody>
+            <?php if (!empty($serviciosFinalizados)): ?>
+                <?php foreach ($serviciosFinalizados as $servicio): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($servicio['nombre_servicio']) ?></td>
+                        <td><?= htmlspecialchars($servicio['usuario_email']) ?></td>
+                        <td><?= htmlspecialchars($servicio['Fecha']) ?></td>
+                        <td><?= htmlspecialchars($servicio['Hora']) ?></td>
+                        <td><?= htmlspecialchars($servicio['Estado']) ?></td>
+                        <td>
+                            <?php 
+                                if (!empty($servicio['Calificacion'])) {
+                                    echo str_repeat("⭐", $servicio['Calificacion']);
+                                } else {
+                                    echo '-';
+                                }
+                            ?>
+                        </td>
+                        <td><?= $servicio['Resena'] ?? '-' ?></td>
+                        <td>
+    <button class="btn-denunciar" data-idcliente="<?= $servicio['IdUsuario'] ?>">Denunciar</button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr><td colspan="8">No hay servicios finalizados.</td></tr>
+            <?php endif; ?>
+        </tbody>
     </table>
 
     <!-- Tabla de cancelados -->
@@ -69,15 +81,19 @@ $serviciosCancelados  = Contrata::obtenerPorEmpresaYEstado($conn, $empresa->getI
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($serviciosCancelados as $servicio): ?>
-                <tr>
-                    <td><?= $servicio['nombre_servicio'] ?></td>
-                    <td><?= $servicio['usuario_email'] ?></td>
-                    <td><?= $servicio['Fecha'] ?></td>
-                    <td><?= $servicio['Hora'] ?></td>
-                    <td><?= $servicio['Estado'] ?></td>
-                </tr>
-            <?php endforeach; ?>
+            <?php if (!empty($serviciosCancelados)): ?>
+                <?php foreach ($serviciosCancelados as $servicio): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($servicio['nombre_servicio']) ?></td>
+                        <td><?= htmlspecialchars($servicio['usuario_email']) ?></td>
+                        <td><?= htmlspecialchars($servicio['Fecha']) ?></td>
+                        <td><?= htmlspecialchars($servicio['Hora']) ?></td>
+                        <td><?= htmlspecialchars($servicio['Estado']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr><td colspan="5">No hay servicios cancelados.</td></tr>
+            <?php endif; ?>
         </tbody>
     </table>
 
@@ -91,7 +107,7 @@ $serviciosCancelados  = Contrata::obtenerPorEmpresaYEstado($conn, $empresa->getI
         <form id="denunciaForm">
             <input type="hidden" name="idCliente" value="">
             <input type="hidden" name="idEmpresa" value="<?= $_SESSION['idUsuario'] ?>">
-            <input type="hidden" name="asunto" value="DenunciarCliente">
+            <input type="hidden" name="asunto" value="DenunciaCliente">
             <label for="detalle">Detalles adicionales (opcional):</label>
             <textarea id="detalle" name="detalle" rows="4" placeholder="Escribe más sobre tu denuncia..."></textarea>
             <button type="submit" class="btn-submit">Enviar denuncia</button>
@@ -102,52 +118,54 @@ $serviciosCancelados  = Contrata::obtenerPorEmpresaYEstado($conn, $empresa->getI
 
 <!-- JS para abrir modal y enviar denuncia -->
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const modal = document.getElementById("denunciaModal");
-        const closeBtn = document.getElementById("closeModalBtn");
-        const form = document.getElementById("denunciaForm");
-        const mensajeDiv = document.getElementById("mensajeDenuncia");
+document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById("denunciaModal");
+    const closeBtn = document.getElementById("closeModalBtn");
+    const form = document.getElementById("denunciaForm");
+    const mensajeDiv = document.getElementById("mensajeDenuncia");
 
-        // Abrir modal al hacer click en "Denunciar"
-        document.querySelectorAll(".btn-denunciar").forEach(btn => {
-            btn.addEventListener("click", () => {
-                form.idCliente.value = btn.dataset.idcliente;
-                mensajeDiv.innerHTML = "";
-                modal.style.display = "block";
-            });
-        });
-
-        // Cerrar modal
-        closeBtn.addEventListener("click", () => modal.style.display = "none");
-        window.addEventListener("click", (e) => {
-            if (e.target === modal) modal.style.display = "none";
-        });
-
-        // Enviar denuncia
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
+    // Abrir modal al hacer click en "Denunciar"
+    document.querySelectorAll(".btn-denunciar").forEach(btn => {
+        btn.addEventListener("click", () => {
+            form.idCliente.value = btn.dataset.idcliente;
             mensajeDiv.innerHTML = "";
-
-            const formData = new FormData(form);
-
-            try {
-                const response = await fetch("/Proyecto/apps/controlador/empresa/DenunciarClienteControlador.php", {
-                    method: "POST",
-                    body: formData
-                });
-                const data = await response.json();
-
-                mensajeDiv.textContent = data.message;
-                mensajeDiv.className = "mensaje-denuncia " + (data.success ? "exito" : "error");
-
-                if (data.success) {
-                    form.reset();
-                    setTimeout(() => modal.style.display = "none", 1500);
-                }
-            } catch (err) {
-                mensajeDiv.textContent = "Ocurrió un error al enviar la denuncia.";
-                mensajeDiv.className = "mensaje-denuncia error";
-            }
+            modal.style.display = "block";
         });
     });
+
+    // Cerrar modal
+    closeBtn.addEventListener("click", () => modal.style.display = "none");
+    window.addEventListener("click", (e) => {
+        if (e.target === modal) modal.style.display = "none";
+    });
+
+    // Enviar denuncia
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        mensajeDiv.innerHTML = "";
+
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch("/Proyecto/apps/controlador/empresa/DenunciarEmpresaControlador.php", {
+                method: "POST",
+                body: formData
+            });
+            const data = await response.json();
+
+            mensajeDiv.textContent = data.message;
+            mensajeDiv.className = "mensaje-denuncia " + (data.success ? "exito" : "error");
+
+            if (data.success) {
+                form.reset();
+                setTimeout(() => modal.style.display = "none", 1500);
+            }
+        } catch (err) {
+        // Mostrar error real del fetch o JSON
+        mensajeDiv.textContent = "Error de conexión o respuesta inválida: " + err.message;
+        mensajeDiv.className = "mensaje-denuncia error";
+        console.error(err); // esto lo ves en consola
+    }
+    });
+});
 </script>
