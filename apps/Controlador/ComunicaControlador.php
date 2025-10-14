@@ -29,7 +29,7 @@ if ($idUsuarioEmpresa && $asunto && $contenido) {
         $contenido,
         $fecha,
         $idUsuarioEmisor,
-        null,              // notificación (por ahora nula)
+        "no leido",              // notificación (por ahora nula)
         $idMensajeRespondido // NUEVO: respuesta a otro mensaje
     );
 
