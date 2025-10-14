@@ -26,10 +26,6 @@ if ($_SESSION['rol'] === 'empresa') {
     $idUsuarioEmpresa = $mensajePadre ? $mensajePadre['IdUsuarioEmpresa'] : $_POST['empresa_id'] ?? null;
 }
 
-// Debug
-$debug = "=== " . date('Y-m-d H:i:s') . " ===\n";
-$debug .= "Cliente: $idUsuarioCliente | Empresa: $idUsuarioEmpresa | Emisor: $idUsuarioEmisor | IdMensajePadre: $idMensajeRespondido\n";
-$debug .= "Asunto: $asunto\nContenido: $contenido\n----------------------\n";
 
 if ($idUsuarioCliente && $idUsuarioEmpresa && $asunto && $contenido) {
     $fecha = date("Y-m-d H:i:s");

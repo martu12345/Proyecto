@@ -25,7 +25,6 @@ body, html {
     font-weight: bold;
     color: #333;
     transition: all 0.3s ease;
-    box-shadow: none;
     border-radius: 5px;
 }
 
@@ -38,139 +37,61 @@ body, html {
     background: #ff914d;
     color: white;
 }
-.btn-denunciar-importante {
-    display: inline-block !important;
-    visibility: visible !important;
-}
 
-
-
-/* ------------------- Tablas finalizado ------------------- */
-#tablaFinalizado {
+/* ------------------- Tablas ------------------- */
+.tabla-agendados {
     width: 100%;
     border-collapse: collapse;
-    table-layout: auto; 
+    table-layout: auto;
     margin-bottom: 30px;
 }
 
-#tablaFinalizado th, #tablaFinalizado td {
+.tabla-agendados th, 
+.tabla-agendados td {
     padding: 10px 12px;
     font-size: 14px;
     border: 1px solid #ddd;
-    text-align: left; 
+    text-align: left;
     vertical-align: middle;
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
 
-#tablaFinalizado th {
+.tabla-agendados th {
     background-color: #f5f5f5;
     font-weight: bold;
 }
 
-/* NombreServicio y Cliente */
-#tablaFinalizado td:nth-child(1),
-#tablaFinalizado td:nth-child(2) {
-    max-width: 200px;
-}
-
-/* Columna Fecha y Hora */
-#tablaFinalizado td:nth-child(3),
-#tablaFinalizado td:nth-child(4) {
-    max-width: 120px;
-    white-space: nowrap; 
-}
-
-/* Estado */
-#tablaFinalizado td:nth-child(5) {
-    max-width: 100px;
-    text-align: center;
-}
-
-/* Calificación */
-#tablaFinalizado td:nth-child(6) {
-    width: 80px;
-    font-size: 16px;
-    color: #ffb400;
-    text-align: center;
-}
-
-/* Reseña */
-#tablaFinalizado td:nth-child(7) {
-    max-width: 400px; 
-    white-space: normal;
-    word-break: break-word;
-    line-height: 1.4;
-}
-
-#tablaFinalizado tbody tr:hover td {
-    background-color: #f9f9f9;
-}
-
-/* ------------------- Tabla cancelado ------------------- */
-#tablaCancelado {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: auto; 
-    margin-bottom: 30px;
-}
-
-#tablaCancelado th, #tablaCancelado td {
-    padding: 10px 12px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    text-align: left; 
+/* Asegurar espacio para botones y que se vean bien */
+.tabla-agendados td {
+    min-height: 50px; /* altura mínima */
+    padding: 8px;
     vertical-align: middle;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
 }
 
-#tablaCancelado th {
-    background-color: #f5f5f5;
-    font-weight: bold;
-}
-
-/* NombreServicio y Cliente */
-#tablaCancelado td:nth-child(1),
-#tablaCancelado td:nth-child(2) {
-    max-width: 200px;
-}
-
-/* Columna Fecha y Hora */
-#tablaCancelado td:nth-child(3),
-#tablaCancelado td:nth-child(4) {
-    max-width: 120px;
-    white-space: nowrap; 
-}
-
-/* Estado */
-#tablaCancelado td:nth-child(5) {
-    max-width: 100px;
-    text-align: center;
-}
-
-#tablaCancelado tbody tr:hover td {
-    background-color: #f9f9f9;
-}
-
-.btn-denunciar {
+/* Botón denunciar */
+.tabla-agendados td button.btn-denunciar {
     display: inline-block !important;
-    padding: 5px 10px;
-    background-color: red !important;
-    color: white !important;
-    font-weight: bold;
-    border-radius: 5px;
+    background-color: #ff914d !important;
+    color: #fff !important;
+    padding: 6px 12px !important;
+    border-radius: 6px;
     border: none;
+    font-weight: bold;
+    cursor: pointer;
 }
 
+/* Hover de fila */
+.tabla-agendados tbody tr:hover td {
+    background-color: #f9f9f9;
+}
 
+/* Ajustes responsive */
 @media (max-width: 768px) {
-    #tablaFinalizado th, #tablaFinalizado td {
+    .tabla-agendados th, .tabla-agendados td {
         padding: 6px 8px;
         font-size: 13px;
     }
-
-
 
     .filtro-btn {
         padding: 6px 10px;

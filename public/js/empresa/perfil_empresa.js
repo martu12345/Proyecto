@@ -143,58 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    function cargarHistorial() {
-        const tbodyFinal = document.querySelector('#tablaFinalizado tbody');
-        const tbodyCancelado = document.querySelector('#tablaCancelado tbody');
-
-        if(!tbodyFinal || !tbodyCancelado) return;
-
-        fetch('/Proyecto/apps/controlador/empresa/AgendadosControlador.php')
-        .then(res => res.json())
-        .then(data => {
-            tbodyFinal.innerHTML = '';
-            tbodyCancelado.innerHTML = '';
-
-            if(data.error){
-                tbodyFinal.innerHTML = `<tr><td colspan="7">${data.error}</td></tr>`;
-                tbodyCancelado.innerHTML = `<tr><td colspan="5">${data.error}</td></tr>`;
-                return;
-            }
-
-            data.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.dataset.id = item.IdCita;
-
-                if(item.Estado === "Finalizado"){
-                    tr.innerHTML = `
-                        <td>${item.NombreServicio}</td>
-                        <td>${item.NombreCliente}</td>
-                        <td>${item.Fecha}</td>
-                        <td>${item.Hora}</td>
-                        <td>${item.Estado}</td>
-                        <td>${item.Calificacion ? '⭐'.repeat(item.Calificacion) : 'No hay'}</td>
-                        <td>${item.Resena ? item.Resena : 'No hay'}</td>
-                    `;
-                    tbodyFinal.appendChild(tr);
-                } else if(item.Estado === "Cancelado"){
-                    tr.innerHTML = `
-                        <td>${item.NombreServicio}</td>
-                        <td>${item.NombreCliente}</td>
-                        <td>${item.Fecha}</td>
-                        <td>${item.Hora}</td>
-                        <td>${item.Estado}</td>
-                    `;
-                    tbodyCancelado.appendChild(tr);
-                }
-            });
-
-            const btnActivo = document.querySelector('.filtro-btn.activa');
-            const estadoActivo = btnActivo ? btnActivo.dataset.estado : "Finalizado";
-            document.getElementById('tablaFinalizado').style.display = estadoActivo === "Finalizado" ? 'table' : 'none';
-            document.getElementById('tablaCancelado').style.display = estadoActivo === "Cancelado" ? 'table' : 'none';
-        })
-        .catch(err => console.error('Error al cargar historial:', err));
-    }
+  
 
     // --- FILTRO DE TABLAS ---
     document.querySelectorAll('.filtro-btn').forEach(btn => {
@@ -208,6 +157,4 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Llamada inicial
-    cargarHistorial();
 });
