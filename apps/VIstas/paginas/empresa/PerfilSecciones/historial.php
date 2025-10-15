@@ -107,7 +107,7 @@ $serviciosCancelados  = Contrata::obtenerPorEmpresaYEstado($conn, $empresa->getI
         <form id="denunciaForm">
             <input type="hidden" name="idCliente" value="">
             <input type="hidden" name="idEmpresa" value="<?= $_SESSION['idUsuario'] ?>">
-            <input type="hidden" name="asunto" value="DenunciaCliente">
+            <input type="hidden" name="asunto" value="DenunciarCliente">
             <label for="detalle">Detalles adicionales (opcional):</label>
             <textarea id="detalle" name="detalle" rows="4" placeholder="Escribe más sobre tu denuncia..."></textarea>
             <button type="submit" class="btn-submit">Enviar denuncia</button>
