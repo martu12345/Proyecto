@@ -2,40 +2,48 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/administrador.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
 
-session_start(); // asegurarse de que la sesión está iniciada
-$idPropietario = $_SESSION['idUsuario'] ?? null; // el propietario que crea el administrador
+header('Content-Type: application/json');
 
-$email    = $_POST['email'] ?? '';
-$telefono = $_POST['telefono'] ?? '';
+session_start();
+$idPropietario = $_SESSION['idUsuario'] ?? null;
+
+$email      = trim($_POST['email'] ?? '');
+$telefono   = trim($_POST['telefono'] ?? '');
 $contrasena = $_POST['contrasena'] ?? '';
 
-// Validaciones
+// 🔹 VALIDACIONES BÁSICAS
 if (empty($email)) {
-    die("El email no puede estar vacío");
+    echo json_encode(['error' => 'El email no puede estar vacío']);
+    exit;
 }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    die("Email inválido");
+    echo json_encode(['error' => 'Email inválido']);
+    exit;
 }
 if (empty($contrasena)) {
-    die("La contraseña no puede estar vacía");
+    echo json_encode(['error' => 'La contraseña no puede estar vacía']);
+    exit;
 }
 if (strlen($contrasena) < 8) {
-    die("La contraseña debe tener al menos 8 caracteres");
+    echo json_encode(['error' => 'La contraseña debe tener al menos 8 caracteres']);
+    exit;
 }
 if (!$idPropietario) {
-    die("No se pudo identificar al propietario.");
+    echo json_encode(['error' => 'No se pudo identificar al propietario.']);
+    exit;
 }
 
-// Crear administrador usando el propietario de la sesión
-$unAdministrador = new Administrador($idPropietario, $email, $contrasena);
+// 🔹 VERIFICAR EMAIL SOLO EN USUARIO
+if (Usuario::existeEmail($conn, $email)) {
+    echo json_encode(['error' => 'El email ya está registrado']);
+    exit;
+}
 
-// Crear administrador sin IdUsuario (se genera al guardar)
-$unAdministrador = new Administrador(null, $email, $contrasena);
-
-// Guardar pasando el id del propietario desde la sesión
-if ($unAdministrador->guardarAdministrador($conn, $idPropietario, $telefono)) {
-    echo "Administrador creado correctamente!";
+// 🔹 CREAR Y GUARDAR ADMINISTRADOR
+$admin = new Administrador(null, $email, $contrasena);
+if ($admin->guardarAdministrador($conn, $idPropietario, $telefono)) {
+    echo json_encode(['success' => 'Administrador creado correctamente!']);
 } else {
-    echo "Error al guardar el administrador.";
+    echo json_encode(['error' => 'Error al guardar el administrador.']);
 }
-?>
+

@@ -12,4 +12,3 @@ if($email != ''){
 
 echo json_encode(['existe' => $existe]);
 
-?>

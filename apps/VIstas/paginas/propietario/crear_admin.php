@@ -42,6 +42,7 @@
         </div>
     </div>
 <script src="/Proyecto/public/js/propietario/crear_admin.js"></script>
+<script src="/Proyecto/public/js/validaciones/validacionRegistroAdmin.js"></script>
 
 </body>
 
