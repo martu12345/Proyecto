@@ -37,7 +37,7 @@ if ($logueado) {
         }
     } elseif ($rol === 'cliente') {
         $home_url = "/Proyecto/apps/vistas/paginas/cliente/home_cliente.php";
-        $perfil_url = "/Proyecto/apps/vistas/paginas/cliente/perfil_cliente.php";
+        $perfil_url = "/Proyecto/apps/controlador/cliente/PerfilControlador.php";
         $idCliente = $_SESSION['idUsuario'];
 
         try {

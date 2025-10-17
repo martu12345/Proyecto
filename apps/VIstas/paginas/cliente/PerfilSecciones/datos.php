@@ -25,7 +25,7 @@
         <label>Contraseña:</label>
         <span class="texto">********</span>
         <input type="password" name="contrasena" class="input-campo" placeholder="Nueva contraseña">
-            <small class="aviso-editar" style="display:none;">Dejar vacío para mantener la contraseña actual</small>
+        <small class="aviso-editar" style="display:none;">Dejar vacío para mantener la contraseña actual</small>
 
     </div>
 

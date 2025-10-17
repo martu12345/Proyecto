@@ -1,5 +1,0 @@
-=== 2025-10-14 02:51:15 ===
-Cliente: 11 | Empresa: 10 | Emisor: 11 | IdMensajePadre: 44
-Asunto: Re: Re: hola
-Contenido: hola eduar
-----------------------

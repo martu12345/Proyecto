@@ -17,8 +17,8 @@
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/frase.php'; ?>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/secciones.php'; ?>
-    <script src="/Proyecto/public/js/secciones.js"></script>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
+    <script src="/Proyecto/public/js/secciones.js"></script>
 
 </body>
 

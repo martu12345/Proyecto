@@ -17,40 +17,29 @@ class ServiciosClienteControlador
         $this->idUsuario = $idUsuario;
     }
 
-    //  PENDIENTES 
-    public function obtenerPendientes()
+    public function obtenerServicios()
     {
-        $contratas = Contrata::obtenerPorUsuarioYEstado($this->conn, $this->idUsuario, 'Pendiente');
+        return [
+            'pendientes' => $this->obtenerPorEstado('Pendiente'),
+            'enProceso' => $this->obtenerPorEstado('En proceso'),
+            'finalizados' => $this->obtenerFinalizadosConCalificacion(),
+            'rechazados' => $this->obtenerPorEstado('Cancelado')
+        ];
+    }
+
+    // Servicios por estado
+    private function obtenerPorEstado($estado)
+    {
+        $contratas = Contrata::obtenerPorUsuarioYEstado($this->conn, $this->idUsuario, $estado);
         return $this->armarArrayConNombres($contratas);
     }
 
-    //  EN PROCESO 
-    public function obtenerEnProceso()
+    // Servicios finalizados con calificación
+    private function obtenerFinalizadosConCalificacion()
     {
-        $contratas = Contrata::obtenerPorUsuarioYEstado($this->conn, $this->idUsuario, 'En proceso');
-        return $this->armarArrayConNombres($contratas);
+        return Contrata::obtenerFinalizadosConCalificacion($this->conn, $this->idUsuario);
     }
 
-    //  FINALIZADOS 
-    public function obtenerFinalizados()
-    {
-        $contratas = Contrata::obtenerPorUsuarioYEstado($this->conn, $this->idUsuario, 'Finalizado');
-        return $this->armarArrayConNombres($contratas);
-    }
-
-    //  CANCELADOS 
-    public function obtenerCancelados()
-    {
-        $contratas = Contrata::obtenerPorUsuarioYEstado($this->conn, $this->idUsuario, 'Cancelado');
-        return $this->armarArrayConNombres($contratas);
-    }
-
-    public function obtenerFinalizadosConCalificacion() {
-    return Contrata::obtenerFinalizadosConCalificacion($this->conn, $this->idUsuario);
-}
-
-
-    //  FUNCION AUXILIAR 
     private function armarArrayConNombres($contratas)
     {
         $resultado = [];
@@ -62,19 +51,15 @@ class ServiciosClienteControlador
             $estado = $c['Estado'];
 
             $servicio = Servicio::obtenerPorId($this->conn, $idServicio);
-
             $idEmpresa = Brinda::obtenerIdEmpresaPorServicio($this->conn, $idServicio);
             $empresa = $idEmpresa ? Empresa::obtenerPorId($this->conn, $idEmpresa) : null;
-
             $nombreEmpresa = $empresa ? $empresa->getNombreEmpresa() : 'Sin empresa';
 
-            //  MENSAJE DE CANCELACION 
+            // Mensaje de cancelación
             $mensajeCancelacion = null;
             if ($estado === 'Cancelado' && $empresa) {
                 $mensajeCancelacion = $this->obtenerMensajeCancelacion($this->idUsuario, $empresa->getIdUsuario(), $fecha);
             }
-
-
 
             $resultado[] = [
                 'idCita' => $idCita,
@@ -89,19 +74,17 @@ class ServiciosClienteControlador
         return $resultado;
     }
 
-    //  OBTENER MENSAJE DE CANCELACION 
+    // --- MENSAJE DE CANCELACIÓN ---
     private $mensajesUsados = [];
 
     private function obtenerMensajeCancelacion($idUsuarioCliente, $idUsuarioEmpresa, $fechaServicio)
     {
         $mensajes = Comunica::obtenerMensajesRecibidosPorEmpresa($this->conn, $idUsuarioEmpresa);
-
         $fechaServicioTs = strtotime($fechaServicio);
         $mensajeValido = null;
         $menorDiferencia = PHP_INT_MAX;
 
         foreach ($mensajes as $m) {
-
             if (in_array($m['idMensaje'], $this->mensajesUsados)) continue;
 
             if (
@@ -109,7 +92,6 @@ class ServiciosClienteControlador
                 && $m['idUsuarioCliente'] == $idUsuarioCliente
                 && $m['asunto'] === 'Rechazo de reserva'
             ) {
-
                 $mensajeFechaTs = strtotime($m['fecha']);
                 $diferencia = abs($mensajeFechaTs - $fechaServicioTs);
 
@@ -129,7 +111,7 @@ class ServiciosClienteControlador
         return 'El cliente cancelo';
     }
 
-    //  CANCELAR SERVICIO 
+    // --- CANCELAR SERVICIO ---
     public function cancelarServicio($idCita)
     {
         $cita = Contrata::obtenerPorId($this->conn, $idCita);

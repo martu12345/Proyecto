@@ -3,13 +3,11 @@ class Brinda
 {
     private $idServicio;
     private $idUsuario;
-    private $notificacion; // Nuevo atributo
 
-    public function __construct($idServicio, $idUsuario, $notificacion = null)
+    public function __construct($idServicio, $idUsuario)
     {
         $this->idServicio = $idServicio;
         $this->idUsuario = $idUsuario;
-        $this->notificacion = $notificacion; // inicializamos
     }
 
     // Getters
@@ -23,11 +21,6 @@ class Brinda
         return $this->idUsuario;
     }
 
-    public function getNotificacion()
-    {
-        return $this->notificacion;
-    }
-
     // Setters
     public function setIdServicio($idServicio)
     {
@@ -39,19 +32,13 @@ class Brinda
         $this->idUsuario = $idUsuario;
     }
 
-    public function setNotificacion($notificacion)
-    {
-        $this->notificacion = $notificacion;
-    }
-
-    // Método para guardar en la BD
     public function guardar($conn)
     {
-        $stmt = $conn->prepare("INSERT INTO Brinda (IdServicio, IdUsuario, notificacion) VALUES (?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO Brinda (IdServicio, IdUsuario) VALUES (?, ?)");
         if (!$stmt) {
             die("Error prepare Brinda: " . $conn->error);
         }
-        $stmt->bind_param("iis", $this->idServicio, $this->idUsuario, $this->notificacion);
+        $stmt->bind_param("ii", $this->idServicio, $this->idUsuario);
         $resultado = $stmt->execute();
         $stmt->close();
         return $resultado;
@@ -69,7 +56,6 @@ class Brinda
         return $fila['IdUsuario'] ?? null;
     }
 
-    // Obtener servicios de una empresa
     public static function obtenerServiciosPorEmpresa($conn, $idUsuario)
     {
         $sql = "SELECT s.*
@@ -84,17 +70,16 @@ class Brinda
 
         $servicios = [];
         while ($fila = $resultado->fetch_assoc()) {
-     $servicios[] = new Servicio(
-    $fila['IdServicio'],
-    $fila['Titulo'],
-    $fila['Categoria'],
-    $fila['Descripcion'],
-    $fila['Precio'],
-    $fila['departamento'],
-    $fila['imagen'],
-    $fila['Duracion'] // ✅ Agregado
-);
-
+            $servicios[] = new Servicio(
+                $fila['IdServicio'],
+                $fila['Titulo'],
+                $fila['Categoria'],
+                $fila['Descripcion'],
+                $fila['Precio'],
+                $fila['departamento'],
+                $fila['imagen'],
+                $fila['Duracion']
+            );
         }
         $stmt->close();
         return $servicios;

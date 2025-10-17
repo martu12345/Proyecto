@@ -1,36 +1,47 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/cliente.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/Cliente.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/Conexion.php');
 
+header('Content-Type: application/json; charset=utf-8');
 
-$email    = $_POST['email'] ?? '';
+// Datos del formulario 
+$email      = $_POST['email'] ?? '';
 $contrasena = $_POST['contrasena'] ?? '';
-$telefono = $_POST['telefono'] ?? '';
-$nombre = $_POST['nombre'] ?? '';
-$apellido = $_POST['apellido'] ?? '';
+$telefono   = $_POST['telefono'] ?? '';
+$nombre     = $_POST['nombre'] ?? '';
+$apellido   = $_POST['apellido'] ?? '';
 
-echo "Email: $email <br>";
-echo "Contraseña: $contrasena <br>";
-echo "Teléfono: $telefono <br>";
-echo "Nombre: $nombre <br>";
-echo "Apellido: $apellido <br>";
+// Validaciones
+$errores = [];
 
-// validaciones  - hay que agregarlas
 if (empty($email)) {
-    //die("El email no puede estar vacío");
-}
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-   // die("Email inválido");
+    $errores[] = "El email no puede estar vacío.";
+} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $errores[] = "Email inválido.";
+} elseif (Cliente::existeEmail($conn, $email)) {
+    $errores[] = "El email ya está registrado.";
 }
 
 if (empty($contrasena)) {
-   // die("La contraseña no puede estar vacía");
-}
-if (strlen($contrasena) < 8) {
-   // die("La contraseña debe tener al menos 8 caracteres");
+    $errores[] = "La contraseña no puede estar vacía.";
+} elseif (strlen($contrasena) < 8) {
+    $errores[] = "La contraseña debe tener al menos 8 caracteres.";
 }
 
-// crear cliente
+if (empty($nombre)) {
+    $errores[] = "El nombre no puede estar vacío.";
+}
+
+if (empty($apellido)) {
+    $errores[] = "El apellido no puede estar vacío.";
+}
+
+if (!empty($errores)) {
+    echo json_encode(['success' => false, 'errors' => $errores]);
+    exit;
+}
+
+// Crear cliente
 $unCliente = new Cliente(null, $email, $contrasena, $nombre, $apellido);
 
 if ($unCliente->guardarCliente($conn, $telefono)) {
@@ -38,5 +49,3 @@ if ($unCliente->guardarCliente($conn, $telefono)) {
 } else {
     echo "Error al guardar el Cliete.";
 }
-
-?> 

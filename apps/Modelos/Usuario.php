@@ -102,4 +102,20 @@ class Usuario
         $stmt->store_result();
         return $stmt->num_rows > 0;
     }
+
+    public function actualizarContrasena($conn, $nuevaContrasena)
+{
+    $hash = password_hash($nuevaContrasena, PASSWORD_DEFAULT);
+    $stmt = $conn->prepare("UPDATE usuario SET Contraseña = ? WHERE IdUsuario = ?");
+    if (!$stmt) die("Error prepare update contrasena: " . $conn->error);
+    $stmt->bind_param("si", $hash, $this->idUsuario);
+    $resultado = $stmt->execute();
+    $stmt->close();
+    if ($resultado) {
+        $this->contrasena = $hash;
+    }
+    return $resultado;
 }
+
+}
+
