@@ -1,18 +1,16 @@
-/* --- Reset y body --- */
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
     font-family: 'Lexend', sans-serif;
     background: linear-gradient(135deg, #ff914d, #ffb27d);
 }
 
-/* --- Contenedor principal --- */
 .agendados-container {
     margin-top: 20px;
     width: 100%;
 }
 
-/* --- Botones de filtro --- */
 .botones-filtro {
     margin-bottom: 20px;
     display: flex;
@@ -21,7 +19,7 @@ body, html {
 
 .filtro-btn {
     padding: 10px 20px;
-    border: none; /* sin borde */
+    border: none;
     cursor: pointer;
     background: #f0f0f0;
     font-weight: bold;
@@ -39,7 +37,6 @@ body, html {
     color: white;
 }
 
-/* --- Tablas --- */
 .tabla-agendados {
     display: none;
     width: 100%;
@@ -49,7 +46,8 @@ body, html {
     margin-bottom: 30px;
 }
 
-.tabla-agendados th, .tabla-agendados td {
+.tabla-agendados th,
+.tabla-agendados td {
     padding: 12px 15px;
     border: 1px solid #ddd;
     text-align: center;
@@ -66,7 +64,6 @@ body, html {
     background-color: #f5f5f5;
 }
 
-/* --- Botones dentro de la celda --- */
 .botones-acciones {
     display: flex;
     justify-content: center;
@@ -74,22 +71,24 @@ body, html {
     flex-wrap: wrap;
 }
 
-.btn-aceptar, .btn-rechazar, .btn-cancelar-tabla {
+.btn-aceptar,
+.btn-rechazar,
+.btn-cancelar-tabla {
     padding: 6px 14px;
     font-weight: bold;
     border-radius: 6px;
     cursor: pointer;
     white-space: nowrap;
-    border: none; /* sin borde */
+    border: none;
     outline: none;
     transition: all 0.2s ease;
 }
 
-/* Colores */
 .btn-aceptar {
     background-color: #ff914d;
     color: white;
 }
+
 .btn-aceptar:hover {
     background-color: #e7620f;
 }
@@ -98,21 +97,21 @@ body, html {
     background-color: #dc3545;
     color: white;
 }
+
 .btn-rechazar:hover {
     background-color: #c82333;
 }
 
-/* --- Botón cancelar en tabla --- */
 .btn-cancelar-tabla {
     background-color: #dc3545;
     color: #fff;
 }
+
 .btn-cancelar-tabla:hover {
     background-color: #b52a36;
     transform: scale(1.05);
 }
 
-/* --- Modales generales --- */
 .modal {
     display: none;
     position: fixed;
@@ -121,7 +120,7 @@ body, html {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.55);
+    background-color: rgba(0, 0, 0, 0.55);
     backdrop-filter: blur(4px);
     justify-content: center;
     align-items: center;
@@ -135,7 +134,7 @@ body, html {
     max-width: 90%;
     text-align: center;
     position: relative;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -159,21 +158,33 @@ body, html {
     color: #333;
     transition: color 0.2s ease;
 }
+
 .close:hover {
     color: #ff914d;
 }
 
-/* Animaciones */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-@keyframes scaleUp {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-/* --- Modal cancelar empresa --- */
+@keyframes scaleUp {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 #modalCancelarEmpresa .modal-content {
     padding: 25px 20px;
     text-align: center;
@@ -194,12 +205,13 @@ body, html {
 #modalCancelarEmpresa .btn-confirm {
     background-color: #28a745;
     color: white;
-    border: none; /* sin borde */
+    border: none;
     padding: 8px 18px;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
+
 #modalCancelarEmpresa .btn-confirm:hover {
     background-color: #218838;
 }
@@ -207,12 +219,13 @@ body, html {
 #modalCancelarEmpresa .btn-cancel {
     background-color: #dc3545;
     color: white;
-    border: none; /* sin borde */
+    border: none;
     padding: 8px 18px;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
+
 #modalCancelarEmpresa .btn-cancel:hover {
     background-color: #c82333;
 }
@@ -223,7 +236,6 @@ body, html {
     color: #555;
 }
 
-/* --- Modal rechazo --- */
 #modalRechazo .modal-content {
     padding: 25px 20px 40px 20px;
     text-align: left;
@@ -256,33 +268,34 @@ body, html {
     background-color: #ff914d;
     color: #fff;
     padding: 10px 20px;
-    border: none; /* sin borde */
+    border: none;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.2s ease;
 }
+
 #formRechazo button[type="submit"]:hover {
     background-color: #e7620f;
 }
 
 #btnConfirmar {
-    background-color: #ff914d; /* naranja principal */
+    background-color: #ff914d;
     color: white;
     padding: 10px 24px;
     font-weight: bold;
     font-size: 16px;
-    border: none; /* sin borde */
-    border-radius: 12px; /* redondeado */
+    border: none;
+    border-radius: 12px;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15); /* sombra sutil */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     transition: all 0.25s ease;
 }
 
 #btnConfirmar:hover {
-    background-color: #e7620f; /* naranja más oscuro al pasar el mouse */
+    background-color: #e7620f;
     transform: scale(1.05);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
 }
 
 #btnConfirmar:active {
@@ -290,7 +303,6 @@ body, html {
 }
 
 
-/* --- Fondo del modal más suave --- */
 #modalCancelarEmpresa {
     display: none;
     position: fixed;
@@ -299,14 +311,13 @@ body, html {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(6px);
     justify-content: center;
     align-items: center;
     transition: opacity 0.3s ease;
 }
 
-/* --- Contenido del modal más elegante --- */
 #modalCancelarEmpresa .modal-content {
     background: #fff;
     padding: 30px 25px;
@@ -314,13 +325,12 @@ body, html {
     max-width: 90%;
     text-align: center;
     border-radius: 12px;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* --- Botones del modal más modernos --- */
 #modalCancelarEmpresa .btn-confirm,
 #modalCancelarEmpresa .btn-cancel {
     padding: 10px 22px;
@@ -328,7 +338,7 @@ body, html {
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
-    border: none; /* sin borde */
+    border: none;
     transition: all 0.2s ease;
 }
 
@@ -336,6 +346,7 @@ body, html {
     background-color: #28a745;
     color: white;
 }
+
 #modalCancelarEmpresa .btn-confirm:hover {
     background-color: #218838;
     transform: scale(1.05);
@@ -345,12 +356,12 @@ body, html {
     background-color: #dc3545;
     color: white;
 }
+
 #modalCancelarEmpresa .btn-cancel:hover {
     background-color: #c82333;
     transform: scale(1.05);
 }
 
-/* --- Botón de tabla cancelar más llamativo --- */
 .btn-cancelar-empresa {
     background-color: #dc3545;
     color: #fff;
@@ -358,9 +369,10 @@ body, html {
     border-radius: 6px;
     font-weight: bold;
     cursor: pointer;
-    border: none; /* sin borde */
+    border: none;
     transition: all 0.2s ease;
 }
+
 .btn-cancelar-empresa:hover {
     background-color: #b52a36;
     transform: scale(1.05);
@@ -368,7 +380,9 @@ body, html {
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
-    .tabla-agendados th, .tabla-agendados td {
+
+    .tabla-agendados th,
+    .tabla-agendados td {
         padding: 8px 10px;
         font-size: 14px;
     }

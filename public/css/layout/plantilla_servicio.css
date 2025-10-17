@@ -5,16 +5,16 @@
     background-color: #ffffff;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     margin-bottom: 20px;
-    align-items: flex-start; /* para alinear al inicio y que no se baje con texto largo */
+    align-items: flex-start;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     font-family: 'Lexend', sans-serif;
 }
 
 .servicio:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .imagen-servicio {
@@ -29,25 +29,24 @@
     display: flex;
     flex: 1;
     justify-content: space-between;
-    gap: 20px; /* separa columna de texto del botón */
-    align-items: flex-start; /* evita que el botón se baje */
+    gap: 20px;
+    align-items: flex-start;
 }
 
 .texto-servicio {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    flex: 1; /* toma todo el espacio disponible */
+    flex: 1;
 }
 
 .acciones-servicio {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* siempre arriba */
-    flex-shrink: 0; /* no se achica */
+    justify-content: flex-start;
+    flex-shrink: 0;
 }
 
-/* Botón Ver más */
 .btn-ver-mas {
     display: inline-flex;
     align-items: center;
@@ -74,9 +73,8 @@
     transform: translateY(-2px);
 }
 
-/* Tipografía */
 .nombre-servicio {
-    font-size: 1.15rem; 
+    font-size: 1.15rem;
     font-weight: 600;
     margin: 0;
     color: #222;
@@ -102,7 +100,6 @@
     color: #000;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .servicio {
         flex-direction: column;

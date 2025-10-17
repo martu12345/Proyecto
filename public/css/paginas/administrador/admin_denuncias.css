@@ -1,4 +1,3 @@
-/* --- CONTENEDOR GLOBAL PARA LA PÁGINA DE DENUNCIAS --- */
 .admin-denuncias-page {
     font-family: 'Lexend', sans-serif;
     background-color: #FF914D;
@@ -11,7 +10,6 @@
     box-sizing: border-box;
 }
 
-/* Título */
 .admin-denuncias-page h1 {
     text-align: center;
     color: white;
@@ -20,7 +18,6 @@
     font-size: 32px;
 }
 
-/* Botones de filtrado */
 .admin-denuncias-page .modal-buttons {
     display: flex;
     justify-content: center;
@@ -50,7 +47,6 @@
     color: white;
 }
 
-/* Lista de denuncias */
 .admin-denuncias-page .servicios-list {
     list-style: none;
     padding: 0;
@@ -62,12 +58,11 @@
     gap: 15px;
 }
 
-/* Tarjeta de denuncia */
 .admin-denuncias-page .servicio-item {
     background-color: #fff;
     border-radius: 12px;
     padding: 20px 25px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -75,10 +70,9 @@
 
 .admin-denuncias-page .servicio-item:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Info de denuncia */
 .admin-denuncias-page .servicio-item .info {
     display: flex;
     flex-direction: column;
@@ -101,14 +95,12 @@
     color: #555;
 }
 
-/* Emails sin subrayado */
 .admin-denuncias-page .servicio-item .info .empresa .email {
     color: #222;
     text-decoration: none;
     font-weight: 500;
 }
 
-/* Mensaje si no hay denuncias */
 .admin-denuncias-page .no-denuncias {
     text-align: center;
     color: white;
@@ -116,14 +108,15 @@
     margin-top: 20px;
 }
 
-/* Responsive: tarjetas más pequeñas en móvil */
 @media (max-width: 600px) {
     .admin-denuncias-page .servicio-item {
         padding: 15px 20px;
     }
+
     .admin-denuncias-page .servicio-item .info .nombre {
         font-size: 16px;
     }
+
     .admin-denuncias-page .servicio-item .info .descripcion,
     .admin-denuncias-page .servicio-item .info .empresa {
         font-size: 12px;

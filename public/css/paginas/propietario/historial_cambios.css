@@ -1,18 +1,14 @@
+html,
+body {
 
-html, body {
-   
     box-sizing: border-box;
     font-family: 'Lexend', sans-serif;
     background-color: #FF914D;
     color: #fff;
-        box-sizing: border-box;
+    box-sizing: border-box;
 
 }
 
-
-
-
-/* Contenedor principal */
 .cambios-admin-container {
     width: 100vw;
     font-family: 'Lexend', sans-serif;
@@ -22,11 +18,10 @@ html, body {
     color: black;
     padding: 30px;
     border-radius: 10px;
-        box-sizing: border-box;
+    box-sizing: border-box;
 
 }
 
-/* Título */
 .cambios-admin-container h1 {
     text-align: center;
     font-size: 32px;
@@ -35,7 +30,6 @@ html, body {
     color: #FF914D;
 }
 
-/* Tabla */
 .tabla-cambios {
     width: 100%;
     border-collapse: collapse;
@@ -59,7 +53,7 @@ html, body {
     color: black;
 }
 
-.tabla-cambios tr:hover{
+.tabla-cambios tr:hover {
     background-color: #fda167;
     color: #FFF;
 }
@@ -71,15 +65,16 @@ html, body {
     color: #FF914D;
     font-weight: bold;
 }
-/* Hover sobre fila para servicio eliminado */
+
 .tabla-cambios tr:hover .servicio-eliminado {
-    color: #FFF; /* texto blanco al pasar el mouse */
+    color: #FFF;
 }
 
 
-/* Responsive */
 @media (max-width: 900px) {
-    .tabla-cambios th, .tabla-cambios td {
+
+    .tabla-cambios th,
+    .tabla-cambios td {
         padding: 12px;
         font-size: 14px;
     }
@@ -90,7 +85,9 @@ html, body {
         padding: 20px;
         margin: 20px auto;
     }
-    .tabla-cambios th, .tabla-cambios td {
+
+    .tabla-cambios th,
+    .tabla-cambios td {
         padding: 8px;
         font-size: 12px;
     }

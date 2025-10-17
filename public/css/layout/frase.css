@@ -1,16 +1,15 @@
-
 .frase-seccion {
-    height: 200px; 
+    height: 200px;
     display: flex;
     font-family: "Playfair-display";
-    justify-content: center; 
-    align-items: center; 
-    text-align: center; 
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     background: linear-gradient(135deg, #FF914D, #fd7019);
-    color: white; 
-    font-size: 2rem; 
+    color: white;
+    font-size: 2rem;
     font-weight: bold;
-    padding: 0 20px; 
+    padding: 0 20px;
     box-sizing: border-box;
 }
 

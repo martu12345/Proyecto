@@ -1,4 +1,3 @@
-
 .ayuda-section {
     padding: 50px 20px;
     padding-bottom: 100px;
@@ -20,7 +19,6 @@
     gap: 20px; 
     flex-wrap: wrap;
 }
-
 
 .cuadro {
     display: flex;

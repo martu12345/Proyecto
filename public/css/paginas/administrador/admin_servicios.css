@@ -1,20 +1,17 @@
-/* Fuente predeterminada */
 body {
     margin: 0;
     font-family: 'Lexend', sans-serif;
-    background-color: #FF914D; /* color principal de toda la página */
+    background-color: #FF914D;
     color: #333;
     padding: 0;
 }
 
-/* Título */
 h1 {
     text-align: center;
     color: white;
     margin-bottom: 30px;
 }
 
-/* Lista de servicios */
 .servicios-list {
     list-style: none;
     padding: 0;
@@ -27,13 +24,12 @@ h1 {
     border-radius: 8px;
     padding: 15px 20px;
     margin-bottom: 15px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Info del servicio */
 .info {
     max-width: 70%;
 }
@@ -58,7 +54,6 @@ h1 {
     color: #666;
 }
 
-/* Botones de acciones */
 .acciones button {
     background-color: #FF914D;
     color: white;
@@ -75,9 +70,8 @@ h1 {
     background-color: #e6833d;
 }
 
-/* Modal general */
 .modal {
-    display: none; /* oculto por defecto */
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -85,25 +79,23 @@ h1 {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
 }
 
-/* Contenido del modal */
 .modal-content {
-    background-color: #fff; /* modal blanco para contraste */
+    background-color: #fff;
     padding: 25px 20px;
     border-radius: 10px;
     width: 90%;
     max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     text-align: center;
     position: relative;
     color: #333;
 }
 
-/* Botón cerrar modal */
 .modal-content .close {
     position: absolute;
     right: 15px;
@@ -119,7 +111,6 @@ h1 {
     color: #e6833d;
 }
 
-/* Botones dentro del modal */
 .modal-buttons {
     display: flex;
     justify-content: center;
@@ -127,7 +118,7 @@ h1 {
 }
 
 .modal-buttons button {
-    background-color: #FF914D; /* boton con color principal */
+    background-color: #FF914D;
     color: white;
     border: none;
     border-radius: 6px;
@@ -143,14 +134,12 @@ h1 {
     color: white;
 }
 
-/* Mensaje dentro del modal */
 .mensaje-modal {
     margin-top: 15px;
     font-size: 14px;
     color: #FF914D;
 }
 
-/* Inputs y textarea del modal */
 .modal-content input,
 .modal-content textarea,
 .modal-content select {

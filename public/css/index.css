@@ -1,11 +1,10 @@
-/* Reset básico */
-body, html {
+body,
+html {
     margin: 0;
     padding: 0;
-    font-family: 'Playfair Display', serif; /* letra elegante para todo */
+    font-family: 'Playfair Display', serif;
 }
 
-/* --- Hero Section --- */
 .hero {
     height: 100vh;
     display: flex;
@@ -26,7 +25,6 @@ body, html {
     margin-bottom: 40px;
 }
 
-/* --- Botones --- */
 .hero-buttons {
     display: flex;
     gap: 25px;
@@ -41,8 +39,8 @@ body, html {
     font-size: 1.5rem;
     font-weight: 700;
     border-radius: 15px;
-    border: 2px solid rgba(255,255,255,0.9);
-    background: rgba(255,255,255,0.25);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.25);
     color: white;
     text-decoration: none;
     text-align: center;
@@ -52,11 +50,10 @@ body, html {
 }
 
 .hero-btn:hover {
-    background: rgba(255,255,255,0.45);
+    background: rgba(255, 255, 255, 0.45);
     transform: translateY(-3px);
 }
 
-/* --- Categorías --- */
 .categories {
     display: flex;
     justify-content: center;
@@ -90,18 +87,47 @@ body, html {
     color: white;
 }
 
-/* --- Responsive --- */
-@media(max-width: 768px){
-    .hero-title { font-size: 3rem; }
-    .hero-btn { padding: 15px 40px; font-size: 1.3rem; }
-    .category img { width: 50px; height: 50px; }
-    .category span { font-size: 0.9rem; }
+@media(max-width: 768px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .hero-btn {
+        padding: 15px 40px;
+        font-size: 1.3rem;
+    }
+
+    .category img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .category span {
+        font-size: 0.9rem;
+    }
 }
 
-@media(max-width: 480px){
-    .hero-title { font-size: 2rem; }
-    .hero-buttons { flex-direction: column; }
-    .hero-btn { width: 160px; padding: 12px 0; font-size: 1.1rem; }
-    .category img { width: 45px; height: 45px; }
-    .category span { font-size: 0.8rem; }
+@media(max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .hero-btn {
+        width: 160px;
+        padding: 12px 0;
+        font-size: 1.1rem;
+    }
+
+    .category img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .category span {
+        font-size: 0.8rem;
+    }
 }

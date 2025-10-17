@@ -5,7 +5,6 @@ body {
     background-color: #ff914d;
 }
 
-/* --- contenedores --- */
 .perfil-container {
     display: flex;
     justify-content: center;
@@ -35,11 +34,10 @@ body {
     box-sizing: border-box;
 }
 
-/* --- foto de perfil --- */
 .foto-circulo {
     width: 120px;
     height: 120px;
-    border-radius: 50%; /* antes era 16px */
+    border-radius: 50%;
     background-color: #ddd;
     display: flex;
     justify-content: center;
@@ -56,8 +54,8 @@ body {
 .foto-circulo img.foto-perfil {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* mejor que contain para que ocupe todo el círculo */
-    border-radius: 50%; /* antes era 16px */
+    object-fit: cover;
+    border-radius: 50%;
     background-color: #fff;
 }
 
@@ -78,7 +76,6 @@ body {
     cursor: pointer;
 }
 
-/* --- nombre y opciones --- */
 .nombre-usuario {
     font-weight: 600;
     margin-bottom: 25px;
@@ -115,7 +112,6 @@ body {
     color: #fff;
 }
 
-/* --- contadores --- */
 .contador-notificaciones-agendados,
 .contador-notificaciones-mensajes {
     display: inline-flex;
@@ -132,7 +128,6 @@ body {
     font-weight: bold;
 }
 
-/* --- perfil info --- */
 .perfil-info {
     flex: 1;
     padding: 40px;
@@ -171,7 +166,6 @@ body {
     box-sizing: border-box;
 }
 
-/* --- botones --- */
 .botones-perfil {
     margin-top: 20px;
     display: flex;
@@ -193,7 +187,7 @@ body {
 #btnGuardar,
 #btnCancelar {
     display: none;
-        border: none;
+    border: none;
 
 }
 
@@ -224,16 +218,13 @@ body {
 }
 
 .aviso-editar {
-    display: none; /* ya lo tenías oculto por defecto */
-    color: #555;   /* opcional: color más suave */
-    font-size: 0.85rem; /* tamaño pequeño */
-    margin-top: 5px;    /* separación del input */
-    display: block;     /* se mostrará cuando se edite */
+    display: none;
+    color: #555;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: block;
 }
 
-
-
-/* --- responsive --- */
 @media (max-width: 900px) and (min-width: 600px) {
     .perfil-box {
         flex-direction: column;

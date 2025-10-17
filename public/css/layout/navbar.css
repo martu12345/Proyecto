@@ -7,7 +7,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 30px; /* más espacio lateral */
+    padding: 0 30px;
     background-color: #ffffff;
     border-bottom: 1px solid #ddd;
     height: 90px;
@@ -20,21 +20,20 @@ body {
 .navbar-right {
     display: flex;
     align-items: center;
-    gap: 35px; /* más separación entre elementos sin cambiar tamaños */
+    gap: 35px;
 }
 
 .logo img {
-    height: 60px; /* tamaño original aproximado */
+    height: 60px;
     width: auto;
     object-fit: contain;
     display: block;
 }
 
-/* Departamentos: no se cambia diseño, solo respeta el original */
 .departamentos select {
-    min-width: 150px; /* ancho mínimo para que no se rompa */
-    max-width: 200px; /* opcional: que no quede gigante */
-    padding: 6px 30px 6px 10px; /* padding derecho más grande para la flecha */
+    min-width: 150px;
+    max-width: 200px;
+    padding: 6px 30px 6px 10px;
     border-radius: 5px;
     font-family: 'Lexend', sans-serif;
     background-color: #ffffff;
@@ -43,14 +42,14 @@ body {
     -webkit-appearance: none;
     -moz-appearance: none;
     border: none;
-    box-sizing: border-box; /* importante para que el padding no rompa */
+    box-sizing: border-box;
     background-image: url("../../imagen/icono/icono_flecha.png");
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 10px 6px;
     cursor: pointer;
-    overflow: hidden; /* evita que el texto se salga */
-    text-overflow: ellipsis; /* muestra "..." si es muy largo */
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 
@@ -60,7 +59,6 @@ body {
     color: #fff;
 }
 
-/* Búsqueda */
 .busqueda form {
     display: flex;
     align-items: center;
@@ -99,7 +97,6 @@ body {
     height: 20px;
 }
 
-/* Perfil */
 .perfil {
     position: relative;
 }
@@ -127,7 +124,7 @@ body {
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     flex-direction: column;
     min-width: 150px;
     z-index: 100;
@@ -151,7 +148,6 @@ body {
     visibility: visible;
 }
 
-/* Puntito rojo sobre el avatar */
 .punto-rojo {
     position: absolute;
     top: 2px;
@@ -163,7 +159,6 @@ body {
     display: inline-block;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
