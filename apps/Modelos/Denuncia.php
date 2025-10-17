@@ -1,15 +1,17 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Conexion.php');
 
-class Denuncia {
+class Denuncia
+{
     private $idDenuncia;
     private $idCliente;
     private $idEmpresa;
-    private $asunto;  
-    private $motivo;  
+    private $asunto;
+    private $motivo;
     private $fecha;
 
-    public function __construct($idCliente, $idEmpresa, $asunto, $motivo = null, $fecha = null, $idDenuncia = null) {
+    public function __construct($idCliente, $idEmpresa, $asunto, $motivo = null, $fecha = null, $idDenuncia = null)
+    {
         $this->idDenuncia = $idDenuncia;
         $this->idCliente = $idCliente;
         $this->idEmpresa = $idEmpresa;
@@ -18,25 +20,58 @@ class Denuncia {
         $this->fecha = $fecha ?? date('Y-m-d H:i:s');
     }
 
-    // 🔹 Getters
-    public function getIdDenuncia() { return $this->idDenuncia; }
-    public function getIdCliente() { return $this->idCliente; }
-    public function getIdEmpresa() { return $this->idEmpresa; }
-    public function getAsunto() { return $this->asunto; }
-    public function getMotivo() { return $this->motivo; }
-    public function getFecha() { return $this->fecha; }
+    // Getters
+    public function getIdDenuncia()
+    {
+        return $this->idDenuncia;
+    }
+    public function getIdCliente()
+    {
+        return $this->idCliente;
+    }
+    public function getIdEmpresa()
+    {
+        return $this->idEmpresa;
+    }
+    public function getAsunto()
+    {
+        return $this->asunto;
+    }
+    public function getMotivo()
+    {
+        return $this->motivo;
+    }
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
 
-    // 🔹 Setters
-    public function setIdCliente($idCliente) { $this->idCliente = $idCliente; }
-    public function setIdEmpresa($idEmpresa) { $this->idEmpresa = $idEmpresa; }
-    public function setAsunto($asunto) { $this->asunto = $asunto; }
-    public function setMotivo($motivo) { $this->motivo = $motivo; }
-    public function setFecha($fecha) { $this->fecha = $fecha; }
+    // Setters
+    public function setIdCliente($idCliente)
+    {
+        $this->idCliente = $idCliente;
+    }
+    public function setIdEmpresa($idEmpresa)
+    {
+        $this->idEmpresa = $idEmpresa;
+    }
+    public function setAsunto($asunto)
+    {
+        $this->asunto = $asunto;
+    }
+    public function setMotivo($motivo)
+    {
+        $this->motivo = $motivo;
+    }
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+    }
 
-   
-    //  Guardar denuncia en la base de datos
-    public function guardar() {
-        global $conn; 
+
+    public function guardar()
+    {
+        global $conn;
 
         $sql = "INSERT INTO denuncia (idCliente, idEmpresa, asunto, motivo, fecha)
                 VALUES (?, ?, ?, ?, ?)";
@@ -46,7 +81,8 @@ class Denuncia {
             return false;
         }
 
-        $stmt->bind_param("iisss",
+        $stmt->bind_param(
+            "iisss",
             $this->idCliente,
             $this->idEmpresa,
             $this->asunto,
@@ -60,10 +96,11 @@ class Denuncia {
         return $resultado;
     }
 
-    public static function obtenerPorAsunto($asunto) {
-    global $conn;
+    public static function obtenerPorAsunto($asunto)
+    {
+        global $conn;
 
-    $sql = "SELECT 
+        $sql = "SELECT 
                 d.*, 
                 uc.Email AS emailCliente, 
                 ue.Email AS emailEmpresa
@@ -73,32 +110,30 @@ class Denuncia {
             WHERE d.asunto = ?
             ORDER BY d.fecha DESC";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $asunto);
-    $stmt->execute();
-    $result = $stmt->get_result();
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $asunto);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    $denuncias = [];
-    while ($row = $result->fetch_assoc()) {
-        // Guardamos el objeto Denuncia como siempre
-        $denuncia = new Denuncia(
-            $row['idCliente'],
-            $row['idEmpresa'],
-            $row['asunto'],
-            $row['motivo'],
-            $row['fecha'],
-            $row['idDenuncia']
-        );
+        $denuncias = [];
+        while ($row = $result->fetch_assoc()) {
+            $denuncia = new Denuncia(
+                $row['idCliente'],
+                $row['idEmpresa'],
+                $row['asunto'],
+                $row['motivo'],
+                $row['fecha'],
+                $row['idDenuncia']
+            );
 
-        // Guardamos los emails junto al objeto en un array asociativo
-        $denuncias[] = [
-            'denuncia' => $denuncia,
-            'emailCliente' => $row['emailCliente'],
-            'emailEmpresa' => $row['emailEmpresa']
-        ];
+            $denuncias[] = [
+                'denuncia' => $denuncia,
+                'emailCliente' => $row['emailCliente'],
+                'emailEmpresa' => $row['emailEmpresa']
+            ];
+        }
+
+        $stmt->close();
+        return $denuncias;
     }
-
-    $stmt->close();
-    return $denuncias;
 }
-} 

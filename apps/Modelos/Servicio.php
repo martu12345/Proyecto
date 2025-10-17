@@ -1,5 +1,6 @@
 <?php
-class Servicio {
+class Servicio
+{
     private $idServicio;
     private $titulo;
     private $categoria;
@@ -7,7 +8,7 @@ class Servicio {
     private $precio;
     private $departamento;
     private $imagen;
-    private $duracion; 
+    private $duracion;
 
     public function __construct(
         $idServicio = null,
@@ -17,7 +18,7 @@ class Servicio {
         $precio = 0,
         $departamento = '',
         $imagen = '',
-        $duracion = 0 
+        $duracion = 0
     ) {
         $this->idServicio = $idServicio;
         $this->titulo = $titulo;
@@ -26,31 +27,79 @@ class Servicio {
         $this->precio = $precio;
         $this->departamento = $departamento;
         $this->imagen = $imagen;
-        $this->duracion = $duracion; 
+        $this->duracion = $duracion;
     }
 
     // Getters
-    public function getIdServicio() { return $this->idServicio; }
-    public function getTitulo() { return $this->titulo; }
-    public function getCategoria() { return $this->categoria; }
-    public function getDescripcion() { return $this->descripcion; }
-    public function getPrecio() { return $this->precio; }
-    public function getDepartamento() { return $this->departamento; }
-    public function getImagen() { return $this->imagen; }
-    public function getDuracion() { return $this->duracion; } 
+    public function getIdServicio()
+    {
+        return $this->idServicio;
+    }
+    public function getTitulo()
+    {
+        return $this->titulo;
+    }
+    public function getCategoria()
+    {
+        return $this->categoria;
+    }
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+    public function getPrecio()
+    {
+        return $this->precio;
+    }
+    public function getDepartamento()
+    {
+        return $this->departamento;
+    }
+    public function getImagen()
+    {
+        return $this->imagen;
+    }
+    public function getDuracion()
+    {
+        return $this->duracion;
+    }
 
     // Setters
-    public function setIdServicio($idServicio) { $this->idServicio = $idServicio; }
-    public function setTitulo($titulo) { $this->titulo = $titulo; }
-    public function setCategoria($categoria) { $this->categoria = $categoria; }
-    public function setDescripcion($descripcion) { $this->descripcion = $descripcion; }
-    public function setPrecio($precio) { $this->precio = $precio; }
-    public function setDepartamento($departamento) { $this->departamento = $departamento; }
-    public function setImagen($imagen) { $this->imagen = $imagen; }
-    public function setDuracion($duracion) { $this->duracion = $duracion; } 
+    public function setIdServicio($idServicio)
+    {
+        $this->idServicio = $idServicio;
+    }
+    public function setTitulo($titulo)
+    {
+        $this->titulo = $titulo;
+    }
+    public function setCategoria($categoria)
+    {
+        $this->categoria = $categoria;
+    }
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    }
+    public function setPrecio($precio)
+    {
+        $this->precio = $precio;
+    }
+    public function setDepartamento($departamento)
+    {
+        $this->departamento = $departamento;
+    }
+    public function setImagen($imagen)
+    {
+        $this->imagen = $imagen;
+    }
+    public function setDuracion($duracion)
+    {
+        $this->duracion = $duracion;
+    }
 
-    // Guardar en base de datos
-    public function guardar($conn) {
+    public function guardar($conn)
+    {
         $sql = "INSERT INTO Servicio (titulo, categoria, descripcion, precio, departamento, imagen, duracion) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
@@ -70,8 +119,8 @@ class Servicio {
         return $stmt->execute();
     }
 
-    // Obtener servicio por ID
-    public static function obtenerPorId($conn, $idServicio) {
+    public static function obtenerPorId($conn, $idServicio)
+    {
         $sql = "SELECT * FROM Servicio WHERE IdServicio = ?";
         $stmt = $conn->prepare($sql);
         if (!$stmt) die("Error al preparar la consulta: " . $conn->error);
@@ -96,8 +145,8 @@ class Servicio {
         return null;
     }
 
-    // Actualizar un servicio
-    public function actualizar($conn) {
+    public function actualizar($conn)
+    {
         $sql = "UPDATE servicio SET 
                     Titulo = ?, 
                     Categoria = ?, 
@@ -113,33 +162,35 @@ class Servicio {
 
         $stmt->bind_param(
             "sssdssii",
-            $this->titulo,       // string
-            $this->categoria,    // string
-            $this->descripcion,  // string
-            $this->precio,       // double
-            $this->departamento, // string
-            $this->imagen,       // string
-            $this->duracion,     // int
-            $this->idServicio    // int
+            $this->titulo,
+            $this->categoria,
+            $this->descripcion,
+            $this->precio,
+            $this->departamento,
+            $this->imagen,
+            $this->duracion,
+            $this->idServicio
         );
 
         return $stmt->execute();
     }
 
-public function eliminar($conn) {
-    $sql = "DELETE FROM Servicio WHERE IdServicio = ?";
-    $stmt = $conn->prepare($sql);
-    if (!$stmt) return false;
+    public function eliminar($conn)
+    {
+        $sql = "DELETE FROM Servicio WHERE IdServicio = ?";
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) return false;
 
-    $stmt->bind_param("i", $this->idServicio);
-    return $stmt->execute();
-}
+        $stmt->bind_param("i", $this->idServicio);
+        return $stmt->execute();
+    }
 
 
 
-    
-    public static function buscarServicios($conn, $q = '', $departamento = '', $estrellas = 0) {
-        $categorias = ['Hogar','Autos','Belleza','Cuidado de niños','Digital','Cocina','Salud','Mascotas','Eventos','Educación','Transporte','Arte y Cultura'];
+
+    public static function buscarServicios($conn, $q = '', $departamento = '', $estrellas = 0)
+    {
+        $categorias = ['Hogar', 'Autos', 'Belleza', 'Cuidado de niños', 'Digital', 'Cocina', 'Salud', 'Mascotas', 'Eventos', 'Educación', 'Transporte', 'Arte y Cultura'];
 
         $where = [];
 
@@ -194,7 +245,4 @@ public function eliminar($conn) {
 
         return $result->num_rows > 0 ? $result->fetch_all(MYSQLI_ASSOC) : [];
     }
-
-
 }
-?>

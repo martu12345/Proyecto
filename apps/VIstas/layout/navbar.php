@@ -1,13 +1,13 @@
 <?php 
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
-require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Controlador/NavbarControlador.php'); // Para departamentos y búsqueda
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Controlador/NavbarControlador.php'); 
 
 $departamento_seleccionado = $_SESSION['departamento_seleccionado'] ?? '';
 $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
 ?>
 
 <nav class="navbar">
-    <!-- IZQUIERDA: LOGO + DEPARTAMENTOS -->
+    <!-- Logo y departamentos -->
     <div class="navbar-left">
         <!-- Logo -->
         <div class="logo">
@@ -16,7 +16,7 @@ $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
             </a>
         </div>
 
-        <!-- Mostrar departamentos solo si NO es admin ni propietario -->
+        <!-- Mostrar departamentos si NO es admin ni propietario -->
         <?php if ($rol !== 'admin' && $rol !== 'propietario'): ?>
         <div class="departamentos">
             <form id="form-departamento" action="/Proyecto/apps/controlador/servicio/BuscarControlador.php" method="POST">
@@ -42,7 +42,7 @@ $ultima_busqueda = $_SESSION['ultima_busqueda'] ?? '';
         <?php endif; ?>
     </div>
 
-    <!-- DERECHA: BUSCADOR + PERFIL -->
+    <!-- Buscador y perfil -->
     <div class="navbar-right">
         <!-- Mostrar buscador solo si NO es admin ni propietario -->
         <?php if ($rol !== 'admin' && $rol !== 'propietario'): ?>

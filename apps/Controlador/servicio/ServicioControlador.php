@@ -1,30 +1,30 @@
 <?php
-session_start(); // asegurar sesión
+session_start();
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/servicio.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/brinda.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
 
-$idUsuario = $_SESSION['idUsuario'] ?? null; // empresa logueada
+$idUsuario = $_SESSION['idUsuario'] ?? null;
 if (!$idUsuario) {
     die("No logueado");
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // Recibir datos del formulario
-    $idServicio = $_POST['idServicio'] ?? null; 
+    // Datos del formulario
+    $idServicio = $_POST['idServicio'] ?? null;
     $titulo = $_POST['titulo'] ?? '';
     $categoria = $_POST['categoria'] ?? '';
     $descripcion = $_POST['descripcion'] ?? '';
     $precio = $_POST['precio'] ?? 0;
     $departamento = $_POST['departamento'] ?? null;
-    $duracion = $_POST['duracion'] ?? 0; 
+    $duracion = $_POST['duracion'] ?? 0;
 
     if (!$departamento) {
         die(json_encode(['success' => false, 'mensaje' => 'Debe seleccionar un departamento']));
     }
 
-    // Procesar imagen
+    // Imagen
     $imagenNombre = '';
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         $carpetaDestino = $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/public/imagen/servicios/';
@@ -37,28 +37,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die("Error al mover la imagen");
         }
     } elseif ($idServicio) {
-        // Editando, mantener imagen existente si no suben nueva
+        // Mantiene la imagen  si no suben una nueva
         $servicioExistente = Servicio::obtenerPorId($conn, $idServicio);
         $imagenNombre = $servicioExistente ? $servicioExistente->getImagen() : '';
     }
 
-    // Crear objeto Servicio (sin disponibilidad)
     $servicio = new Servicio(
-        $idServicio, 
+        $idServicio,
         $titulo,
         $categoria,
         $descripcion,
         $precio,
         $departamento,
         $imagenNombre,
-        $duracion 
+        $duracion
     );
 
-    // Guardar o actualizar
     if ($idServicio) {
         // EDITAR
         if ($servicio->actualizar($conn)) {
-            header('Location: /Proyecto/apps/vistas/paginas/empresa/perfil_empresa.php?seccion=servicios'); 
+            header('Location: /Proyecto/apps/vistas/paginas/empresa/perfil_empresa.php?seccion=servicios');
             exit;
         } else {
             die("Error al actualizar el servicio");
@@ -68,15 +66,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($servicio->guardar($conn)) {
             $idServicioCreado = $conn->insert_id;
 
-            // Crear relación Brinda
             $brinda = new Brinda($idServicioCreado, $idUsuario);
             if (!$brinda->guardar($conn)) die("Error al guardar la relación Brinda");
 
-            header('Location: /Proyecto/apps/vistas/paginas/empresa/home_empresa.php'); 
+            header('Location: /Proyecto/apps/vistas/paginas/empresa/home_empresa.php');
             exit;
         } else {
             die("Error al guardar el servicio");
         }
     }
 }
-?>

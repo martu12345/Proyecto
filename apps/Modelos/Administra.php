@@ -15,13 +15,25 @@ class Administra
     }
 
     // Getters
-    public function getIdAdministra() { return $this->idAdministra; }
-    public function getIdServicio() { return $this->idServicio; }
-    public function getIdUsuario() { return $this->idUsuario; }
-    public function getFecha() { return $this->fecha; }
+    public function getIdAdministra()
+    {
+        return $this->idAdministra;
+    }
+    public function getIdServicio()
+    {
+        return $this->idServicio;
+    }
+    public function getIdUsuario()
+    {
+        return $this->idUsuario;
+    }
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
 
-    // Guardar en BD
-    public function guardar($conn) {
+    public function guardar($conn)
+    {
         $sql = "INSERT INTO administra (idUsuario, idServicio, fecha) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         if (!$stmt) die("Error prepare Administra: " . $conn->error);
@@ -30,9 +42,9 @@ class Administra
         $this->idAdministra = $conn->insert_id;
         return true;
     }
-public static function obtenerTodos($conn)
-{
-    $sql = "SELECT 
+    public static function obtenerTodos($conn)
+    {
+        $sql = "SELECT 
                 a.idAdministra, 
                 u.IdUsuario, 
                 u.email, 
@@ -43,27 +55,24 @@ public static function obtenerTodos($conn)
             LEFT JOIN Servicio s ON a.idServicio = s.IdServicio
             ORDER BY a.fecha DESC";
 
-    $result = $conn->query($sql);
+        $result = $conn->query($sql);
 
-    if (!$result) {
-        die("Error en consulta Administra: " . $conn->error);
+        if (!$result) {
+            die("Error en consulta Administra: " . $conn->error);
+        }
+
+        $cambios = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $cambios[] = [
+                'idAdministra' => $row['idAdministra'],
+                'idUsuario' => $row['IdUsuario'],
+                'email' => $row['email'],
+                'servicio' => $row['servicio'],
+                'fecha' => $row['fecha']
+            ];
+        }
+
+        return $cambios;
     }
-
-    $cambios = [];
-
-    while ($row = $result->fetch_assoc()) {
-        $cambios[] = [
-            'idAdministra' => $row['idAdministra'],
-            'idUsuario' => $row['IdUsuario'],
-            'email' => $row['email'],  // email del admin
-            'servicio' => $row['servicio'],
-            'fecha' => $row['fecha']
-        ];
-    }
-
-    return $cambios;
 }
-
-} 
-
-?>

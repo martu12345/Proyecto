@@ -1,16 +1,20 @@
 <?php
+session_start();
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Conexion.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Servicio.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Brinda.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Empresa.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Contrata.php');
 
-// Iniciar variables
 $idServicio = null;
 $servicio = null;
 $empresa = null;
 $resenas = [];
 $mensajeError = null;
+
+$logueado = isset($_SESSION['idUsuario']);
+$rol = $logueado ? $_SESSION['rol'] : null;
+$usuario_id = $_SESSION['idUsuario'] ?? null;
 
 // Obtener idServicio desde GET
 $idRaw = $_GET['idServicio'] ?? null;
@@ -23,31 +27,27 @@ if (!$idRaw) {
     if ($idServicio <= 0) {
         $mensajeError = "Id de servicio inválido.";
     } else {
-        // Obtener servicio
         $servicio = Servicio::obtenerPorId($conn, $idServicio);
 
         if (!$servicio) {
             $mensajeError = "No se encontró el servicio con Id {$idServicio}.";
         } else {
-            // Obtener idEmpresa asociado al servicio
+            // Empresa que brinda el servicio
             $idEmpresa = Brinda::obtenerIdEmpresaPorServicio($conn, $idServicio);
-
-            if (!$idEmpresa) {
-                // Si Brinda no devuelve nada, intentar obtener directamente del servicio (si existe el método)
-                if (method_exists($servicio, 'getIdEmpresa')) {
-                    $idEmpresa = $servicio->getIdEmpresa();
-                }
-            }
-
-            // Cargar empresa si existe idEmpresa
             $empresa = $idEmpresa ? Empresa::obtenerPorId($conn, $idEmpresa) : null;
 
-            // Obtener reseñas del servicio
+            // Reseñas del servicio
             $resenas = Contrata::obtenerResenasPorServicio($conn, $idServicio);
+
+            $imagen = $servicio->getImagen();
+            $rutaImagenFinal = (!empty($imagen) && file_exists($_SERVER['DOCUMENT_ROOT'] . "/Proyecto/public/imagen/servicios/$imagen"))
+                                ? "/Proyecto/public/imagen/servicios/$imagen"
+                                : "/Proyecto/public/imagen/servicios/default.png"; 
+
+            $precioFormateado = number_format($servicio->getPrecio(), 0, '', '.');
         }
     }
 }
 
-// Cargar la vista
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/servicio/DetallesServicio.php');
 exit;

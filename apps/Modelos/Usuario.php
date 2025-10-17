@@ -1,7 +1,7 @@
 <?php
 class Usuario
 {
-    protected $idUsuario; // pk
+    protected $idUsuario;
     private $email;
     private $contrasena;
 
@@ -9,12 +9,11 @@ class Usuario
     {
         $this->idUsuario = $idUsuario;
         $this->email = $email;
-    if ($contrasena !== null) {
-        $this->contrasena = password_hash($contrasena, PASSWORD_BCRYPT);
-    } else {
-        $this->contrasena = null;
-    }
-
+        if ($contrasena !== null) {
+            $this->contrasena = password_hash($contrasena, PASSWORD_BCRYPT);
+        } else {
+            $this->contrasena = null;
+        }
     }
 
     // getters
@@ -46,7 +45,6 @@ class Usuario
         $this->contrasena = password_hash($contrasena, PASSWORD_DEFAULT);
     }
 
-    // verificación de contraseña
     public function verificarContrasena($contrasenaIngresada)
     {
         return password_verify($contrasenaIngresada, $this->contrasena);
@@ -59,15 +57,12 @@ class Usuario
             die("Error prepare usuarios: " . $conn->error);
         }
 
-        // Asignar parámetros
         $stmt->bind_param("ss", $this->email, $this->contrasena);
 
-        // Ejecutar y verificar
         if (!$stmt->execute()) {
             die("Error execute usuarios: " . $stmt->error);
         }
 
-        // Guardar el id generado automáticamente
         $this->idUsuario = $conn->insert_id;
 
         $stmt->close();
@@ -75,7 +70,6 @@ class Usuario
     }
 
 
-    // buscar usuario por email
     public static function buscarPorEmail($conn, $email)
     {
         $stmt = $conn->prepare("SELECT * FROM usuario WHERE email = ?");
@@ -89,13 +83,14 @@ class Usuario
                 $resultado['email'],
                 $resultado['contraseña']
             );
-            $usuario->contrasena = $resultado['contraseña']; // mantener hash
+            $usuario->contrasena = $resultado['contraseña'];
             return $usuario;
         }
         return null;
     }
 
-    public static function existeEmail($conn, $email) {
+    public static function existeEmail($conn, $email)
+    {
         $stmt = $conn->prepare("SELECT IdUsuario FROM usuario WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -104,18 +99,16 @@ class Usuario
     }
 
     public function actualizarContrasena($conn, $nuevaContrasena)
-{
-    $hash = password_hash($nuevaContrasena, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("UPDATE usuario SET Contraseña = ? WHERE IdUsuario = ?");
-    if (!$stmt) die("Error prepare update contrasena: " . $conn->error);
-    $stmt->bind_param("si", $hash, $this->idUsuario);
-    $resultado = $stmt->execute();
-    $stmt->close();
-    if ($resultado) {
-        $this->contrasena = $hash;
+    {
+        $hash = password_hash($nuevaContrasena, PASSWORD_DEFAULT);
+        $stmt = $conn->prepare("UPDATE usuario SET Contraseña = ? WHERE IdUsuario = ?");
+        if (!$stmt) die("Error prepare update contrasena: " . $conn->error);
+        $stmt->bind_param("si", $hash, $this->idUsuario);
+        $resultado = $stmt->execute();
+        $stmt->close();
+        if ($resultado) {
+            $this->contrasena = $hash;
+        }
+        return $resultado;
     }
-    return $resultado;
 }
-
-}
-

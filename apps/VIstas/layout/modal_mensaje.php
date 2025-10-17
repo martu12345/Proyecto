@@ -12,7 +12,7 @@
             <label for="contenido">Mensaje</label>
             <textarea id="contenido" name="contenido" rows="4" placeholder="Escribe tu mensaje..." required></textarea>
 <div id="mensajeExito" style="display:none; color:green; margin-top:10px;">
-        ✅ Mensaje enviado correctamente
+        Mensaje enviado correctamente
     </div>
 
             <div class="boton-contenedor">

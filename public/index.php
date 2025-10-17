@@ -14,7 +14,6 @@
 <body>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-title">Porque siempre hay algo que arreglar</div>
 

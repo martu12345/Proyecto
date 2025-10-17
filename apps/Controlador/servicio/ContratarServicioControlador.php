@@ -8,7 +8,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Contrata.php');
 
 $idUsuario = $_SESSION['idUsuario'] ?? null;
 
-// AGENDAR SERVICIO
+//  Agendar un servicio 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idServicio = $_POST['idServicio'] ?? null;
     $dia = $_POST['dia'] ?? null;
@@ -16,23 +16,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($idUsuario && $idServicio && $dia && $hora) {
         $servicio = Servicio::obtenerPorId($conn, $idServicio);
+
         if ($servicio) {
-
             $duracion = $servicio->getDuracion();
-            error_log("DEBUG: intentando agendar $dia $hora, duración $duracion");
-
 
             if (Contrata::estaDisponible($conn, $idServicio, $dia, $hora, $duracion)) {
                 $cita = new Contrata(
-                    $idUsuario,   // idUsuario
-                    $idServicio,  // idServicio
-                    null,         // idCita (nueva)
-                    $dia,         // fecha
-                    $hora,        // hora
+                    $idUsuario,
+                    $idServicio,
+                    null,         // idCita - se incrementa solo 
+                    $dia,
+                    $hora,
                     null,         // calificacion
                     null,         // resena
-                    null,         // estado (opcional, usa el valor por defecto 'Pendiente')
-                    'no_leido'    // notificacion
+                    null,         // estado - Pendiente por defecto
+                    'no_leido'
                 );
 
                 if ($cita->guardar($conn)) {
@@ -41,24 +39,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'dia' => $dia,
                         'hora' => $hora
                     ];
-                    header("Location: /Proyecto/apps/vistas/paginas/servicio/ConfirmacionServicio.php");
+                    header("Location: /Proyecto/apps/controlador/servicio/ConfirmarServicioControlador.php");
                     exit();
                 }
             } else {
-                $_SESSION['errorHora'] = "⚠️ No se puede agendar: el horario choca con otra cita.";
+                $_SESSION['errorHora'] = " No se puede agendar: el horario choca con otra cita.";
             }
         }
     }
 }
 
-
-// Obtener datos del servicio
+//  Datos del servicio
 $servicio = Servicio::obtenerPorId($conn, $_GET['idServicio'] ?? null);
 if (!$servicio) die("Servicio no encontrado.");
 
-// Obtener empresa que brinda el servicio
+// Empresa que brinda el servicio
 $idEmpresa = Brinda::obtenerIdEmpresaPorServicio($conn, $servicio->getIdServicio());
 $empresa = null;
+
 if ($idEmpresa) {
     $stmt = $conn->prepare("SELECT * FROM Empresa WHERE IdUsuario = ?");
     $stmt->bind_param("i", $idEmpresa);
@@ -67,7 +65,6 @@ if ($idEmpresa) {
     $stmt->close();
 }
 
-// Meses para el calendario
 $meses = [
     1 => 'Enero',
     2 => 'Febrero',
@@ -83,7 +80,7 @@ $meses = [
     12 => 'Diciembre'
 ];
 
-// Obtener todas las citas del servicio
+// Citas ocupadas
 $citasOcupadas = Contrata::obtenerCitasPorServicio($conn, $servicio->getIdServicio());
 $duracion = $servicio->getDuracion(); // en horas
 

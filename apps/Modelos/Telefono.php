@@ -6,7 +6,7 @@ class Telefono
 
     public function __construct($idUsuario, $telefono)
     {
-        $this->idUsuario = $idUsuario; // acá solo guardamos el valor
+        $this->idUsuario = $idUsuario;
         $this->telefono = $telefono;
     }
 
@@ -30,7 +30,6 @@ class Telefono
         $this->telefono = $telefono;
     }
 
-    // Inserta un teléfono en la base de datos
     public static function insertarTelefono($conn, $idUsuario, $telefono)
     {
         $stmt = $conn->prepare("INSERT INTO telefono (IdUsuario, telefono) VALUES (?, ?)");
@@ -42,7 +41,6 @@ class Telefono
         return true;
     }
 
-    // Nuevo método: obtiene todos los teléfonos de un usuario
     public static function obtenerPorUsuario($conn, $idUsuario)
     {
         $stmt = $conn->prepare("SELECT telefono FROM telefono WHERE IdUsuario = ?");
@@ -55,16 +53,17 @@ class Telefono
             $telefonos[] = $fila['telefono'];
         }
         $stmt->close();
-        return $telefonos; // array de strings con los teléfonos
+        return $telefonos;
     }
-    public static function actualizarTelefono($conn, $idUsuario, $telefono) {
-    $stmt = $conn->prepare("DELETE FROM telefono WHERE IdUsuario = ?");
-    $stmt->bind_param("i", $idUsuario);
-    $stmt->execute();
-    $stmt->close();
+    public static function actualizarTelefono($conn, $idUsuario, $telefono)
+    {
+        $stmt = $conn->prepare("DELETE FROM telefono WHERE IdUsuario = ?");
+        $stmt->bind_param("i", $idUsuario);
+        $stmt->execute();
+        $stmt->close();
 
-    if ($telefono) {
-        self::insertarTelefono($conn, $idUsuario, $telefono);
+        if ($telefono) {
+            self::insertarTelefono($conn, $idUsuario, $telefono);
+        }
     }
-}
 }

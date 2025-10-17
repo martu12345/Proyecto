@@ -1,6 +1,6 @@
 <footer class="footer">
     <div class="footer-content">
-        
+
         <div class="bandera-bloque">
             <img src="/Proyecto/public/imagen/icono/icono_bandera.png" class="bandera">
             <span>Uruguay</span>

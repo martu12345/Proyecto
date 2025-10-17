@@ -1,4 +1,4 @@
-<?php 
+<?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 header('Content-Type: application/json');
 
@@ -7,7 +7,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Servicio.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Administra.php');
 
 
-// Obtener rol e ID de usuario
+// Obtener rol e ID del usuario
 $rol = $_SESSION['rol'] ?? '';
 $idUsuario = $_SESSION['idUsuario'] ?? null;
 
@@ -29,10 +29,9 @@ if (!$servicio) {
     exit;
 }
 
-// Validar permisos
+// Solo puede eliminar si es de su empresa o si es admin
 if ($rol === 'empresa') {
-    // Solo puede eliminar si es de su empresa
-    require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/modelos/Brinda.php');
+    require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Brinda.php');
     $misServicios = Brinda::obtenerServiciosPorEmpresa($conn, $idUsuario);
     $misIds = array_map(fn($s) => $s->getIdServicio(), $misServicios);
 
@@ -54,7 +53,6 @@ if ($rol === 'admin') {
     }
 }
 
-// Intentar eliminar
 if ($servicio->eliminar($conn)) {
     echo json_encode(['success' => true]);
 } else {

@@ -7,7 +7,7 @@ class Empresa extends Usuario
     private $nombreEmpresa;
     private $calle;
     private $numero;
-    private $imagen; // atributo para la foto
+    private $imagen;
 
     public function __construct($idUsuario, $email, $contrasena, $telefono, $nombreEmpresa, $calle, $numero, $imagen = null)
     {
@@ -35,7 +35,7 @@ class Empresa extends Usuario
     {
         return $this->imagen;
     }
-    
+
 
     public function setNombreEmpresa($nombreEmpresa)
     {
@@ -88,7 +88,6 @@ WHERE e.IdUsuario = ?
     }
 
 
-    // Actualiza los datos de la empresa (incluyendo imagen)
     public function actualizarEmpresa($conn)
     {
         $sql = "UPDATE empresa SET NombreEmpresa = ?, Calle = ?, Numero = ?, Imagen = ? WHERE IdUsuario = ?";
@@ -107,7 +106,6 @@ WHERE e.IdUsuario = ?
         return $stmt->execute();
     }
 
-    //guardar empresa en la base y telefono 
     public function guardarEmpresa($conn, $telefono = null)
     {
         if (parent::guardar($conn)) {
@@ -121,55 +119,52 @@ WHERE e.IdUsuario = ?
             return false;
         }
     }
-    // Obtener todas las empresas
-public static function obtenerTodos($conn) {
-    $sql = "SELECT u.IdUsuario, u.Email, e.NombreEmpresa, e.Calle, e.Numero, e.Imagen
+
+
+    public static function obtenerTodos($conn)
+    {
+        $sql = "SELECT u.IdUsuario, u.Email, e.NombreEmpresa, e.Calle, e.Numero, e.Imagen
             FROM empresa e
             JOIN usuario u ON e.IdUsuario = u.IdUsuario";
-    $res = $conn->query($sql);
-    $empresas = [];
-    while ($row = $res->fetch_assoc()) {
-        // instanciamos Empresa sin pasar password
-        $empresa = new Empresa(
-            $row['IdUsuario'],
-            $row['Email'],
-            '',  // pasamos string vacío en vez de null
-            null,
-            $row['NombreEmpresa'],
-            $row['Calle'],
-            $row['Numero'],
-            $row['Imagen']
-        );
-        $empresas[] = $empresa;
+        $res = $conn->query($sql);
+        $empresas = [];
+        while ($row = $res->fetch_assoc()) {
+            $empresa = new Empresa(
+                $row['IdUsuario'],
+                $row['Email'],
+                '',
+                null,
+                $row['NombreEmpresa'],
+                $row['Calle'],
+                $row['Numero'],
+                $row['Imagen']
+            );
+            $empresas[] = $empresa;
+        }
+        return $empresas;
     }
-    return $empresas;
-}
 
 
-// Obtener todos los teléfonos de la empresa
-public function obtenerTelefonos($conn) {
-    return Telefono::obtenerPorUsuario($conn, $this->idUsuario); 
-    // Telefono::obtenerPorUsuario debe devolver un array de strings
-}
+    public function obtenerTelefonos($conn)
+    {
+        return Telefono::obtenerPorUsuario($conn, $this->idUsuario);
+    }
 
 
 
-      // Método para eliminar empresa + usuario + teléfonos
-    public static function eliminarPorId($conn, $idEmpresa) {
+    public static function eliminarPorId($conn, $idEmpresa)
+    {
         try {
-            // Primero eliminar teléfonos asociados
             $stmtTel = $conn->prepare("DELETE FROM telefono WHERE IdUsuario = ?");
             $stmtTel->bind_param("i", $idEmpresa);
             $stmtTel->execute();
             $stmtTel->close();
 
-            // Luego eliminar de la tabla empresa
             $stmtEmp = $conn->prepare("DELETE FROM empresa WHERE IdUsuario = ?");
             $stmtEmp->bind_param("i", $idEmpresa);
             $stmtEmp->execute();
             $stmtEmp->close();
 
-            // Por último, eliminar de la tabla usuario
             $stmtUsu = $conn->prepare("DELETE FROM usuario WHERE IdUsuario = ?");
             $stmtUsu->bind_param("i", $idEmpresa);
             $stmtUsu->execute();
@@ -183,34 +178,32 @@ public function obtenerTelefonos($conn) {
     }
 
 
-// Método para actualizar empresa (nombre, email y teléfono)
-public function actualizarDatosEmpresa($conn, $telefono = null) {
-    try {
-        // Actualizar email en tabla usuario
-        $stmt1 = $conn->prepare("UPDATE usuario SET Email = ? WHERE IdUsuario = ?");
-        $email = $this->getEmail();
-        $stmt1->bind_param("si", $email, $this->idUsuario);
-        $stmt1->execute();
-        $stmt1->close();
+    public function actualizarDatosEmpresa($conn, $telefono = null)
+    {
+        try {
+            // Actualizar email 
+            $stmt1 = $conn->prepare("UPDATE usuario SET Email = ? WHERE IdUsuario = ?");
+            $email = $this->getEmail();
+            $stmt1->bind_param("si", $email, $this->idUsuario);
+            $stmt1->execute();
+            $stmt1->close();
 
-        // Actualizar nombre en tabla empresa
-        $stmt2 = $conn->prepare("UPDATE empresa SET NombreEmpresa = ? WHERE IdUsuario = ?");
-        $stmt2->bind_param("si", $this->nombreEmpresa, $this->idUsuario);
-        $stmt2->execute();
-        $stmt2->close();
+            // Actualizar nombre 
+            $stmt2 = $conn->prepare("UPDATE empresa SET NombreEmpresa = ? WHERE IdUsuario = ?");
+            $stmt2->bind_param("si", $this->nombreEmpresa, $this->idUsuario);
+            $stmt2->execute();
+            $stmt2->close();
 
-        // Actualizar teléfono si se pasó
-        if ($telefono !== null) {
-            require_once('Telefono.php');
-            Telefono::actualizarTelefono($conn, $this->idUsuario, $telefono);
+            // Actualizar teléfono 
+            if ($telefono !== null) {
+                require_once('Telefono.php');
+                Telefono::actualizarTelefono($conn, $this->idUsuario, $telefono);
+            }
+
+            return true;
+        } catch (Exception $e) {
+            error_log("Error al actualizar empresa: " . $e->getMessage());
+            return false;
         }
-
-        return true;
-    } catch (Exception $e) {
-        error_log("Error al actualizar empresa: " . $e->getMessage());
-        return false;
     }
-}
-
-
 }
