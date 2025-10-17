@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +10,14 @@
     <link rel="stylesheet" href="/Proyecto/public/css/layout/footer.css">
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/login.css">
 </head>
+
 <body>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
     <div class="login-background">
-        <div class="login-box" >
+        <div class="login-box">
             <h2>Inicio de sesión</h2>
-            <form action="../../Controlador/LoginControlador.php" method="POST" id="formulario-login"> 
+            <form action="../../Controlador/LoginControlador.php" method="POST" id="formulario-login">
 
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Tu email" required>
@@ -27,7 +29,7 @@
                     <button type="submit">Iniciar sesión</button>
                     <button type="button" onclick="window.location.href='registro.php'"> Registrarse</button>
                     <button type="button" onclick="window.location.href='/Proyecto/public/index.php'">Cancelar</button>
-                        <div id="mensaje-error" style="color:red; margin-top:10px;"></div>
+                    <div id="mensaje-error" style="color:red; margin-top:10px;"></div>
 
                 </div>
             </form>
@@ -38,4 +40,5 @@
     <script src="/Proyecto/public/js/validaciones/validacionLogin.js"></script>
 
 </body>
+
 </html>

@@ -7,7 +7,7 @@
     <title>Manitas - Dar de baja Administrador</title>
     <link rel="stylesheet" href="/Proyecto/public/css/fonts.css">
     <link rel="stylesheet" href="/Proyecto/public/css/paginas/registro.css">
-        <link rel="stylesheet" href="/Proyecto/public/css/layout/navbar.css">
+    <link rel="stylesheet" href="/Proyecto/public/css/layout/navbar.css">
 
 </head>
 
@@ -33,9 +33,7 @@
         </div>
     </div>
 
-    <!-- Vinculás el script externo -->
     <script src="/Proyecto/public/js/propietario/dar_baja_admin.js"></script>
 </body>
 
 </html>
-

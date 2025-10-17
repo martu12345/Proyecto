@@ -23,7 +23,7 @@
 
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="admin@manitas.com" required>
-                
+
                 <label for="telefono">Teléfono</label>
                 <input type="tel" id="telefono" name="telefono" placeholder="099123456" pattern="[0-9]{9}" title="Ingrese un número uruguayo de 9 dígitos" maxlength="9" required>
 
@@ -41,8 +41,8 @@
             </form>
         </div>
     </div>
-<script src="/Proyecto/public/js/propietario/crear_admin.js"></script>
-<script src="/Proyecto/public/js/validaciones/validacionRegistroAdmin.js"></script>
+    <script src="/Proyecto/public/js/propietario/crear_admin.js"></script>
+    <script src="/Proyecto/public/js/validaciones/validacionRegistroAdmin.js"></script>
 
 </body>
 

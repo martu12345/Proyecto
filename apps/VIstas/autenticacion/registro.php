@@ -48,7 +48,7 @@
                     <button type="submit">Registrarse</button>
                     <button type="button" onclick="window.location.href='login.php'">Iniciar sesión</button>
                     <button type="button" onclick="window.location.href='/Proyecto/public/index.php'">Cancelar</button>
-                        <div id="mensaje-error-cliente" style="color:red; margin-top:10px;"></div>
+                    <div id="mensaje-error-cliente" style="color:red; margin-top:10px;"></div>
 
                 </div>
             </form>
@@ -81,10 +81,10 @@
                     <button type="submit" id>Registrarse</button>
                     <button type="button" onclick="window.location.href='login.php'">Iniciar sesión</button>
                     <button type="button" onclick="window.location.href='/Proyecto/public/index.php'">Cancelar</button>
-                            <div id="mensaje-error-empresa" style="color:red; margin-top:10px;"></div>
+                    <div id="mensaje-error-empresa" style="color:red; margin-top:10px;"></div>
 
                 </div>
-            </form> 
+            </form>
         </div>
 
     </div>
@@ -92,7 +92,7 @@
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/footer.php'; ?>
     <script src="/Proyecto/public/js/mostrar_formulario.js"></script>
 
-    <script src="/Proyecto/public/js/validaciones/ValidacionRegistro.js"></script> 
+    <script src="/Proyecto/public/js/validaciones/ValidacionRegistro.js"></script>
 
 </body>
 

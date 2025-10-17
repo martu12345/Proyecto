@@ -28,7 +28,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Controlador/administrador
                 <?php if (!empty($cambios)): ?>
                     <?php foreach ($cambios as $cambio): ?>
                         <?php
-                            // Si no tiene servicio, significa que se eliminó
+                            // Si no tiene servicio, se eliminó
                             $servicio = !empty($cambio['servicio'])
                                 ? htmlspecialchars($cambio['servicio'])
                                 : '<span class="servicio-eliminado">Fue eliminado</span>';
