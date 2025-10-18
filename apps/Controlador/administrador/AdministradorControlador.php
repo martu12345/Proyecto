@@ -11,7 +11,6 @@ $email      = trim($_POST['email'] ?? '');
 $telefono   = trim($_POST['telefono'] ?? '');
 $contrasena = $_POST['contrasena'] ?? '';
 
-// 🔹 VALIDACIONES BÁSICAS
 if (empty($email)) {
     echo json_encode(['error' => 'El email no puede estar vacío']);
     exit;
@@ -33,13 +32,11 @@ if (!$idPropietario) {
     exit;
 }
 
-// 🔹 VERIFICAR EMAIL SOLO EN USUARIO
 if (Usuario::existeEmail($conn, $email)) {
     echo json_encode(['error' => 'El email ya está registrado']);
     exit;
 }
 
-// 🔹 CREAR Y GUARDAR ADMINISTRADOR
 $admin = new Administrador(null, $email, $contrasena);
 if ($admin->guardarAdministrador($conn, $idPropietario, $telefono)) {
     echo json_encode(['success' => 'Administrador creado correctamente!']);

@@ -12,4 +12,4 @@ class AdminDenunciaController {
 
 // Crear instancia y obtener denuncias
 $adminController = new AdminDenunciaController();
-$denuncias = $adminController->denuncias; // Esto se pasa a la vista
+$denuncias = $adminController->denuncias; 

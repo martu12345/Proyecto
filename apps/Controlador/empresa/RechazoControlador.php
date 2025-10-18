@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cita->getIdUsuario(), 
         $idEmpresa,
         null,
-        'Rechazo de reserva',   // <-- mantenemos el asunto igual
+        'Rechazo de reserva',  
         $contenido,
         $fecha,
         $idEmpresa              
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Actualizar estado de la cita a Cancelado
-    $exitoEstado = $cita->actualizarEstado($conn, 'Cancelado'); // <-- solo esto cambia
+    $exitoEstado = $cita->actualizarEstado($conn, 'Cancelado'); 
 
     if ($exitoEstado) {
         echo json_encode(['success' => true]);

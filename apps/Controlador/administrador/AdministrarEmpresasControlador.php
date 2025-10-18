@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accion = $_POST['accion'] ?? '';
 
-    // --- ELIMINAR EMPRESA ---
+    // eliminar
     if ($accion === 'eliminar') {
         $idEmpresa = $_POST['idEmpresa'] ?? null;
 
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // --- EDITAR EMPRESA ---
+    // editar
     if ($accion === 'editar') {
         $idEmpresa = $_POST['idEmpresa'] ?? null;
         $nombre    = $_POST['nombreEmpresa'] ?? '';
@@ -47,12 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $empresa = new Empresa(
                 $idEmpresa,
                 $email,
-                '',       // contraseña, no se modifica
-                null,     // teléfono temporal
-                $nombre,  // nombreEmpresa
-                '',       // calle vacío
-                0,        // número vacío
-                null      // imagen
+                '',       
+                null,     
+                $nombre,  
+                '',       
+                0,        
+                null      
             );
 
             $resultado = $empresa->actualizarDatosEmpresa($conn, $telefono);

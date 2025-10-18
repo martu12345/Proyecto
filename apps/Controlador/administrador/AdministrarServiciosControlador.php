@@ -6,7 +6,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Administra.php'
 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Servicio.php');
 
-// Verificación de rol administrador
 if (!isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
     echo "Acceso denegado";
     exit;
@@ -22,7 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $duracion = $_POST['duracion'] ?? 0;
     $imagen = null;
 
-    // Subir nueva imagen si hay
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
         $nombreArchivo = uniqid() . '_' . preg_replace("/[^a-zA-Z0-9\._-]/", "_", basename($_FILES['imagen']['name']));
         $rutaDestino = $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/public/imagen/servicios/' . $nombreArchivo;
@@ -32,14 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Obtener servicio actual
     $servicio = Servicio::obtenerPorId($conn, $id);
     if (!$servicio) {
         echo "<p>Servicio no encontrado</p>";
         exit;
     }
 
-// Registrar edición en administra
 $idAdmin = $_SESSION['idUsuario'];
 $administra = new Administra($id, $idAdmin, date('Y-m-d H:i:s'));
 if (!$administra->guardar($conn)) {
@@ -48,7 +44,6 @@ if (!$administra->guardar($conn)) {
 }
 
 
-    // Actualizar datos
     $servicio->setTitulo($titulo);
     $servicio->setCategoria($categoria);
     $servicio->setDepartamento($departamento);

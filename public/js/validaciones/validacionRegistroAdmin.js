@@ -2,69 +2,82 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("formulario-admin");
     if (!form) return;
 
-    const emailAdmin = document.getElementById("email");
-    const mensajeAdmin = document.getElementById("mensaje-error-admin");
+    const emailInput = document.getElementById("email");
+    const telefonoInput = document.getElementById("telefono");
+    const contrasenaInput = document.getElementById("contrasena");
+    const mensaje = document.getElementById("mensaje-error-admin");
 
     form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        mensajeAdmin.textContent = "";
-        mensajeAdmin.style.color = "red"; // color por defecto
+        e.preventDefault(); // ⚡ evita envío tradicional
+        mensaje.textContent = "";
+        mensaje.style.color = "red";
 
-        const email = emailAdmin.value.trim();
-        const telefono = document.getElementById("telefono").value.trim();
-        const contrasena = document.getElementById("contrasena").value;
+        const email = emailInput.value.trim();
+        const telefono = telefonoInput.value.trim();
+        const contrasena = contrasenaInput.value;
 
-        // ===== VALIDACIONES =====
+        // ===== VALIDACIONES LOCALES =====
         if (!/^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(email)) {
-            mensajeAdmin.textContent = "❌ Email inválido.";
-            emailAdmin.focus();
+            mensaje.textContent = "❌ Email inválido.";
+            emailInput.focus();
             return;
         }
+
         if (!/^09[0-9]{7}$/.test(telefono)) {
-            mensajeAdmin.textContent = "❌ Teléfono inválido. Debe ser uruguayo (09xxxxxxx)";
+            mensaje.textContent = "❌ Teléfono inválido. Debe ser uruguayo (09xxxxxxx)";
+            telefonoInput.focus();
             return;
         }
+
         if (contrasena.length < 8) {
-            mensajeAdmin.textContent = "❌ La contraseña debe tener al menos 8 caracteres.";
+            mensaje.textContent = "❌ La contraseña debe tener al menos 8 caracteres.";
+            contrasenaInput.focus();
             return;
         }
 
         try {
-            // ===== VERIFICAR EMAIL ANTES DE ENVIAR =====
-            const resVerif = await fetch(`/Proyecto/apps/Controlador/VerificarEmail.php?email=${encodeURIComponent(email)}`);
+            // ===== VERIFICAR EMAIL POR POST =====
+            let formData = new FormData();
+            formData.append("accion", "verificar");
+            formData.append("email", email);
+
+            const resVerif = await fetch("/Proyecto/apps/Controlador/administrador/AdministradorControlador.php", {
+                method: "POST",
+                body: formData
+            });
+
+            if (!resVerif.ok) throw new Error("Error HTTP: " + resVerif.status);
             const dataVerif = await resVerif.json();
 
             if (dataVerif.existe) {
-                mensajeAdmin.textContent = "❌ Este email ya está registrado.";
-                emailAdmin.focus();
+                mensaje.textContent = "❌ Este email ya está registrado.";
+                emailInput.focus();
                 return;
             }
 
-            // ===== ENVIAR FORMULARIO =====
-            const formData = new FormData(form);
+            // ===== ENVIAR FORMULARIO REAL =====
+            formData = new FormData(form); // ahora sí incluye todo el form
             const res = await fetch(form.action, {
                 method: "POST",
                 body: formData
             });
 
-            const data = await res.json(); // siempre parsear JSON
+            if (!res.ok) throw new Error("Error HTTP: " + res.status);
+            const data = await res.json();
 
             if (data.success) {
-                mensajeAdmin.style.color = "green";
-                mensajeAdmin.textContent = "✅ Administrador creado correctamente!";
+                mensaje.style.color = "green";
+                mensaje.textContent = "✅ Administrador creado correctamente!";
                 form.reset();
             } else if (data.error) {
-                mensajeAdmin.style.color = "red";
-                mensajeAdmin.textContent = "❌ " + data.error;
+                mensaje.textContent = "❌ " + data.error;
             } else {
-                mensajeAdmin.style.color = "red";
-                mensajeAdmin.textContent = "❌ Ocurrió un error inesperado.";
+                mensaje.textContent = "❌ Ocurrió un error inesperado.";
             }
 
         } catch (err) {
             console.error("Error:", err);
-            mensajeAdmin.style.color = "red";
-            mensajeAdmin.textContent = "❌ Error al procesar la solicitud.";
+            mensaje.textContent = "❌ Error al procesar la solicitud.";
         }
     });
 });
