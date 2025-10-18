@@ -32,37 +32,38 @@ class Administra
         return $this->fecha;
     }
 
+    // Guardar nuevo registro
     public function guardar($conn)
     {
-        $sql = "INSERT INTO administra (idUsuario, idServicio, fecha) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO administra (idServicio, idUsuario, fecha) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($sql);
         if (!$stmt) die("Error prepare Administra: " . $conn->error);
-        $stmt->bind_param("iis", $this->idUsuario, $this->idServicio, $this->fecha);
+
+        $stmt->bind_param("iis", $this->idServicio, $this->idUsuario, $this->fecha);
         if (!$stmt->execute()) die("Error execute Administra: " . $stmt->error);
-        $this->idAdministra = $conn->insert_id;
+
+        $this->idAdministra = $conn->insert_id; // guarda el nuevo ID generado
         return true;
     }
+
+    // Obtener todos los registros
     public static function obtenerTodos($conn)
     {
         $sql = "SELECT 
-                a.idAdministra, 
-                u.IdUsuario, 
-                u.email, 
-                s.Titulo AS servicio, 
-                a.fecha
-            FROM administra a
-            LEFT JOIN usuario u ON a.idUsuario = u.IdUsuario
-            LEFT JOIN Servicio s ON a.idServicio = s.IdServicio
-            ORDER BY a.fecha DESC";
+                    a.idAdministra, 
+                    u.IdUsuario, 
+                    u.email, 
+                    s.Titulo AS servicio, 
+                    a.fecha
+                FROM administra a
+                LEFT JOIN usuario u ON a.idUsuario = u.IdUsuario
+                LEFT JOIN Servicio s ON a.idServicio = s.IdServicio
+                ORDER BY a.fecha DESC";
 
         $result = $conn->query($sql);
-
-        if (!$result) {
-            die("Error en consulta Administra: " . $conn->error);
-        }
+        if (!$result) die("Error en consulta Administra: " . $conn->error);
 
         $cambios = [];
-
         while ($row = $result->fetch_assoc()) {
             $cambios[] = [
                 'idAdministra' => $row['idAdministra'],
