@@ -129,40 +129,40 @@ class Comunica
 
         return $stmt->execute();
     }
+public static function obtenerMensajesRecibidosPorEmpresa($conn, $idEmpresa)
+{
+    $sql = "SELECT 
+                c.idMensaje,
+                c.contenido AS mensaje,
+                c.FechaHora AS fecha,
+                c.asunto,
+                c.notificacion,
+                c.IdMensajePadre,
+                CASE 
+                    WHEN c.idUsuarioEmisor = c.idUsuarioCliente THEN CONCAT(cl.nombre, ' ', cl.apellido)
+                    ELSE e.nombreEmpresa
+                END AS emisor,
+                c.idUsuarioEmisor,
+                c.idUsuarioCliente
+            FROM comunica c
+            LEFT JOIN cliente cl ON c.idUsuarioEmisor = cl.idUsuario
+            LEFT JOIN empresa e ON c.idUsuarioEmisor = e.idUsuario
+            WHERE c.idUsuarioEmpresa = ? 
+              AND c.idUsuarioEmisor != ?   
+            ORDER BY c.FechaHora ASC";
 
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $idEmpresa, $idEmpresa); 
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
-    public static function obtenerMensajesRecibidosPorEmpresa($conn, $idEmpresa)
-    {
-        $sql = "SELECT 
-                    c.idMensaje,
-                    c.contenido AS mensaje,
-                    c.FechaHora AS fecha,
-                    c.asunto,
-                    c.notificacion,
-                    c.IdMensajePadre,
-                    CASE 
-                        WHEN c.idUsuarioEmisor = c.idUsuarioCliente THEN CONCAT(cl.nombre, ' ', cl.apellido)
-                        ELSE e.nombreEmpresa
-                    END AS emisor,
-                    c.idUsuarioEmisor,
-                    c.idUsuarioCliente
-                FROM comunica c
-                LEFT JOIN cliente cl ON c.idUsuarioEmisor = cl.idUsuario
-                LEFT JOIN empresa e ON c.idUsuarioEmisor = e.idUsuario
-                WHERE c.idUsuarioEmpresa = ?
-                ORDER BY c.FechaHora ASC";
-
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $idEmpresa);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-
-        $mensajes = [];
-        while ($fila = $resultado->fetch_assoc()) {
-            $mensajes[] = $fila;
-        }
-        return $mensajes;
+    $mensajes = [];
+    while ($fila = $resultado->fetch_assoc()) {
+        $mensajes[] = $fila;
     }
+    return $mensajes;
+}
+
 
     public static function obtenerMensajePorId($conn, $idMensaje)
     {
