@@ -1,6 +1,9 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
+require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/seguridad/seguridad.php');
+
+
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/Contrata.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/Brinda.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/Modelos/Comunica.php');
