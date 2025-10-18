@@ -27,7 +27,7 @@
             <?php endif; ?>
 
             <p>Te avisaremos cuando la empresa confirme el horario.</p>
-            <button onclick="window.location.href='/Proyecto/apps/vistas/paginas/busqueda.php'">Volver</button>
+            <button onclick="window.location.href='/Proyecto/apps/controlador/servicio/BuscarControlador.php'">Volver</button>
         </div>
     </div>
 
