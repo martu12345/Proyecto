@@ -29,7 +29,7 @@ $clientes = $controlador->obtenerTodos();
 <?php else: ?>
     <ul class="clientes-list">
         <?php foreach ($clientes as $c): ?>
-            <?php $telefonos = $c->obtenerTelefonos($conn); // obtenemos todos los teléfonos ?>
+            <?php $telefonos = $c->obtenerTelefonos($conn);  ?>
             <li class="cliente-item">
                 <div class="info">
     <div class="info">
@@ -49,7 +49,6 @@ $clientes = $controlador->obtenerTodos();
     </ul>
 <?php endif; ?>
 
-<!-- MODAL ELIMINAR -->
 <div id="modalEliminar" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -61,7 +60,7 @@ $clientes = $controlador->obtenerTodos();
         <div id="mensajeModal" class="mensaje-modal" style="display:none;"></div>
     </div>
 </div>
-<!-- MODAL EDITAR -->
+
 <div id="modalEditar" class="modal">
     <div class="modal-content">
         <span class="closeEditar">&times;</span>

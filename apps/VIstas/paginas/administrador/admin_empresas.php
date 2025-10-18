@@ -43,7 +43,6 @@ if (count($empresas) === 0) {
 <h1>Administrar Empresas</h1>
 <?= $htmlEmpresas ?>
 
-<!-- MODAL ELIMINAR -->
 <div id="modalEliminar" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -56,7 +55,6 @@ if (count($empresas) === 0) {
     </div>
 </div>
 
-<!-- MODAL EDITAR -->
 <div id="modalEditar" class="modal">
     <div class="modal-content">
         <span class="closeEditar">&times;</span>
