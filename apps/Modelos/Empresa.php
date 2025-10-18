@@ -206,4 +206,40 @@ WHERE e.IdUsuario = ?
             return false;
         }
     }
+public function actualizarEmpresaCompleta($conn, $hashContrasena = null, $telefono = null)
+{
+    try {
+        // --- Actualizar email y contraseña en la tabla usuario ---
+        $email = $this->getEmail();
+        if ($hashContrasena) {
+            $stmt = $conn->prepare("UPDATE usuario SET Email = ?, Contraseña = ? WHERE IdUsuario = ?");
+            $stmt->bind_param("ssi", $email, $hashContrasena, $this->idUsuario);
+        } else {
+            $stmt = $conn->prepare("UPDATE usuario SET Email = ? WHERE IdUsuario = ?");
+            $stmt->bind_param("si", $email, $this->idUsuario);
+        }
+        $stmt->execute();
+        $stmt->close();
+
+        // --- Actualizar datos de la empresa ---
+        $stmt2 = $conn->prepare("UPDATE empresa SET NombreEmpresa = ?, Calle = ?, Numero = ? WHERE IdUsuario = ?");
+        $stmt2->bind_param("sssi", $this->nombreEmpresa, $this->calle, $this->numero, $this->idUsuario);
+        $stmt2->execute();
+        $stmt2->close();
+
+        // --- Actualizar teléfono si se envía ---
+        if ($telefono !== null) {
+            require_once('Telefono.php');
+            Telefono::actualizarTelefono($conn, $this->idUsuario, $telefono);
+        }
+
+        return true;
+
+    } catch (Exception $e) {
+        error_log("Error al actualizar empresa: " . $e->getMessage());
+        return false;
+    }
+}
+
+
 }

@@ -3,13 +3,11 @@ session_start();
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/conexion.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/modelos/Empresa.php');
 
-// Inicializar variables
 $empresa = null;
 $mensajeError = null;
 
-// Obtener variables desde GET
 $idEmpresa = $_GET['idEmpresa'] ?? null;
-$idServicio = $_GET['idServicio'] ?? null; // necesario para el botón volver
+$idServicio = $_GET['idServicio'] ?? null; 
 
 // Validar idEmpresa
 if ($idEmpresa === null) {
@@ -27,9 +25,7 @@ if ($idEmpresa === null) {
     }
 }
 
-// Convertir idServicio a entero si existe
 $idServicio = $idServicio ? intval($idServicio) : null;
 
-// Cargar la vista
 require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/paginas/empresa/Detalle_Empresa.php');
 exit;

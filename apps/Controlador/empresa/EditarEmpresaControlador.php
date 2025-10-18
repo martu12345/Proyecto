@@ -25,49 +25,32 @@ if (!$email) {
     exit();
 }
 
-try {
-    // --- Actualizar usuario ---
-    if (!empty($contrasena)) {
-        $hash = password_hash($contrasena, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("UPDATE usuario SET Email = ?, Contraseña = ? WHERE IdUsuario = ?");
-        if (!$stmt) throw new Exception("Error prepare update usuario: ".$conn->error);
-        $stmt->bind_param("ssi", $email, $hash, $idUsuario);
-    } else {
-        $stmt = $conn->prepare("UPDATE usuario SET Email = ? WHERE IdUsuario = ?");
-        if (!$stmt) throw new Exception("Error prepare update email: ".$conn->error);
-        $stmt->bind_param("si", $email, $idUsuario);
-    }
-    $stmt->execute();
-    $stmt->close();
-
-    // --- Traer datos actuales de la empresa ---
-    $stmt = $conn->prepare("SELECT NombreEmpresa, Calle, Numero, Imagen FROM empresa WHERE IdUsuario = ?");
-    $stmt->bind_param("i", $idUsuario);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $data = $result->fetch_assoc();
-    $stmt->close();
-
-    // --- Si no se envía algún dato, usamos los actuales ---
-    $nombreEmpresa = $nombreEmpresa ?: $data['NombreEmpresa'];
-    $calle = $calle ?: $data['Calle'];
-    $numero = $numero ?: $data['Numero'];
-
-    if (!preg_match("/^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com)$/i", $email)) {
+if (!preg_match("/^[a-zA-Z0-9._%+-]+@(gmail\.com|hotmail\.com)$/i", $email)) {
     echo json_encode(['ok' => false, 'error' => 'El email debe terminar en @gmail.com o @hotmail.com']);
     exit();
 }
 
+try {
+    // --- Obtener empresa usando método de la clase ---
+    $empresa = Empresa::obtenerPorId($conn, $idUsuario);
+    if (!$empresa) throw new Exception("Empresa no encontrada");
 
-    // --- Actualizar empresa directamente sin depender de la clase ---
-    $stmt = $conn->prepare("UPDATE empresa SET NombreEmpresa=?, Calle=?, Numero=? WHERE IdUsuario=?");
-    if (!$stmt) throw new Exception("Error prepare update empresa: ".$conn->error);
-    $stmt->bind_param("sssi", $nombreEmpresa, $calle, $numero, $idUsuario);
-    $stmt->execute();
-    $stmt->close();
+    // --- Actualizar valores en la instancia ---
+    $empresa->setEmail($email);
+    $empresa->setNombreEmpresa($nombreEmpresa ?: $empresa->getNombreEmpresa());
+    $empresa->setCalle($calle ?: $empresa->getCalle());
+    $empresa->setNumero($numero ?: $empresa->getNumero());
 
-    echo json_encode(['ok' => true]);
+    // --- Crear hash de contraseña si se envía ---
+    $hash = !empty($contrasena) ? password_hash($contrasena, PASSWORD_DEFAULT) : null;
+
+    // --- Usar método de la clase para actualizar email, contraseña y datos de empresa ---
+    if ($empresa->actualizarEmpresaCompleta($conn, $hash)) {
+        echo json_encode(['ok' => true]);
+    } else {
+        throw new Exception("No se pudo actualizar la empresa");
+    }
+
 } catch (Exception $e) {
     echo json_encode(['ok' => false, 'error' => $e->getMessage()]);
 }
-?>

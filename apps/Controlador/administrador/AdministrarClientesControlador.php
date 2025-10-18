@@ -8,7 +8,6 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $accion = $_POST['accion'] ?? '';
 
-    // --- ELIMINAR CLIENTE ---
     if ($accion === 'eliminar') {
         $idCliente = $_POST['idCliente'] ?? null;
 
@@ -31,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // --- EDITAR CLIENTE ---
     if ($accion === 'editar') {
         $idCliente = $_POST['idCliente'] ?? null;
         $nombre    = $_POST['nombre'] ?? '';
@@ -45,13 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         try {
-            // Creamos el objeto Cliente
             $cliente = new Cliente($idCliente, $email, '', $nombre, $apellido);
 
-            // Actualizamos cliente en la base
             $cliente->actualizarCliente($conn);
 
-            // Actualizamos teléfono (elimina el anterior y agrega el nuevo)
             if ($telefono) {
                 Telefono::actualizarTelefono($conn, $idCliente, $telefono);
             }

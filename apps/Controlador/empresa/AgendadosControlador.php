@@ -3,8 +3,7 @@ session_start();
 
 // Configuración de errores
 ini_set('display_errors', 0);
-ini_set('log_errors', 1);
-error_reporting(E_ALL);
+
 
 header('Content-Type: application/json');
 
@@ -22,7 +21,6 @@ if (!$idEmpresa) {
     exit;
 }
 
-// --- POST: aceptar/rechazar cita ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idCita = $_POST['idContrata'] ?? null;
     $accion = $_POST['accion'] ?? null;
@@ -38,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Cambiamos 'Rechazado' a 'Cancelado'
     $nuevoEstado = ($accion === 'aceptar') ? 'En proceso' : 'Cancelado';
 
     try {
@@ -55,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// --- GET: obtener agendados ---
 try {
     $agendados = Contrata::obtenerAgendadosPorEmpresa($conn, $idEmpresa);
     if (!$agendados || !is_array($agendados)) $agendados = [];

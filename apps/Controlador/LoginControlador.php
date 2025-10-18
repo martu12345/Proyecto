@@ -1,6 +1,6 @@
 <?php
 session_start();
-header('Content-Type: application/json'); // siempre JSON
+header('Content-Type: application/json'); 
 
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/conexion.php');
 require_once($_SERVER['DOCUMENT_ROOT'].'/Proyecto/apps/Modelos/Usuario.php');
@@ -88,6 +88,6 @@ if ($redirect === '') {
     exit();
 }
 
-// Todo OK → devuelvo JSON con redirección
+
 echo json_encode(['exito' => true, 'redirect' => $redirect]);
 exit();
