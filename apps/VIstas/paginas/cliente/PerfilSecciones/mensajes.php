@@ -16,7 +16,6 @@
         <button id="btnEnviados" onclick="mostrarEnviados()">Enviados</button>
     </div>
 
-    <!-- Recibidos -->
     <div id="recibidos" class="mensajes-lista">
         <?php if (empty($mensajesRecibidos)): ?>
             <p>No hay mensajes recibidos.</p>
@@ -41,7 +40,6 @@
         <?php endif; ?>
     </div>
 
-    <!-- Enviados -->
     <div id="enviados" class="mensajes-lista" style="display:none;">
         <?php if (empty($mensajesEnviados)): ?>
             <p>No hay mensajes enviados.</p>

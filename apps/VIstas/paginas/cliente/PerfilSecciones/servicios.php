@@ -31,7 +31,6 @@ $rechazados = $servicios['rechazados'];
         <div class="tab" data-tab="Cancelado">Cancelados</div>
     </div>
 
-    <!-- PENDIENTES -->
     <div class="tab-content active" id="Pendientes">
         <?php if (count($pendientes) === 0): ?>
             <p>No hay servicios pendientes.</p>
@@ -47,7 +46,6 @@ $rechazados = $servicios['rechazados'];
         <?php endif; ?>
     </div>
 
-    <!-- EN PROCESO -->
     <div class="tab-content" id="En-proceso">
         <?php if (count($enProceso) === 0): ?>
             <p>No hay servicios en proceso.</p>
@@ -63,7 +61,6 @@ $rechazados = $servicios['rechazados'];
         <?php endif; ?>
     </div>
 
-    <!-- FINALIZADOS -->
     <div class="tab-content" id="Finalizado">
         <?php if (count($finalizados) === 0): ?>
             <p>No hay servicios finalizados.</p>
@@ -92,7 +89,6 @@ $rechazados = $servicios['rechazados'];
     </div>
 
 
-    <!-- CANCELADOS -->
     <div class="tab-content" id="Cancelado">
         <?php if (count($rechazados) === 0): ?>
             <p>No hay servicios cancelados.</p>
@@ -110,7 +106,6 @@ $rechazados = $servicios['rechazados'];
         <?php endif; ?>
     </div>
 
-    <!-- MODAL cancelar -->
 
     <div id="modalCancelar" class="modal">
         <div class="modal-content">
@@ -126,7 +121,6 @@ $rechazados = $servicios['rechazados'];
         </div>
     </div>
 
-    <!-- MODAL CALIFICAR -->
     <div id="modalCalificar" class="modal">
         <div class="modal-content">
             <h3>Calificar Servicio</h3>
@@ -150,7 +144,6 @@ $rechazados = $servicios['rechazados'];
         </div>
     </div>
 
-    <!-- MODAL VER CALIFICACIÓN -->
     <div id="modalVerCalificacion" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>

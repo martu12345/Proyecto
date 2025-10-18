@@ -36,7 +36,6 @@ $servicios = $controlador->obtenerServiciosConEmpresa();
                     </div>
 
                     <div class="acciones">
-                        <!-- ✅ Igual que la empresa: usamos data-* -->
                         <button 
                             class="btn-editar"
                             data-id="<?= $s->getIdServicio() ?>"
@@ -75,7 +74,6 @@ data-departamento="<?= htmlspecialchars($s->getDepartamento(), ENT_QUOTES) ?>"
 
 <script src="/Proyecto/public/js/administrador/admin_servicios.js"></script>
 
-    <!-- ✅ Script de edición (reutilizado) -->
     <script src="/Proyecto/public/js/servicio/editar_servicios.js"></script>
 
   

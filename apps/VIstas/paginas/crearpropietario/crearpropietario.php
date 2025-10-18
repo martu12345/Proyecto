@@ -23,7 +23,7 @@ if ($stmtUsuario->execute()) {
     $stmtProp->bind_param("i", $idUsuario);
     $stmtProp->execute();
 
-    // Insertamos el teléfono (si tu tabla teléfono tiene FK con usuario)
+    // Insertamos el teléfono
     $sqlTel = "INSERT INTO telefono (IdUsuario, telefono) VALUES (?, ?)";
     $stmtTel = $conn->prepare($sqlTel);
     $stmtTel->bind_param("is", $idUsuario, $telefono);

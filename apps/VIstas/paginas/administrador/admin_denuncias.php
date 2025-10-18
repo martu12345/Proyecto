@@ -9,24 +9,20 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/administrad
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Denuncias Admin</title>
 
-<!-- Navbar -->
 <link rel="stylesheet" href="/Proyecto/public/css/layout/navbar.css">
     <link rel="stylesheet" href="/Proyecto/public/css/fonts.css">
 
 
-<!-- Estilos de la página de denuncias -->
 <link rel="stylesheet" href="/Proyecto/public/css/paginas/administrador/admin_denuncias.css">
 </head>
 
 <body>
     <?php include $_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/vistas/layout/navbar.php'; ?>
 
-    <!-- Contenedor principal para aislar el CSS -->
     <div class="admin-denuncias-page">
 
         <h1>Denuncias</h1>
 
-        <!-- Botones para filtrar -->
         <div class="modal-buttons">
             <a href="?tipo=DenunciarServicio">
                 <button class="<?= ($_GET['tipo'] ?? 'DenunciarServicio') === 'DenunciarServicio' ? 'selected' : '' ?>">
@@ -40,7 +36,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/Proyecto/apps/controlador/administrad
             </a>
         </div>
 
-        <!-- Lista de denuncias -->
 <ul class="servicios-list">
     <?php if (count($denuncias ?? []) === 0): ?>
         <p class="no-denuncias">No hay denuncias de este tipo.</p>
