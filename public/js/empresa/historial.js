@@ -1,11 +1,46 @@
-
 document.addEventListener("DOMContentLoaded", function() {
+    // =========================
+    // TABLAS FINALIZADOS / CANCELADOS
+    // =========================
+    const tablaFinalizado = document.getElementById("tablaFinalizado");
+    const tablaCancelado = document.getElementById("tablaCancelado");
+    const btnFinalizado = document.querySelector('.filtro-btn[data-estado="Finalizado"]');
+    const btnCancelado = document.querySelector('.filtro-btn[data-estado="Cancelado"]');
+    const botonesFiltro = document.querySelectorAll(".filtro-btn");
+
+    // Mostrar Finalizados automáticamente
+    if (tablaFinalizado && tablaCancelado && btnFinalizado && btnCancelado) {
+        tablaFinalizado.style.display = "table";
+        tablaCancelado.style.display = "none";
+        btnFinalizado.classList.add("activa");
+        btnCancelado.classList.remove("activa");
+    }
+
+    // Función para cambiar tablas al click
+    botonesFiltro.forEach(btn => {
+        btn.addEventListener("click", () => {
+            if (btn.dataset.estado === "Finalizado") {
+                tablaFinalizado.style.display = "table";
+                tablaCancelado.style.display = "none";
+            } else {
+                tablaFinalizado.style.display = "none";
+                tablaCancelado.style.display = "table";
+            }
+
+            botonesFiltro.forEach(b => b.classList.remove("activa"));
+            btn.classList.add("activa");
+        });
+    });
+
+    // =========================
+    // MODAL DE DENUNCIA
+    // =========================
     const modal = document.getElementById("denunciaModal");
     const closeBtn = document.getElementById("closeModalBtn");
     const form = document.getElementById("denunciaForm");
     const mensajeDiv = document.getElementById("mensajeDenuncia");
 
-    // Abrir modal al hacer click en "Denunciar"
+    // Abrir modal al clickear "Denunciar"
     document.querySelectorAll(".btn-denunciar").forEach(btn => {
         btn.addEventListener("click", () => {
             form.idCliente.value = btn.dataset.idcliente;
@@ -14,13 +49,15 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Cerrar modal
+    // Cerrar modal con la X
     closeBtn.addEventListener("click", () => modal.style.display = "none");
+
+    // Cerrar modal al clickear fuera
     window.addEventListener("click", (e) => {
         if (e.target === modal) modal.style.display = "none";
     });
 
-    // Enviar denuncia
+    // Enviar denuncia vía fetch
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
         mensajeDiv.innerHTML = "";
@@ -42,10 +79,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 setTimeout(() => modal.style.display = "none", 1500);
             }
         } catch (err) {
-        // Mostrar error real del fetch o JSON
-        mensajeDiv.textContent = "Error de conexión o respuesta inválida: " + err.message;
-        mensajeDiv.className = "mensaje-denuncia error";
-        console.error(err); // esto lo ves en consola
-    }
+            mensajeDiv.textContent = "Error de conexión o respuesta inválida: " + err.message;
+            mensajeDiv.className = "mensaje-denuncia error";
+            console.error(err);
+        }
     });
 });
+
