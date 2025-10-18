@@ -18,7 +18,8 @@
     <div class="login-background">
         <div class="login-box">
             <h2>Crear Administrador</h2>
-            <form action="/Proyecto/apps/Controlador/administrador/AdministradorControlador.php" method="POST">
+<form id="formulario-admin" action="/Proyecto/apps/Controlador/administrador/AdministradorControlador.php" method="POST">
+
                 <input type="hidden" name="accion" value="crear">
 
                 <label for="email">Email</label>
@@ -38,11 +39,11 @@
                 </div>
 
                 <div id="mensaje-error-admin" style="color:red; margin-top:10px;"></div>
+                    <script src="/Proyecto/public/js/validaciones/validacionRegistroAdmin.js"></script>
+
             </form>
         </div>
     </div>
-    <script src="/Proyecto/public/js/propietario/crear_admin.js"></script>
-    <script src="/Proyecto/public/js/validaciones/validacionRegistroAdmin.js"></script>
 
 </body>
 
