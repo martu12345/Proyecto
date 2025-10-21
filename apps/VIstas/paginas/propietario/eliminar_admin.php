@@ -25,7 +25,7 @@
 
                 <div class="login-buttons">
                     <button type="submit">Eliminar</button>
-                    <button type="button" onclick="window.location.href='/Proyecto/apps/vistas/home_propietario.php'">Cancelar</button>
+                    <button type="button" onclick="window.location.href='/Proyecto/apps/vistas/paginas/propietario/home_propietario.php'">Cancelar</button>
                 </div>
 
                 <div id="mensaje-error-admin" style="color:red; margin-top:10px;"></div>
